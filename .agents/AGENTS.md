@@ -41,3 +41,36 @@ MusicProvider es una Prueba de Concepto (PoC) para una futura integración en el
   - `packages/plugin-sdk/` para entender cómo se declaran los tipos de plugins y cómo retornan la información.
   - `packages/player/src-tauri/src/ytdlp.rs` para ver cómo el backend oficial consume `yt-dlp`.
 - **Regla de Integración**: Evita usar paquetes pesados que no estén alineados con las librerías permitidas o utilizadas en Nuclear, y siempre piensa en el diseño orientado a plugins (abstracciones, "hosts" y "providers"). Consulta el skill `nuclear-reference` para más detalles.
+
+## Ecosistema configurado (Gentle-AI inspired)
+
+Este proyecto tiene configurados los siguientes componentes del ecosistema:
+
+### MCP Servers (conectados vía `cmd mcp`)
+| Servidor | Propósito | Comando de setup |
+|---|---|---|
+| **Engram** | Memoria persistente del proyecto | `cmd mcp add engram -- engram mcp` |
+| **Context7** | Documentación actualizada de librerías/APIs | `cmd mcp add context7 -- npx -y @upstash/context7-mcp --api-key <key>` |
+
+### Skills instalados
+- `sdd-workflow` — Ciclo SDD completo (diseño → implementación → verificación)
+- `music-provider` — Guía de integración con yt-dlp
+- `nuclear-reference` — Referencia cruzada con el repositorio Nuclear
+
+### OpenSpecs
+Los specs de diseño se almacenan en `.openspecs/<cambio>/README.md`. El archivo `.openspecs/config.json` define las convenciones del proyecto.
+
+### Flujo de trabajo recomendado (SDD)
+1. **Tarea sustancial (2+ archivos o decisión arquitectónica)**:
+   - Lee el spec existente en `.openspecs/` si aplica
+   - Usa el skill `sdd-workflow` para diseñar, implementar y verificar
+   - Persiste las decisiones en Engram con `mem_save`
+
+2. **Tarea simple (1 archivo, cambio pequeño)**:
+   - Implementa directamente, sin ciclo SDD completo
+
+3. **Documentación de APIs externas**:
+   - Usa Context7 (`resolve-library-id` + `query-docs`) para obtener docs actualizadas
+
+4. **Resumen de sesión**:
+   - Al finalizar tareas significativas, llama a `mem_session_summary` para persistir el contexto
