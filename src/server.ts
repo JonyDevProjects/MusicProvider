@@ -9,6 +9,9 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+// Servir la aplicación web de Flutter
+app.use(express.static(path.join(process.cwd(), 'Spoti5_app', 'build', 'web')));
+
 app.get('/api/search', async (req, res) => {
   try {
     const query = req.query.q as string;

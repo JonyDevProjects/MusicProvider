@@ -81,10 +81,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 const SizedBox(width: 8),
-                IconButton(
-                  icon: const Icon(Icons.send),
-                  color: Theme.of(context).colorScheme.primary,
-                  onPressed: _performSearch,
+                Tooltip(
+                  message: 'Search Button',
+                  child: IconButton(
+                    icon: const Icon(Icons.send),
+                    color: Theme.of(context).colorScheme.primary,
+                    onPressed: _performSearch,
+                  ),
                 ),
               ],
             ),
@@ -115,37 +118,41 @@ class _HomeScreenState extends State<HomeScreen> {
                         itemCount: _searchResults.length,
                         itemBuilder: (context, index) {
                           final track = _searchResults[index];
-                          return ListTile(
-                            leading: ClipRRect(
-                              borderRadius: BorderRadius.circular(4),
-                              child: track.thumbnail != null
-                                  ? Image.network(
-                                      track.thumbnail!,
-                                      width: 50,
-                                      height: 50,
-                                      fit: BoxFit.cover,
-                                    )
-                                  : Container(
-                                      width: 50,
-                                      height: 50,
-                                      color: Colors.grey,
-                                      child: const Icon(Icons.music_note),
-                                    ),
+                          return Semantics(
+                            label: 'TrackResult-${track.title}',
+                            button: true,
+                            child: ListTile(
+                              leading: ClipRRect(
+                                borderRadius: BorderRadius.circular(4),
+                                child: track.thumbnail != null
+                                    ? Image.network(
+                                        track.thumbnail!,
+                                        width: 50,
+                                        height: 50,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Container(
+                                        width: 50,
+                                        height: 50,
+                                        color: Colors.grey,
+                                        child: const Icon(Icons.music_note),
+                                      ),
+                              ),
+                              title: Text(
+                                track.title,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              subtitle: Text(
+                                track.artist ?? 'Unknown Artist',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              trailing: Text(_formatDuration(track.duration)),
+                              onTap: () {
+                                context.read<PlayerProvider>().playTrack(track);
+                              },
                             ),
-                            title: Text(
-                              track.title,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            subtitle: Text(
-                              track.artist ?? 'Unknown Artist',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            trailing: Text(_formatDuration(track.duration)),
-                            onTap: () {
-                              context.read<PlayerProvider>().playTrack(track);
-                            },
                           );
                         },
                       ),
