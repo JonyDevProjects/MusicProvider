@@ -119,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         itemBuilder: (context, index) {
                           final track = _searchResults[index];
                           return Semantics(
-                            label: 'TrackResult-${track.title}',
+                            label: 'TrackResult-${track.title} (${_formatDuration(track.duration)})',
                             button: true,
                             child: ListTile(
                               leading: ClipRRect(

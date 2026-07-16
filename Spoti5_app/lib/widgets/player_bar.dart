@@ -104,8 +104,10 @@ class PlayerBar extends StatelessWidget {
               stream: playerProvider.audioPlayer.positionStream,
               builder: (context, positionSnapshot) {
                 final position = positionSnapshot.data ?? Duration.zero;
-                final duration = playerProvider.audioPlayer.duration ?? Duration.zero;
-                
+                final duration = track.duration != null
+                    ? Duration(seconds: track.duration!)
+                    : playerProvider.audioPlayer.duration ?? Duration.zero;
+
                 return ProgressBar(
                   progress: position,
                   total: duration,
