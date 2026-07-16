@@ -5,7 +5,10 @@ import '../models/track.dart';
 
 class ApiService {
   // En emulador de Android usa 10.0.2.2. En iOS, Web o Desktop usa localhost.
+  // En dispositivos físicos se pasa la IP LAN de la Mac vía --dart-define=BASE_URL=...
   static String get baseUrl {
+    const fromDefine = String.fromEnvironment('BASE_URL');
+    if (fromDefine.isNotEmpty) return fromDefine;
     if (Platform.isAndroid) return 'http://10.0.2.2:3000/api';
     return 'http://localhost:3000/api';
   }
