@@ -9,6 +9,7 @@
 # workflow
 - After completing implementations and validations, automatically create taste learnings from project decisions made during the session. Confidence: 0.85
 - Persist implementation decisions and testing outcomes in Engram after finishing work, ensuring coherence with taste learnings and avoiding memory conflicts. Confidence: 0.85
+- For complex tasks: Follow a structured workflow from plan to implementation step by step. Confidence: 0.85
 
 # testing-strategy
 - For Flutter multiplatform E2E tests: use the official `integration_test` package (not flutter_driver) for iOS and Android, plus Playwright for the web target. Confidence: 0.90
