@@ -1,11 +1,14 @@
 import 'dart:convert';
+import 'dart:io' if (dart.library.html) 'stub_io.dart';
 import 'package:http/http.dart' as http;
 import '../models/track.dart';
 
 class ApiService {
-  // En emulador de Android usa 10.0.2.2. En iOS o Desktop/Web usa localhost.
-  // Ajusta la IP si pruebas en un dispositivo físico.
-  static const String baseUrl = 'http://localhost:3000/api';
+  // En emulador de Android usa 10.0.2.2. En iOS, Web o Desktop usa localhost.
+  static String get baseUrl {
+    if (Platform.isAndroid) return 'http://10.0.2.2:3000/api';
+    return 'http://localhost:3000/api';
+  }
 
   Future<List<Track>> searchTracks(String query) async {
     final response = await http.get(Uri.parse('$baseUrl/search?q=$query'));

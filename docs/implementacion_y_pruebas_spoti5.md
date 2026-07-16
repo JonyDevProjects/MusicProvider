@@ -141,6 +141,10 @@ Puedes correr el proyecto en la plataforma que prefieras:
   ```bash
   flutter run -d iPhone
   ```
+- **Para Emulador Android:**
+  ```bash
+  flutter run -d Android
+  ```
 
 > **⚠️ AVISO PARA ANDROID:** Si pruebas en un emulador de Android nativo, el servidor que corre en tu Mac en `localhost` no es directamente accesible usando `localhost` desde dentro del emulador Android. Si vas a usar Android, abre `Spoti5_app/lib/services/api_service.dart` y cambia la constante `baseUrl` de `http://localhost:3000/api` a `http://10.0.2.2:3000/api`.
 
