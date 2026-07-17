@@ -75,6 +75,6 @@ app.post('/api/download', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 MusicProvider Server corriendo en http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 MusicProvider Server corriendo en http://0.0.0.0:${PORT}`);
 });
