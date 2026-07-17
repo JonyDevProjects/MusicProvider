@@ -35,6 +35,26 @@ A diferencia de Android, probar en un iPhone requiere firma digital y CocoaPods.
    ```
    Dirígete a la pestaña **Signing & Capabilities** de `Runner` y selecciona tu *Development Team*.
 
+3. **Confiar en el Certificado de Desarrollo (CRÍTICO):**
+   
+   > [!IMPORTANT]
+   > **Este paso es OBLIGATORIO** y es la causa más común del error "The Dart VM Service was not discovered after X seconds".
+   
+   Si es la primera vez que ejecutas una app con tu certificado de desarrollo en el dispositivo, **debes confiar manualmente en el certificado**:
+   
+   **En el iPhone/iPad:**
+   1. Ve a **Configuración** → **General** → **VPN y gestión de dispositivos**
+   2. Busca el perfil con tu Apple ID (ej: `Apple Development: tu@email.com (XXXXXXXXXX)`)
+   3. Toca sobre él y selecciona **"Confiar en [nombre del perfil]"**
+   4. Confirma la acción
+   
+   **¿Cómo saber si este es el problema?**
+   - Aparece un diálogo **"Untrusted Developer"** en el dispositivo
+   - Xcode muestra: `"Unable to launch com.example.app because it has an invalid code signature, inadequate entitlements or its profile has not been explicitly trusted by the user"`
+   - Flutter timeout con: `"The Dart VM Service was not discovered after 60 seconds"`
+   
+   **Verificación:** Después de confiar en el certificado, la app debería instalarse y ejecutarse sin errores.
+
 ### Ejecución iOS
 Conecta el iPhone (por cable o confíalo vía red), verifica el `<deviceId>` con `flutter devices` y ejecuta:
 ```bash

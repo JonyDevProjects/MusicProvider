@@ -40,7 +40,8 @@ Durante el desarrollo nos enfrentamos a diversos desafíos que moldearon la arqu
 
 Toda la documentación arquitectónica, guías de instalación del entorno (SDK de Flutter, Xcode, Android Studio) y el **paso a paso para ejecutar el servidor y la aplicación** se encuentran documentados de forma pormenorizada en:
 
-📄 **[Implementación y Pruebas (Spoti5)](./docs/implementacion_y_pruebas_spoti5.md)**
+📄 **[Setup y Arquitectura (Spoti5)](./docs/setup_y_arquitectura.md)**
+📄 **[Guía de Pruebas y E2E (Testing)](./docs/testing/README.md)**
 📄 **[Contexto y Estado Original](./docs/contexto_y_estado.md)**
 
 ---

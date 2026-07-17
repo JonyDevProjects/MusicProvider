@@ -7,10 +7,7 @@
 - For /sdd-verify (SDD verify phase): Use xiaomi/mimo-v2.5 model. Confidence: 0.65
 
 # workflow
-- After completing implementations and validations, automatically create taste learnings from project decisions made during the session. Confidence: 0.85
-- Persist implementation decisions and testing outcomes in Engram after finishing work, ensuring coherence with taste learnings and avoiding memory conflicts. Confidence: 0.85
-- For complex tasks: Follow a structured workflow from plan to implementation step by step. Confidence: 0.85
-
+See [workflow/taste.md](workflow/taste.md)
 # testing-strategy
 - For Flutter multiplatform E2E tests: use the official `integration_test` package (not flutter_driver) for iOS and Android, plus Playwright for the web target. Confidence: 0.90
 - For Flutter web (CanvasKit) E2E with Playwright: verify values via `aria-label` on semantic nodes (`flt-semantics`), not via DOM text; expose durations on search results (`TrackResult-*`) since `ProgressBar` semantics are not materialized in CanvasKit. Confidence: 0.90

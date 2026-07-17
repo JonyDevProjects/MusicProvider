@@ -2,7 +2,7 @@
 
 ## Resumen Ejecutivo
 
-Se realizaron pruebas manuales en todas las plataformas documentadas siguiendo la estrategia de pruebas del proyecto. **5 de 6 plataformas pasaron exitosamente**, con un timeout conocido en iOS físico.
+Se realizaron pruebas manuales en todas las plataformas documentadas siguiendo la estrategia de pruebas del proyecto. **6 de 6 plataformas pasaron exitosamente**, incluyendo iOS físico que previamente tenía un timeout.
 
 ## Estado de Pruebas por Plataforma
 
@@ -12,7 +12,7 @@ Se realizaron pruebas manuales en todas las plataformas documentadas siguiendo l
 | Android Emulator | ✅ PASS | integration_test/app_test.dart - 1 test passed |
 | iOS Simulator | ✅ PASS | integration_test/app_test.dart - 1 test passed |
 | Android Físico (S9+) | ✅ PASS | integration_test con BASE_URL LAN |
-| iOS Físico (iPhone 12 mini) | ⚠️ TIMEOUT | VM Service no descubierto - requiere verificación manual |
+| iOS Físico (iPhone 12 mini) | ✅ PASS | integration_test con BASE_URL LAN (15 segundos) |
 
 ## Detalles por Plataforma
 
@@ -56,12 +56,20 @@ Se realizaron pruebas manuales en todas las plataformas documentadas siguiendo l
 ### 6. iOS Físico (iPhone 12 mini Joni)
 - **Dispositivo**: iPhone 12 mini (iOS 18.7.8)
 - **Conexión**: USB (00008101-000C2D492682001E)
-- **Estado**: TIMEOUT después de 180 segundos
-- **Error**: "The Dart VM Service was not discovered after 60 seconds"
-- **Causa probable**: 
-  - El dispositivo necesita confiar en el certificado de desarrollo
-  - Problemas de conectividad de red entre Mac y dispositivo
-  - Posible necesidad de habilitar "Developer Mode" en el dispositivo
+- **Comando**: `flutter test integration_test/app_test.dart -d 00008101-000C2D492682001E --dart-define=BASE_URL=http://192.168.1.128:3000/api`
+- **Estado**: ✅ PASS - 1 test passed (15 segundos)
+
+**Problemas encontrados y resueltos:**
+1. **Untrusted Developer**: El dispositivo no confiaba en el certificado de desarrollo
+   - Solución: Configuración → General → VPN y gestión de dispositivos → Confiar en el certificado
+   
+2. **No route to host (errno 65)**: El prompt de permiso de red local no aparecía automáticamente
+   - Causa: Bug conocido de Flutter/iOS donde el prompt de permiso de red local no se muestra en modo debug
+   - Solución: Ejecutar la app en modo profile (`flutter run --profile`) para forzar la aparición del prompt, luego aceptar el permiso de red local
+   
+3. **Documentación actualizada**: 
+   - `docs/testing/e2e_mobile_fisicos.md` con sección de troubleshooting para certificado
+   - `docs/testing/ios_troubleshooting.md` guía completa de troubleshooting iOS
 
 ## Funcionalidades Verificadas
 
@@ -87,10 +95,17 @@ Se realizaron pruebas manuales en todas las plataformas documentadas siguiendo l
 - **Solución**: Clic en botón "Enable accessibility" al cargar la página
 - **Impacto**: Pruebas automatizadas con Playwright requieren inyección de clic
 
-### 2. iOS Físico - VM Service Timeout
+### 2. iOS Físico - VM Service Timeout (RESUELTO)
 - **Problema**: El Dart VM Service no se descubre en 60 segundos
-- **Documentado en**: `docs/testing/e2e_mobile_fisicos.md`
-- **Solución sugerida**: Verificar confianza del certificado y conectividad de red
+- **Causa raíz**: El dispositivo no confía en el certificado de desarrollo
+- **Solución**: Ir a Configuración → General → VPN y gestión de dispositivos → Confiar en el certificado
+- **Documentado en**: `docs/testing/e2e_mobile_fisicos.md` (sección "Confiar en el Certificado de Desarrollo")
+
+### 3. iOS Físico - No route to host (RESUELTO)
+- **Problema**: "Connection failed (OS Error: No route to host, errno = 65)" al intentar conectar con el backend
+- **Causa raíz**: Bug de Flutter/iOS - el prompt de permiso de red local no aparece automáticamente en modo debug
+- **Solución**: Ejecutar `flutter run --profile` para forzar la aparición del prompt de permiso de red local, luego aceptar "Permitir"
+- **Documentado en**: `docs/testing/ios_troubleshooting.md`
 
 ### 3. ADB Wi-Fi (Documentado)
 - **Problema**: Huawei P30 Pro pierde conexión tcpip al desconectar USB
@@ -98,7 +113,9 @@ Se realizaron pruebas manuales en todas las plataformas documentadas siguiendo l
 
 ## Recomendaciones
 
-1. **Para iOS Físico**: Verificar manualmente que el certificado de desarrollo es confiable en el dispositivo antes de ejecutar pruebas automatizadas
+1. **Para iOS Físico**: 
+   - Verificar manualmente que el certificado de desarrollo es confiable en el dispositivo antes de ejecutar pruebas automatizadas
+   - Si el prompt de permiso de red local no aparece, ejecutar `flutter run --profile` primero para forzarlo
 
 2. **Para Flutter Web**: Considerar agregar un init script que habilite la accesibilidad automáticamente para pruebas E2E
 

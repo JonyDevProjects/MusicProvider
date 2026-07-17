@@ -37,3 +37,4 @@ Hemos documentado las particularidades, retos resueltos y flujos de ejecución e
 - 🌐 **[E2E en Web (Playwright)](./e2e_web_playwright.md)**: Pruebas sobre CanvasKit simulando inputs nativos y utilizando el árbol semántico (`flt-semantics`).
 - 📱 **[E2E en Emuladores (iOS / Android)](./e2e_mobile_emuladores.md)**: Cómo levantar el emulador Android CLI, el Simulador iOS y ejecutar `integration_test/app_test.dart`.
 - 📲 **[E2E en Dispositivos Físicos](./e2e_mobile_fisicos.md)**: Configuración de Xcode, `--dart-define=BASE_URL` para LAN, y resolución de problemas comunes como caídas de ADB por Wi-Fi.
+- 🔧 **[Troubleshooting iOS](./ios_troubleshooting.md)**: Solución a problemas comunes en iOS físico (Untrusted Developer, mDNS, Developer Mode, certificados expirados).
