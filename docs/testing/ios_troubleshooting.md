@@ -144,6 +144,46 @@ iOS requiere permiso explícito para acceder a la red local (LAN). La primera ve
 
 ---
 
+## Problema 6: Connection refused / localhost apunta al dispositivo
+
+### Síntomas
+- Error: `"Connection refused (OS Error: Connection refused, errno = 61)"`
+- URI muestra `http://localhost:3000/api/search?q=...`
+- El backend funciona correctamente en la Mac
+- La app web (Chrome) funciona sin problemas
+
+### Causa
+Cuando la app se ejecuta en un dispositivo iOS físico, `localhost` se refiere al **propio iPhone**, no a la Mac donde corre el backend. A diferencia de los emuladores (que mapean `localhost` al host), un dispositivo físico necesita la **IP LAN de la Mac** explícitamente.
+
+### Solución
+
+**Paso 1: Obtener la IP de la Mac**
+```bash
+ipconfig getifaddr en0
+# Ejemplo: 192.168.1.128
+```
+
+**Paso 2: Ejecutar la app con `--dart-define`**
+```bash
+cd Spoti5_app
+flutter run --release -d <deviceId> \
+  --dart-define=BASE_URL=http://<MAC_IP>:3000/api
+```
+
+**Paso 3: Verificar conexión**
+- La app debería poder buscar y reproducir música
+- Las requests ahora apuntan a `http://192.168.1.128:3000/api` en lugar de `http://localhost:3000/api`
+
+### ¿Por qué ocurre esto?
+El código en `api_service.dart` usa `localhost` como fallback para iOS. Esto funciona en emuladores y web, pero en dispositivos físicos `localhost` se resuelve a la propia interfaz de red del dispositivo (127.0.0.1), donde no hay ningún servidor escuchando.
+
+La app soporta `--dart-define=BASE_URL=...` para sobreescribir la URL del backend. Esta es la forma correcta de configurar la conexión para dispositivos físicos.
+
+### Referencia
+- Archivo: `Spoti5_app/lib/services/api_service.dart` — lógica de detección de `baseUrl`
+
+---
+
 ## Checklist Pre-Ejecución
 
 Antes de ejecutar pruebas E2E en iOS físico, verificar:
@@ -155,6 +195,7 @@ Antes de ejecutar pruebas E2E en iOS físico, verificar:
 - [ ] **Personal Hotspot**: Desactivado
 - [ ] **Backend corriendo**: `npm run dev:server` en el puerto 3000
 - [ ] **IP de Mac**: Verificada con `ipconfig getifaddr en0`
+- [ ] **BASE_URL configurado**: Usar `--dart-define=BASE_URL=http://<MAC_IP>:3000/api` en dispositivos físicos
 - [ ] **Dispositivo conectado**: `flutter devices` lo muestra
 
 ---
@@ -185,4 +226,4 @@ flutter test integration_test/app_test.dart \
 
 ---
 
-*Última actualización: 17 de Julio 2026*
+*Última actualización: 18 de Julio 2026*

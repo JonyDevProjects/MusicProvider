@@ -55,11 +55,51 @@ A diferencia de Android, probar en un iPhone requiere firma digital y CocoaPods.
    
    **Verificación:** Después de confiar en el certificado, la app debería instalarse y ejecutarse sin errores.
 
-### Ejecución iOS
+### Ejecución iOS (Validación Manual / Funcional con `flutter run --release`)
+
+> [!NOTE]
+> Para **validación manual funcional** (buscar y reproducir) en iPhone físico por red inalámbrica, usar `flutter run --release` es el flujo que funciona de forma fiable. El `flutter test` (integration_test) en iOS físico presenta barreras de automatización desatendida (Local Network Privacy Prompt, mDNS/VM Service timeout) — ver `ios_troubleshooting.md` y `manual_testing_results_2026-07-17_ronda3.md`.
+
+Flujo validado paso a paso (sesión 2026-07-18, iPhone conectado vía Wi-Fi):
+
+1. **Levantar el backend** (escucha en `0.0.0.0:3000`, no solo `localhost`):
+   ```bash
+   cd MusicProvider
+   npm run dev:server
+   ```
+
+2. **Obtener la IP LAN de la Mac** (ambos en la misma subred Wi-Fi):
+   ```bash
+   ipconfig getifaddr en0
+   # Ejemplo real de la sesión: 192.168.1.46
+   ```
+
+3. **Verificar el deviceId** del iPhone:
+   ```bash
+   flutter devices
+   # Ejemplo: 00008101-000C2D492682001E (Jonathan's iPhone, wireless)
+   ```
+
+4. **Levantar la app en release** inyectando la IP LAN del backend:
+   ```bash
+   cd Spoti5_app
+   flutter run --release -d 00008101-000C2D492682001E \
+     --dart-define=BASE_URL=http://192.168.1.46:3000/api
+   ```
+
+**Notas importantes:**
+- El iPhone físico **NO resuelve `localhost`** ni `10.0.2.2`; requiere la IP LAN real vía `--dart-define=BASE_URL`.
+- `api_service.dart` ya resuelve `localhost` para iOS/Web/Desktop y `10.0.2.2` para Android emulator, pero el iPhone físico necesita la IP LAN inyectada manualmente.
+- La primera instalación por Wi-Fi a veces falla en "Installing and launching"; relanzar el backend y la app (rebuild) lo resuelve.
+- No usar `adb`/`idevice_id` (no están en PATH); el CLI de Android es `~/.local/bin/android` (no acepta `devices`). Usar `flutter devices` para listar.
+
+### Ejecución iOS (Suite E2E `integration_test`)
 Conecta el iPhone (por cable o confíalo vía red), verifica el `<deviceId>` con `flutter devices` y ejecuta:
 ```bash
 flutter test integration_test/app_test.dart -d <deviceId> --dart-define=BASE_URL=http://<MAC_IP>:3000/api
 ```
+> [!WARNING]
+> En iOS físico este comando puede fallar por el Local Network Privacy Prompt del bundle de test (no se acepta automáticamente) y timeout del Dart VM Service vía mDNS. Prefiere el `flutter run --release` de arriba para validación funcional.
 
 ## 3. Configuración para Android Físico
 
