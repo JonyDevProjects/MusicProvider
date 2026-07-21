@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'ytdlp_native.dart';
+import 'lib.dart';
 
 /// Service for interacting with yt-dlp via Rust native library
 class YtDlpService {
@@ -29,7 +30,7 @@ class YtDlpService {
   }
 
   /// Search for tracks
-  /// 
+  ///
   /// [query] - Search query string
   /// [limit] - Maximum number of results (default: 10)
   Future<List<SearchResult>> search(String query, {int limit = 10}) async {
@@ -43,7 +44,7 @@ class YtDlpService {
   }
 
   /// Get stream information for a video
-  /// 
+  ///
   /// [videoId] - YouTube video ID or URL
   Future<StreamInfo> getStreamInfo(String videoId) async {
     _ensureInitialized();
@@ -56,7 +57,7 @@ class YtDlpService {
   }
 
   /// Get playlist information
-  /// 
+  ///
   /// [url] - Playlist URL
   Future<PlaylistInfo> getPlaylist(String url) async {
     _ensureInitialized();

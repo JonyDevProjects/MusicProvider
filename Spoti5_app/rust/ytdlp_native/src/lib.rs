@@ -3,9 +3,12 @@
 //! This library provides a native interface to yt-dlp for searching,
 //! extracting metadata, and getting stream URLs from various platforms.
 
+mod frb_generated; /* AUTO INJECTED BY flutter_rust_bridge. This line may not be accurate, and you can change it according to your needs. */
+
 mod ytdlp;
 mod ytdlp_setup;
 mod ndjson_parser;
+pub mod api;
 
 pub use ytdlp::*;
 pub use ytdlp_setup::*;
@@ -37,6 +40,9 @@ pub enum YtDlpError {
     
     #[error("HTTP error: {0}")]
     HttpError(#[from] reqwest::Error),
+    
+    #[error("Zip error: {0}")]
+    ZipError(#[from] zip::result::ZipError),
     
     #[error("Other error: {0}")]
     Other(String),
