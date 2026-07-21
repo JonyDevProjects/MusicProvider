@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'screens/home_screen.dart';
 import 'providers/player_provider.dart';
+import 'native/frb_generated.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await RustLib.init();
+  
   runApp(
     MultiProvider(
       providers: [

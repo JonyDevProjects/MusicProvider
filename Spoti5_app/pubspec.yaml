@@ -13,6 +13,9 @@ dependencies:
   just_audio: ^0.9.36
   audio_video_progress_bar: ^2.0.3
   provider: ^6.1.2
+  flutter_rust_bridge: ^2.12.0
+  rust_lib_ytdlp_native:
+    path: rust/ytdlp_native
 
 dev_dependencies:
   flutter_test:

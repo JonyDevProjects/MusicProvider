@@ -49,10 +49,16 @@ class FakePlayerProvider extends ChangeNotifier implements PlayerProvider {
   AudioPlayer get audioPlayer => _audioPlayer;
 
   @override
+  bool get useNative => true;
+
+  @override
   Future<void> playTrack(Track track) async {}
 
   @override
   void togglePlayPause() {}
+
+  @override
+  void toggleNativeMode() {}
 }
 
 void main() {

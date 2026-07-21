@@ -8,6 +8,9 @@
 
 # workflow
 See [workflow/taste.md](workflow/taste.md)
+# architecture
+- Use Flutter Rust Bridge (FRB) for integrating yt-dlp natively into the mobile app, enabling shared Rust code with Nuclear's ecosystem. Confidence: 0.65
+
 # testing-strategy
 - For Flutter multiplatform E2E tests: use the official `integration_test` package (not flutter_driver) for iOS and Android, plus Playwright for the web target. Confidence: 0.90
 - For Flutter web (CanvasKit) E2E with Playwright: verify values via `aria-label` on semantic nodes (`flt-semantics`), not via DOM text; expose durations on search results (`TrackResult-*`) since `ProgressBar` semantics are not materialized in CanvasKit. Confidence: 0.90
