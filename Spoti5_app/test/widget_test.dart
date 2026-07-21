@@ -7,13 +7,22 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:provider/provider.dart';
 
 import 'package:spoti5_app/main.dart';
+import 'package:spoti5_app/providers/player_provider.dart';
 
 void main() {
   testWidgets('App starts correctly', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const Spoti5App());
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => PlayerProvider()),
+        ],
+        child: const Spoti5App(),
+      ),
+    );
 
     // Verify that the app starts with the search bar
     expect(find.text('Search songs, artists...'), findsOneWidget);
