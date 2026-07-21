@@ -66,3 +66,11 @@ flutter doctor
 Para conocer cómo levantar el proyecto e interactuar con la aplicación, así como el detalle de las pruebas end-to-end implementadas (Playwright en Web, Emuladores Android/iOS, y dispositivos físicos reales), por favor consulta nuestra documentación dedicada en el directorio `testing/`:
 
 👉 **[Ir a la Documentación de Testing](./testing/README.md)**
+
+---
+
+## 4. Documentación Relacionada
+
+Para un análisis detallado de todas las dependencias del proyecto, incluyendo diagramas de flujo y justificación arquitectónica:
+
+📄 **[Análisis de Dependencias](./dependency_analysis.md)**

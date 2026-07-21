@@ -62,3 +62,9 @@ La herramienta ha sido implementada de forma completa y está operativa en su ni
 Para asegurar que se pueda iterar y extender esta aplicación en el futuro utilizando IA de manera predecible, se configuraron:
 *   **Reglas Locales (`.agents/AGENTS.md`):** Obligan al uso estricto del estándar ESM (extensiones `.js` en importaciones relativas).
 *   **Skill Técnico (`.agents/skills/music-provider/SKILL.md`):** Contiene el "know-how" para que cualquier agente que lea el entorno entienda inmediatamente la naturaleza del wrapper, el formato NDJSON y las responsabilidades del binario, sin tener que gastar tiempo "re-descubriendo" el código.
+
+## 5. Documentación Relacionada
+
+Para un análisis detallado de todas las dependencias utilizadas en el proyecto (propósito, patrones de integración, alternativas consideradas y diagramas de flujo), consultar:
+
+📄 **[Análisis de Dependencias](./dependency_analysis.md)**

@@ -43,6 +43,7 @@ Toda la documentación arquitectónica, guías de instalación del entorno (SDK 
 📄 **[Setup y Arquitectura (Spoti5)](./docs/setup_y_arquitectura.md)**
 📄 **[Guía de Pruebas y E2E (Testing)](./docs/testing/README.md)**
 📄 **[Contexto y Estado Original](./docs/contexto_y_estado.md)**
+📄 **[Análisis de Dependencias](./docs/dependency_analysis.md)**
 
 ---
 *Este proyecto utiliza IA conversacional como soporte de Pair-Programming y orquestación de agentes mediante directrices estrictas definidas en el directorio `.agents/`.*
