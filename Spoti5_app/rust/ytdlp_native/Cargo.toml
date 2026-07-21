@@ -1,0 +1,25 @@
+[package]
+name = "ytdlp_native"
+version = "0.1.0"
+edition = "2021"
+description = "Native yt-dlp wrapper for Flutter via flutter_rust_bridge"
+
+[lib]
+name = "ytdlp_native"
+crate-type = ["cdylib", "staticlib"]
+
+[dependencies]
+flutter_rust_bridge = "=2.12.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1.0", features = ["full"] }
+reqwest = { version = "0.11", features = ["json", "stream"] }
+futures = "0.3"
+log = "0.4"
+anyhow = "1.0"
+thiserror = "1.0"
+zip = "0.6"
+chrono = { version = "0.4", features = ["serde"] }
+
+[build-dependencies]
+flutter_rust_bridge_codegen = "=2.12.0"

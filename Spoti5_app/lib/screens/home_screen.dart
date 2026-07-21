@@ -4,6 +4,7 @@ import '../models/track.dart';
 import '../services/api_service.dart';
 import '../providers/player_provider.dart';
 import '../widgets/player_bar.dart';
+import '../native/ytdlp_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -15,6 +16,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
   final ApiService _apiService = ApiService();
+  final YtDlpService _ytDlpService = YtDlpService.instance;
   
   List<Track> _searchResults = [];
   bool _isSearching = false;
@@ -30,7 +32,23 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
     try {
-      final results = await _apiService.searchTracks(query);
+      List<Track> results;
+      
+      if (context.read<PlayerProvider>().useNative) {
+        // Use native Rust library
+        final searchResults = await _ytDlpService.search(query);
+        results = searchResults.map((sr) => Track(
+          id: sr.id,
+          title: sr.title,
+          artist: sr.channel,
+          thumbnail: sr.thumbnail,
+          duration: sr.duration?.toInt(),
+        )).toList();
+      } else {
+        // Use legacy API service
+        results = await _apiService.searchTracks(query);
+      }
+      
       setState(() {
         _searchResults = results;
       });
