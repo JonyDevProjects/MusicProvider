@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/track.dart';
@@ -22,6 +23,11 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _isSearching = false;
   String? _error;
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
   Future<void> _performSearch() async {
     final query = _searchController.text.trim();
     if (query.isEmpty) return;
@@ -33,17 +39,26 @@ class _HomeScreenState extends State<HomeScreen> {
 
     try {
       List<Track> results;
+      final playerProvider = context.read<PlayerProvider>();
       
-      if (context.read<PlayerProvider>().useNative) {
-        // Use native Rust library
-        final searchResults = await _ytDlpService.search(query);
-        results = searchResults.map((sr) => Track(
-          id: sr.id,
-          title: sr.title,
-          artist: sr.channel,
-          thumbnail: sr.thumbnail,
-          duration: sr.duration?.toInt(),
-        )).toList();
+      if (playerProvider.useNative && playerProvider.nativeAvailable) {
+        try {
+          // Try native Rust library first
+          final searchResults = await _ytDlpService.search(query);
+          results = searchResults.map((sr) => Track(
+            id: sr.id,
+            title: sr.title,
+            artist: sr.channel,
+            thumbnail: sr.thumbnail,
+            duration: sr.duration?.toInt(),
+          )).toList();
+        } catch (nativeError) {
+          // Fallback to legacy API if native fails
+          if (kDebugMode) {
+            print('Native search failed, falling back to legacy API: $nativeError');
+          }
+          results = await _apiService.searchTracks(query);
+        }
       } else {
         // Use legacy API service
         results = await _apiService.searchTracks(query);

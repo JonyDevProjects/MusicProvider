@@ -40,6 +40,11 @@ fn release_filename() -> &'static str {
     {
         "yt-dlp_macos.zip"
     }
+    #[cfg(target_os = "ios")]
+    {
+        // iOS uses the macOS binary for simulator; real devices need a different approach
+        "yt-dlp_macos.zip"
+    }
     #[cfg(all(target_os = "linux", target_arch = "x86_64"))]
     {
         "yt-dlp_linux.zip"
@@ -62,6 +67,11 @@ fn release_filename() -> &'static str {
 fn binary_name() -> &'static str {
     #[cfg(target_os = "macos")]
     {
+        "yt-dlp_macos"
+    }
+    #[cfg(target_os = "ios")]
+    {
+        // iOS uses the macOS binary for simulator; real devices need a different approach
         "yt-dlp_macos"
     }
     #[cfg(all(target_os = "linux", target_arch = "x86_64"))]

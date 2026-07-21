@@ -10,6 +10,8 @@
 See [workflow/taste.md](workflow/taste.md)
 # architecture
 - Use Flutter Rust Bridge (FRB) for integrating yt-dlp natively into the mobile app, enabling shared Rust code with Nuclear's ecosystem. Confidence: 0.65
+- For Rust cross-compilation to iOS (`aarch64-apple-ios`) with `zstd-sys`/C deps that fail on `___chkstk_darwin`: use `IPHONEOS_DEPLOYMENT_TARGET=15.0 cargo build --target aarch64-apple-ios --release` (`.cargo/config.toml` rustflags are overridden by the target's default `-target arm64-apple-ios10.0.0`). Confidence: 0.70
+- When flutter_rust_bridge Rust lib is statically linked via CocoaPods on iOS (`.a` file), use `ExternalLibrary.process(iKnowHowToUseIt: true)` and add `s.static_framework = true` to the podspec instead of relying on default `.framework` loading. Confidence: 0.70
 
 # testing-strategy
 - For Flutter multiplatform E2E tests: use the official `integration_test` package (not flutter_driver) for iOS and Android, plus Playwright for the web target. Confidence: 0.90
@@ -18,6 +20,7 @@ See [workflow/taste.md](workflow/taste.md)
 
 # spoti5-deploy
 - For deploying Spoti5 to a physical iPhone (wireless): use `flutter run --release -d <deviceId> --dart-define=BASE_URL=http://<MAC_IP>:3000/api`, where `MAC_IP` is obtained via `ipconfig getifaddr en0`. Confidence: 0.85
+- Spotti5 app embeds backend logic (via FRB/yt-dlp native integration) so starting the Node.js backend on the Mac is not required — the app handles it directly. Confidence: 0.70
 
 # spoti5-config
 - Backend `baseUrl` in `api_service.dart`: detect by platform — `10.0.2.2:3000/api` for Android emulator, `localhost:3000/api` for iOS/Web/Desktop; use `Platform.isAndroid` with a `stub_io.dart` for web builds. Confidence: 0.90

@@ -14,3 +14,9 @@ dependencies:
 
 flutter:
   uses-material-design: true
+  plugin:
+    platforms:
+      ios:
+        pluginClass: RustLibYtdlpNativePlugin
+      macos:
+        pluginClass: RustLibYtdlpNativePlugin
