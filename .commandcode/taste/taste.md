@@ -9,6 +9,7 @@
 # workflow
 See [workflow/taste.md](workflow/taste.md)
 # architecture
+- For macOS builds that execute external binaries (e.g., yt-dlp via Rust FRB): disable App Sandbox by setting `com.apple.security.app-sandbox` to `false` in `DebugProfile.entitlements` (and `Release.entitlements` for non-App Store builds), otherwise `Command::new` fails with `Operation not permitted`. Confidence: 0.75
 - Use Flutter Rust Bridge (FRB) for integrating yt-dlp natively into the mobile app, enabling shared Rust code with Nuclear's ecosystem. Confidence: 0.65
 - For Rust cross-compilation to iOS (`aarch64-apple-ios`) with `zstd-sys`/C deps that fail on `___chkstk_darwin`: use `IPHONEOS_DEPLOYMENT_TARGET=15.0 cargo build --target aarch64-apple-ios --release` (`.cargo/config.toml` rustflags are overridden by the target's default `-target arm64-apple-ios10.0.0`). Confidence: 0.70
 - When flutter_rust_bridge Rust lib is statically linked via CocoaPods on iOS (`.a` file), use `ExternalLibrary.process(iKnowHowToUseIt: true)` and add `s.static_framework = true` to the podspec instead of relying on default `.framework` loading. Confidence: 0.70

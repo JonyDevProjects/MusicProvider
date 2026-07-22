@@ -39,4 +39,16 @@ post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_macos_build_settings(target)
   end
+
+  # Force-link the Rust static library into the Runner binary.
+  # With use_frameworks! + static_framework, CocoaPods uses -l"ytdlp_native"
+  # which only loads referenced symbols. Rust FFI symbols are resolved at
+  # runtime via dlsym, so we need -force_load to include all symbols.
+  rust_lib_path = '${PODS_ROOT}/../Flutter/ephemeral/.symlinks/plugins/rust_lib_ytdlp_native/macos/libytdlp_native.a'
+  rust_ldflags = "-force_load \"#{rust_lib_path}\" -lSystem -lc++ -lbz2 -framework Security -framework SystemConfiguration"
+  Dir.glob("#{installer.sandbox.root}/Target Support Files/Pods-Runner/Pods-Runner.*.xcconfig").each do |xcconfig|
+    contents = File.read(xcconfig)
+    contents.gsub!('-l"ytdlp_native"', rust_ldflags)
+    File.write(xcconfig, contents)
+  end
 end
