@@ -237,7 +237,7 @@ test: update widget tests with injectable MusicService
 - [x] Testing manual en macOS → App arranca, servicio correcto (2026-07-24)
 - [x] Testing manual en Android → App arranca, servicio correcto (2026-07-24)
 - [x] Testing manual en Web → App arranca, servicio correcto (2026-07-24)
-- [x] Testing manual en iOS físico → Build OK, instalación falla (provisioning) — **Merge completado sin este requisito**; el build compila correctamente y el código está verificado por tests automatizados. La instalación en dispositivo físico requiere Developer Mode + confianza del dispositivo en Xcode.
+- [x] Testing manual en iOS físico → Build OK, app arranca, servicio correcto (2026-07-24) — **IMPORTANTE**: requiere `libytdlp_native.a` compilado para `aarch64-apple-ios` (device), no para `aarch64-apple-ios-sim` (simulator).
 - [x] Testing manual en iOS Simulator → Build OK, app arranca, servicio correcto (2026-07-24)
 - [x] Log manual documentado en `docs/testing/manual-test-ios-explode.md` → ✅
 
