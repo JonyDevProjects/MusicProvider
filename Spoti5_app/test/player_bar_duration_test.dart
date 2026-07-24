@@ -6,7 +6,17 @@ import 'package:provider/provider.dart';
 
 import 'package:spoti5_app/models/track.dart';
 import 'package:spoti5_app/providers/player_provider.dart';
+import 'package:spoti5_app/services/music_service.dart';
 import 'package:spoti5_app/widgets/player_bar.dart';
+
+class FakeMusicService implements MusicService {
+  @override
+  Future<List<Track>> searchTracks(String query) async => [];
+
+  @override
+  Future<StreamResult> getStream(String videoId) async =>
+      const StreamResult(url: 'https://example.com/fake');
+}
 
 /// Fake de AudioPlayer que reporta el DOBLE de la duración real del track,
 /// simulando el bug de just_audio (audioPlayer.duration == 2x track.duration).
@@ -49,16 +59,16 @@ class FakePlayerProvider extends ChangeNotifier implements PlayerProvider {
   AudioPlayer get audioPlayer => _audioPlayer;
 
   @override
-  bool get useNative => true;
+  MusicService get service => FakeMusicService();
 
   @override
   Future<void> playTrack(Track track) async {}
 
   @override
-  void togglePlayPause() {}
+  Future<List<Track>> searchTracks(String query) async => [];
 
   @override
-  void toggleNativeMode() {}
+  void togglePlayPause() {}
 }
 
 void main() {

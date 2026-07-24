@@ -6,3 +6,4 @@
 - Before starting complex tasks: Create a new branch to avoid introducing noise into the main branch. Confidence: 0.70
 - During test runs that involve external devices or services, when a repetitive error pattern emerges across attempts, proactively ask the user if they need to perform a check on the device or external application (e.g., Developer Mode, Developer Trust, USB connection, Wi-Fi) before retrying. Confidence: 0.85
 - Use GitFlow with `develop` as the integration branch, `feature/*` for new features, `bugfix/*` for bug fixes, `hotfix/*` for urgent production patches, and `release/*` for release preparation; `main` is production-only. Confidence: 0.80
+- After completing a phase of a roadmap/plan, always update the roadmap document to record the current phase, add notes about deviations from what was initially planned, and review for any relevant observations after updating. Confidence: 0.75

@@ -1,30 +1,33 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 
 import 'package:spoti5_app/main.dart';
+import 'package:spoti5_app/models/track.dart';
 import 'package:spoti5_app/providers/player_provider.dart';
+import 'package:spoti5_app/services/music_service.dart';
+
+class FakeMusicService implements MusicService {
+  @override
+  Future<List<Track>> searchTracks(String query) async => [];
+
+  @override
+  Future<StreamResult> getStream(String videoId) async =>
+      const StreamResult(url: 'https://example.com/fake');
+}
 
 void main() {
   testWidgets('App starts correctly', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
     await tester.pumpWidget(
       MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (_) => PlayerProvider()),
+          ChangeNotifierProvider(
+            create: (_) => PlayerProvider(services: [FakeMusicService()]),
+          ),
         ],
         child: const Spoti5App(),
       ),
     );
 
-    // Verify that the app starts with the search bar
     expect(find.text('Search songs, artists...'), findsOneWidget);
   });
 }

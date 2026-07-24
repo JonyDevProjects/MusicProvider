@@ -1,11 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/track.dart';
-import '../services/api_service.dart';
 import '../providers/player_provider.dart';
 import '../widgets/player_bar.dart';
-import '../native/ytdlp_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -16,17 +13,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
-  final ApiService _apiService = ApiService();
-  final YtDlpService _ytDlpService = YtDlpService.instance;
-  
   List<Track> _searchResults = [];
   bool _isSearching = false;
   String? _error;
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   Future<void> _performSearch() async {
     final query = _searchController.text.trim();
@@ -38,32 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
     try {
-      List<Track> results;
-      final playerProvider = context.read<PlayerProvider>();
-      
-      if (playerProvider.useNative && playerProvider.nativeAvailable) {
-        try {
-          // Try native Rust library first
-          final searchResults = await _ytDlpService.search(query);
-          results = searchResults.map((sr) => Track(
-            id: sr.id,
-            title: sr.title,
-            artist: sr.channel,
-            thumbnail: sr.thumbnail,
-            duration: sr.duration?.toInt(),
-          )).toList();
-        } catch (nativeError) {
-          // Fallback to legacy API if native fails
-          if (kDebugMode) {
-            print('Native search failed, falling back to legacy API: $nativeError');
-          }
-          results = await _apiService.searchTracks(query);
-        }
-      } else {
-        // Use legacy API service
-        results = await _apiService.searchTracks(query);
-      }
-      
+      final results = await context.read<PlayerProvider>().searchTracks(query);
       setState(() {
         _searchResults = results;
       });
