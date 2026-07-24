@@ -2,8 +2,9 @@ import 'dart:convert';
 import 'dart:io' if (dart.library.html) 'stub_io.dart';
 import 'package:http/http.dart' as http;
 import '../models/track.dart';
+import 'music_service.dart';
 
-class ApiService {
+class ApiService implements MusicService {
   // En emulador de Android usa 10.0.2.2. En iOS, Web o Desktop usa localhost.
   // En dispositivos físicos se pasa la IP LAN de la Mac vía --dart-define=BASE_URL=...
   static String get baseUrl {
@@ -13,6 +14,7 @@ class ApiService {
     return 'http://localhost:3000/api';
   }
 
+  @override
   Future<List<Track>> searchTracks(String query) async {
     final response = await http.get(Uri.parse('$baseUrl/search?q=$query'));
     
@@ -33,5 +35,11 @@ class ApiService {
     } else {
       throw Exception('Failed to load stream URL');
     }
+  }
+
+  @override
+  Future<StreamResult> getStream(String videoId) async {
+    final url = await getStreamUrl(videoId);
+    return StreamResult(url: url);
   }
 }
