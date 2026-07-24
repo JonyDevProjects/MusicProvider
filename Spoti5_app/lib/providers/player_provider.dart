@@ -1,44 +1,23 @@
 import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
 import '../models/track.dart';
-import '../services/api_service.dart';
-import '../native/ytdlp_service.dart';
+import '../services/music_service.dart';
+import '../services/music_service_factory.dart';
 
 class PlayerProvider with ChangeNotifier {
   final AudioPlayer _audioPlayer = AudioPlayer();
-  final ApiService _apiService = ApiService();
-  final YtDlpService _ytDlpService = YtDlpService.instance;
+  final List<MusicService> _services;
 
   Track? _currentTrack;
   bool _isLoading = false;
-  bool _useNative = true; // Flag to use native Rust library
-  bool _nativeAvailable = false; // Track if native library is available
+
+  PlayerProvider({List<MusicService>? services})
+      : _services = services ?? MusicServiceFactory.create();
 
   Track? get currentTrack => _currentTrack;
   bool get isLoading => _isLoading;
   AudioPlayer get audioPlayer => _audioPlayer;
-  bool get useNative => _useNative;
-  bool get nativeAvailable => _nativeAvailable;
-
-  PlayerProvider() {
-    _initNative();
-  }
-
-  /// Initialize native library and check availability
-  Future<void> _initNative() async {
-    try {
-      await _ytDlpService.initialize();
-      await _ytDlpService.getVersion();
-      _nativeAvailable = true;
-    } catch (e) {
-      _nativeAvailable = false;
-      _useNative = false;
-      if (kDebugMode) {
-        print('Native library not available: $e');
-      }
-    }
-    notifyListeners();
-  }
+  MusicService get service => _services.first;
 
   Future<void> playTrack(Track track) async {
     _isLoading = true;
@@ -46,39 +25,46 @@ class PlayerProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      String streamUrl;
-      
-      if (_useNative && _nativeAvailable) {
-        // Use native Rust library
-        final streamInfo = await _ytDlpService.getStreamInfo(track.id);
-        streamUrl = streamInfo.streamUrl;
-      } else {
-        // Use legacy API service
-        streamUrl = await _apiService.getStreamUrl(track.id);
+      for (var i = 0; i < _services.length; i++) {
+        try {
+          final result = await _services[i].getStream(track.id);
+          await _audioPlayer.setAudioSource(
+            AudioSource.uri(
+              Uri.parse(result.url),
+              headers: result.headers,
+            ),
+          );
+          _audioPlayer.play();
+          break;
+        } catch (e) {
+          if (kDebugMode) {
+            print('Service ${_services[i].runtimeType} failed: $e');
+          }
+          if (i == _services.length - 1) rethrow;
+        }
       }
-      
-      await _audioPlayer.setUrl(streamUrl);
-      _audioPlayer.play();
     } catch (e) {
       if (kDebugMode) {
-        print('Error playing track: $e');
-      }
-      // Fallback to legacy API if native fails
-      if (_useNative && _nativeAvailable) {
-        try {
-          final streamUrl = await _apiService.getStreamUrl(track.id);
-          await _audioPlayer.setUrl(streamUrl);
-          _audioPlayer.play();
-        } catch (fallbackError) {
-          if (kDebugMode) {
-            print('Fallback also failed: $fallbackError');
-          }
-        }
+        print('All services failed to play track: $e');
       }
     } finally {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  Future<List<Track>> searchTracks(String query) async {
+    for (var i = 0; i < _services.length; i++) {
+      try {
+        return await _services[i].searchTracks(query);
+      } catch (e) {
+        if (kDebugMode) {
+          print('Service ${_services[i].runtimeType} search failed: $e');
+        }
+        if (i == _services.length - 1) rethrow;
+      }
+    }
+    return [];
   }
 
   void togglePlayPause() {
