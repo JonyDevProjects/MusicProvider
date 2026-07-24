@@ -2,9 +2,9 @@
 
 **Rama**: `feature/ios-youtube-explode` (desde `develop`)
 **Fecha**: 2026-07-22
-**Última actualización**: 2026-07-23
+**Última actualización**: 2026-07-24
 **Objetivo**: Permitir que Spoti5 funcione en iOS sin depender del servidor Node.js backend.
-**Estado**: Fases 0–3 completadas. Fase 4 (testing manual) pendiente. Fase 5 (merge) pendiente.
+**Estado**: Fases 0–3 completadas y commiteadas (14 commits en `feature/ios-youtube-explode`). Fase 4 (testing manual) pendiente. Fase 5 (merge) pendiente.
 
 ---
 
@@ -218,6 +218,8 @@ test: add YtExplodeService unit tests
 test: add MusicServiceFactory tests
 test: update widget tests with injectable MusicService
 ```
+
+> **Nota (2026-07-24)**: Los 14 commits (12 del roadmap + 2 adicionales para docs y taste) han sido aplicados en `feature/ios-youtube-explode`. El commit `fix: use AudioSource.uri with headers to fix HTTP 403` se integró con el refactor de `PlayerProvider` en un único commit (`refactor: simplify PlayerProvider to use MusicService`). Los archivos `init_native.dart` e `init_web.dart` fueron eliminados (no referenciados después de la limpieza de `main.dart`).
 
 #### Criterios de merge a `develop`
 
