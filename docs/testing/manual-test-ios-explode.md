@@ -60,21 +60,21 @@ Formato: `TIMESTAMP | PLATFORM | ACTION | RESULT | DURATION_MS | NOTES`
 ### iOS Simulator (iPhone 12 mini, iOS 18.0)
 
 ```
-2026-07-24T03:40:00Z | iOS-Simulator | build | FAIL | - | libytdlp_native.a built for iOS, not iOS-simulator
+2026-07-24T04:15:00Z | iOS-Simulator | rust_build | OK | 20290 | cargo build --target aarch64-apple-ios-sim --release
+2026-07-24T04:15:20Z | iOS-Simulator | build | OK | 31500 | flutter build ios --simulator --no-codesign
+2026-07-24T04:16:00Z | iOS-Simulator | app_start | OK | - | MusicServiceFactory: using YtExplodeService -> ApiService
 ```
 
-- [ ] App arranca sin crash (NO - build falla)
-- [ ] Log muestra servicio seleccionado (NO disponible)
+- [x] App arranca sin crash
+- [x] Log muestra `MusicServiceFactory: using YtExplodeService -> ApiService`
 - [x] Build para iOS device funciona (`flutter build ios --no-codesign` → OK, 18.7MB en 2026-07-23)
 
-**Notas**: El build para iOS Simulator falla porque `libytdlp_native.a` fue compilado para `aarch64-apple-ios` (device), no para `x86_64-apple-ios` o `arm64-apple-ios-simulator`. Esto es un problema preexistente no relacionado con los cambios de esta rama. El build para iOS device (físico) compila correctamente.
-
-**Solución futura**: Compilar el Rust library para el target de simulador:
+**Notas**: El build para iOS Simulator ahora funciona después de compilar el Rust library para el target `aarch64-apple-ios-sim` y copiar `libytdlp_native.a` al directorio `ios/`. El comando usado fue:
 ```bash
-IPHONEOS_DEPLOYMENT_TARGET=15.0 cargo build --target x86_64-apple-ios --release
-# o para Apple Silicon simulator:
-IPHONEOS_DEPLOYMENT_TARGET=15.0 cargo build --target arm64-apple-ios-simulator --release
+IPHONEOS_DEPLOYMENT_TARGET=15.0 cargo build --target aarch64-apple-ios-sim --release
+cp target/aarch64-apple-ios-sim/release/libytdlp_native.a ios/libytdlp_native.a
 ```
+El servicio seleccionado es `YtExplodeService -> ApiService` (correcto para iOS). La app arranca sin crash y muestra la interfaz de búsqueda.
 
 ### iOS Físico (Jonathan's iPhone, iOS 18.7.8)
 
@@ -103,18 +103,16 @@ IPHONEOS_DEPLOYMENT_TARGET=15.0 cargo build --target arm64-apple-ios-simulator -
 | macOS | ✅ | ✅ YtdlpNativeService -> YtExplodeService -> ApiService | ✅ | Backend en localhost:3000 |
 | Android | ✅ | ✅ YtdlpNativeService -> YtExplodeService -> ApiService | ✅ | ApiService usa 10.0.2.2:3000 |
 | Web | ✅ | ✅ ApiService | ✅ | Conditional import stub funciona |
-| iOS Simulator | ❌ | N/A | ❌ | Rust lib no compilado para simulator |
+| iOS Simulator | ✅ | ✅ YtExplodeService -> ApiService | ✅ | Rust lib compilado para aarch64-apple-ios-sim |
 | iOS Físico | ⚠️ | N/A | ✅ | Build OK, instalación falla (provisioning) |
 
 ## Limitaciones del testing manual
 
 - **Search y playback**: Requieren interacción UI directa. Verificados indirectamente por tests automatizados (11/11 pasan, incluye YtExplodeService tests con red real a YouTube).
-- **iOS Simulator**: No se pudo testear debido a que el Rust library no está compilado para la arquitectura de simulador.
-- **iOS Físico**: El build compila pero la instalación falla. Requiere resolución de provisioning en Xcode.
+- **iOS Físico**: El build compila pero la instalación falla. Requiere resolución de provisioning en Xcode (Developer Mode + confianza del dispositivo).
 
 ## Próximos pasos
 
-1. Compilar Rust library para iOS simulator target
-2. Resolver provisioning de iOS físico (Developer Mode + Xcode Product > Run)
-3. Testing UI manual de search y playback en iOS físico
-4. Merge a `develop` (Fase 5)
+1. Resolver provisioning de iOS físico (Developer Mode + Xcode Product > Run)
+2. Testing UI manual de search y playback en iOS físico o simulador
+3. Merge a `develop` (Fase 5)
