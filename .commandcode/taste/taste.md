@@ -9,11 +9,7 @@
 # workflow
 See [workflow/taste.md](workflow/taste.md)
 # architecture
-- For macOS builds that execute external binaries (e.g., yt-dlp via Rust FRB): disable App Sandbox by setting `com.apple.security.app-sandbox` to `false` in `DebugProfile.entitlements` (and `Release.entitlements` for non-App Store builds), otherwise `Command::new` fails with `Operation not permitted`. Confidence: 0.75
-- Use Flutter Rust Bridge (FRB) for integrating yt-dlp natively into the mobile app, enabling shared Rust code with Nuclear's ecosystem. Confidence: 0.65
-- For Rust cross-compilation to iOS (`aarch64-apple-ios`) with `zstd-sys`/C deps that fail on `___chkstk_darwin`: use `IPHONEOS_DEPLOYMENT_TARGET=15.0 cargo build --target aarch64-apple-ios --release` (`.cargo/config.toml` rustflags are overridden by the target's default `-target arm64-apple-ios10.0.0`). Confidence: 0.70
-- When flutter_rust_bridge Rust lib is statically linked via CocoaPods on iOS (`.a` file), use `ExternalLibrary.process(iKnowHowToUseIt: true)` and add `s.static_framework = true` to the podspec instead of relying on default `.framework` loading. Confidence: 0.70
-
+See [architecture/taste.md](architecture/taste.md)
 # testing-strategy
 - For Flutter multiplatform E2E tests: use the official `integration_test` package (not flutter_driver) for iOS and Android, plus Playwright for the web target. Confidence: 0.90
 - For Flutter web (CanvasKit) E2E with Playwright: verify values via `aria-label` on semantic nodes (`flt-semantics`), not via DOM text; expose durations on search results (`TrackResult-*`) since `ProgressBar` semantics are not materialized in CanvasKit. Confidence: 0.90
@@ -26,3 +22,7 @@ See [workflow/taste.md](workflow/taste.md)
 # spoti5-config
 - Backend `baseUrl` in `api_service.dart`: detect by platform — `10.0.2.2:3000/api` for Android emulator, `localhost:3000/api` for iOS/Web/Desktop; use `Platform.isAndroid` with a `stub_io.dart` for web builds. Confidence: 0.90
 - PlayerBar duration: always use `track.duration` from the backend (yt-dlp seconds) for the progress bar total, never `audioPlayer.duration` (just_audio may report double). Confidence: 0.95
+- For fixing YouTube HTTP 403 on audio playback: use `AudioSource.uri` with headers (`User-Agent: Mozilla/5.0`) instead of `setUrl()`. Confidence: 0.90
+- On iOS (which blocks `exec()` of external binaries), use `youtube_explode_dart` (pure Dart) as the primary music service via the Strategy Pattern. Confidence: 0.80
+
+

@@ -1,0 +1,8 @@
+# architecture
+- For macOS builds that execute external binaries (e.g., yt-dlp via Rust FRB): disable App Sandbox by setting `com.apple.security.app-sandbox` to `false` in `DebugProfile.entitlements` (and `Release.entitlements` for non-App Store builds), otherwise `Command::new` fails with `Operation not permitted`. Confidence: 0.75
+- Use Flutter Rust Bridge (FRB) for integrating yt-dlp natively into the mobile app, enabling shared Rust code with Nuclear's ecosystem. Confidence: 0.65
+- For Rust cross-compilation to iOS (`aarch64-apple-ios`) with `zstd-sys`/C deps that fail on `___chkstk_darwin`: use `IPHONEOS_DEPLOYMENT_TARGET=15.0 cargo build --target aarch64-apple-ios --release` (`.cargo/config.toml` rustflags are overridden by the target's default `-target arm64-apple-ios10.0.0`). Confidence: 0.70
+- When flutter_rust_bridge Rust lib is statically linked via CocoaPods on iOS (`.a` file), use `ExternalLibrary.process(iKnowHowToUseIt: true)` and add `s.static_framework = true` to the podspec instead of relying on default `.framework` loading. Confidence: 0.70
+- Use an abstract `MusicService` interface with a strategy pattern: platform-specific implementations (`YtExplodeService` for iOS, `YtdlpNativeService` for macOS/Android, `ApiService` for web/fallback) plus a factory for selection by platform. Confidence: 0.80
+- For Dart packages that don't compile on web (e.g., `youtube_explode_dart`), use conditional imports with a stub: barrel file with `import 'stub.dart' if (dart.library.io) 'impl.dart'` plus a factory function. Confidence: 0.75
+- For testability of `PlayerProvider`, accept an injectable `List<MusicService>? services` parameter in the constructor rather than hardcoding service instances. Confidence: 0.70
