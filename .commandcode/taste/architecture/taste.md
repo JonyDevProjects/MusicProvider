@@ -6,3 +6,6 @@
 - Use an abstract `MusicService` interface with a strategy pattern: platform-specific implementations (`YtExplodeService` for iOS, `YtdlpNativeService` for macOS/Android, `ApiService` for web/fallback) plus a factory for selection by platform. Confidence: 0.80
 - For Dart packages that don't compile on web (e.g., `youtube_explode_dart`), use conditional imports with a stub: barrel file with `import 'stub.dart' if (dart.library.io) 'impl.dart'` plus a factory function. Confidence: 0.75
 - For testability of `PlayerProvider`, accept an injectable `List<MusicService>? services` parameter in the constructor rather than hardcoding service instances. Confidence: 0.70
+- For iOS audio playback with YouTube CDN URLs that AVPlayer fails to open (error -1 / -11828), download the audio stream to a local temp file using Dart `http.Client` and play via `AudioSource.file` instead of `AudioSource.uri` with headers. Confidence: 0.80
+- In iOS `Info.plist`, use `NSAllowsArbitraryLoads` (not `NSAllowsLocalNetworking`) to allow just_audio's AVPlayer proxy to fetch audio from external CDNs. Confidence: 0.85
+- When selecting YouTube audio streams for iOS, prefer AAC/MP4 codecs (`mp4a.40.2`, `aac`) over WebM/Opus — iOS AVPlayer does not natively support WebM containers. Confidence: 0.85
