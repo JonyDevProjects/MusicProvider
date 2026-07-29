@@ -60,6 +60,24 @@ The user requires the app to work **without a backend** (no Node.js server on th
 - **just_audio**: Still `(-1) unknown error`
 - **Finding**: The User-Agent is NOT the issue
 
+### Test 8: Download-to-File Workaround (Solution C)
+- **Approach**: Download the audio stream to a local file using Dart HTTP client, then play with `AudioSource.file()`
+- **Info.plist**: `NSAllowsArbitraryLoads` (applied)
+- **Codec**: Correctly selects `mp4a.40.2` (AAC-LC) ✅
+- **HTTP download**: **FAILED with `403 Forbidden`** ❌
+- **Finding**: YouTube CDN rejects the HTTP GET request from the iPhone with 403, even with iPhone User-Agent
+- **just_audio direct URL**: Still `(-1) unknown error` (same as before)
+- **ApiService fallback**: `Connection refused` (no backend running on 127.0.0.1:9999)
+
+### Test 8 Analysis: The 403 Error
+- The HTTP GET request to the YouTube CDN URL returns `403 Forbidden` when made from the iPhone
+- This is different from the earlier diagnostic where HTTP GET returned `206` — the earlier test was likely done with a different URL or different conditions
+- Possible causes:
+  1. **URL signature expiration**: YouTube CDN URLs are time-limited; the URL may have expired between manifest fetch and download
+  2. **Missing headers**: YouTube may require additional headers (Range, Accept, etc.)
+  3. **Region/geo restriction**: The CDN URL might be geo-fenced to the Mac's IP
+  4. **IPv6 issue**: The CDN URL might resolve to an IPv6 address that YouTube blocks for non-browser clients
+
 ---
 
 ## Key Findings
@@ -73,8 +91,9 @@ The user requires the app to work **without a backend** (no Node.js server on th
 | just_audio version | ✅ Tested | 0.9.46 and 0.10.6 both fail |
 | Proxy (headers) | ✅ Tested | Fails with and without headers |
 | Network connectivity | ✅ Working | Search and HTTP GET both work |
+| Download-to-file (Solution C) | ❌ Failed | HTTP 403 Forbidden from YouTube CDN |
 
-**The YouTube CDN URL is accessible via HTTP (Dart HTTP client) but AVPlayer (used by just_audio) cannot play it on cellular.**
+**The YouTube CDN URL is accessible via HTTP in some conditions (Test 6) but returns 403 Forbidden when the iPhone attempts to download it (Test 8). AVPlayer also fails with `(-1) unknown error` when given the CDN URL directly.**
 
 > **UNVERIFIED**: The claim that AVPlayer works on WiFi is based on the `develop` branch test report, not the current code. This needs verification.
 
@@ -166,18 +185,18 @@ The most likely causes are:
 ## Files Modified During Investigation
 
 1. `Spoti5_app/ios/Runner/Info.plist` — Changed `NSAllowsLocalNetworking` to `NSAllowsArbitraryLoads`
-2. `Spoti5_app/lib/services/yt_explode_service_io.dart` — Fixed codec selection (using `audioCodec` instead of `codec.subtype`, iterate highest-to-lowest bitrate)
-3. `Spoti5_app/lib/providers/player_provider.dart` — Added diagnostic logging (HTTP HEAD/GET requests)
+2. `Spoti5_app/lib/services/yt_explode_service_io.dart` — Fixed codec selection (using `audioCodec` instead of `codec.subtype`, iterate highest-to-lowest bitrate); added download-to-file approach with iPhone User-Agent
+3. `Spoti5_app/lib/providers/player_provider.dart` — Added file URI handling (`AudioSource.file`), diagnostic logging
 4. `Spoti5_app/pubspec.yaml` — Upgraded `just_audio` from `^0.9.36` to `^0.10.6`
 
----
+## Updated Recommendations
 
-## Recommendations
-
-1. **Priority 1**: Verify current code on WiFi (same network as Mac) to confirm the "works on WiFi" claim
-2. **Short-term**: Implement Solution F (hybrid approach) — keep YtExplodeService as primary, fall back to ApiService when just_audio fails
-3. **Medium-term**: Investigate Solution D — test with `audioplayers` package or force IPv4 in AVPlayer
-4. **Long-term**: Monitor just_audio releases for iOS 18 fixes
+1. **Priority 1**: Verify current code on WiFi (same network as Mac) to confirm the "works on WiFi" claim — the `develop` branch test is not sufficient
+2. **Priority 2**: Investigate the `403 Forbidden` error — test with additional HTTP headers (Range, Accept), check URL signature expiration, and test with a fresh manifest URL
+3. **Priority 3**: If 403 is geo/region-related, consider proxying through the backend only for URL resolution (not audio proxying)
+4. **Short-term**: Implement Solution F (hybrid approach) — keep YtExplodeService as primary, fall back to ApiService when playback fails
+5. **Medium-term**: Investigate Solution D — test with `audioplayers` package or force IPv4 in AVPlayer
+6. **Long-term**: Monitor just_audio releases for iOS 18 fixes
 
 ---
 
