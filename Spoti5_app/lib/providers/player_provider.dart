@@ -27,26 +27,40 @@ class PlayerProvider with ChangeNotifier {
     try {
       for (var i = 0; i < _services.length; i++) {
         try {
+          if (kDebugMode) {
+            print('[PlayerProvider] Trying service ${_services[i].runtimeType} for track ${track.id}');
+          }
           final result = await _services[i].getStream(track.id);
-          await _audioPlayer.setAudioSource(
-            AudioSource.uri(
-              Uri.parse(result.url),
-              headers: result.headers,
-            ),
-          );
+          if (kDebugMode) {
+            print('[PlayerProvider] Got stream URL: ${result.url.substring(0, result.url.length.clamp(0, 120))}...');
+            print('[PlayerProvider] Headers: ${result.headers}');
+          }
+
+          final uri = Uri.parse(result.url);
+          if (uri.scheme == 'file') {
+            await _audioPlayer.setAudioSource(
+              AudioSource.file(
+                uri.toFilePath(),
+              ),
+            );
+          } else {
+            await _audioPlayer.setAudioSource(
+              AudioSource.uri(
+                uri,
+                headers: result.headers,
+              ),
+            );
+          }
           _audioPlayer.play();
           break;
-        } catch (e) {
-          if (kDebugMode) {
-            print('Service ${_services[i].runtimeType} failed: $e');
-          }
+        } catch (e, st) {
+          print('[PlayerProvider] Service ${_services[i].runtimeType} FAILED: $e');
+          print('[PlayerProvider] Stack trace: $st');
           if (i == _services.length - 1) rethrow;
         }
       }
     } catch (e) {
-      if (kDebugMode) {
-        print('All services failed to play track: $e');
-      }
+      print('[PlayerProvider] All services failed to play track: $e');
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -59,7 +73,7 @@ class PlayerProvider with ChangeNotifier {
         return await _services[i].searchTracks(query);
       } catch (e) {
         if (kDebugMode) {
-          print('Service ${_services[i].runtimeType} search failed: $e');
+          print('[PlayerProvider] Service ${_services[i].runtimeType} search failed: $e');
         }
         if (i == _services.length - 1) rethrow;
       }
