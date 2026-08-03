@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io' if (dart.library.html) 'stub_io.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import '../models/track.dart';
 import 'music_service.dart';
@@ -27,18 +28,25 @@ class ApiService implements MusicService {
   }
 
   Future<String> getStreamUrl(String videoId) async {
-    final response = await http.get(Uri.parse('$baseUrl/info?url=$videoId'));
-    
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      return data['streamUrl'] as String;
-    } else {
-      throw Exception('Failed to load stream URL');
-    }
+    // Devolvemos la URL del nuevo endpoint de proxy de streaming
+    return '$baseUrl/audio/stream?videoId=$videoId';
   }
 
   @override
   Future<StreamResult> getStream(String videoId) async {
+    // Pre-resolve: warm the backend yt-dlp cache so AVPlayer's probe request
+    // hits cache immediately instead of triggering yt-dlp (~3-5s) inline.
+    try {
+      final response = await http.get(Uri.parse('$baseUrl/audio/resolve?videoId=$videoId'));
+      if (response.statusCode == 200) {
+        debugPrint('[ApiService] Stream pre-resolved and cached for $videoId');
+      } else {
+        debugPrint('[ApiService] Pre-resolve returned ${response.statusCode}, proceeding with stream');
+      }
+    } catch (e) {
+      debugPrint('[ApiService] Pre-resolve failed (non-critical): $e');
+    }
+
     final url = await getStreamUrl(videoId);
     return StreamResult(url: url);
   }

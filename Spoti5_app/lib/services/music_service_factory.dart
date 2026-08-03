@@ -8,18 +8,23 @@ class MusicServiceFactory {
   /// Returns services ordered by priority for the current platform.
   static List<MusicService> create() {
     List<MusicService> services;
+    final useProxy = const String.fromEnvironment('BASE_URL').isNotEmpty;
+
     if (kIsWeb) {
       services = [ApiService()];
     } else {
       switch (defaultTargetPlatform) {
         case TargetPlatform.iOS:
-          services = [createYtExplodeService(), ApiService()];
+          services = useProxy
+              ? [ApiService(), createYtExplodeService()]
+              : [createYtExplodeService(), ApiService()];
         case TargetPlatform.macOS:
         case TargetPlatform.android:
-          services = [YtdlpNativeService(), createYtExplodeService(), ApiService()];
         case TargetPlatform.linux:
         case TargetPlatform.windows:
-          services = [YtdlpNativeService(), createYtExplodeService(), ApiService()];
+          services = useProxy
+              ? [ApiService(), YtdlpNativeService(), createYtExplodeService()]
+              : [YtdlpNativeService(), createYtExplodeService(), ApiService()];
         default:
           services = [ApiService()];
       }
