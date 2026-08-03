@@ -1,4 +1,9 @@
 # workflow
+- For Android file recovery tasks on Mac: use ADB (Android Debug Bridge) as the primary interface for phone interaction and file transfer, preferring `adb pull` and `adb shell` commands over manual GUI operations. Confidence: 0.90
+- When organizing recovered files, use a date-based folder structure (e.g., `Sep2025_plus/`) with source-based subdirectories (Camera, WhatsApp_Sent, WhatsApp_Private, WhatsApp_Video, Screenshots) for clear categorization. Confidence: 0.85
+- Follow a structured plan-based recovery approach: read the plan file first, assess current state, then execute recovery steps systematically with todo tracking. Confidence: 0.85
+- Prefer bulk file transfer operations (tar archives piped via ADB) over individual file `adb pull` commands for efficiency when recovering large numbers of files. Confidence: 0.80
+- When a tool or download source fails (e.g., APKMirror, APKPure blocked by Cloudflare/JS), try alternative sources (F-Droid, GitHub releases, APKCombo, direct CDN links) before abandoning. Confidence: 0.75
 - After completing implementations and validations, automatically create taste learnings from project decisions made during the session. Confidence: 0.85
 - After running tests that required starting external services (Node.js backend, iproxy, emulators, etc.), automatically verify and stop all services that were started for those tests. Confidence: 0.90
 - After any complex change or implementation, always persist it in Engram documenting what was done and any remaining next steps. Confidence: 0.90
@@ -7,3 +12,10 @@
 - During test runs that involve external devices or services, when a repetitive error pattern emerges across attempts, proactively ask the user if they need to perform a check on the device or external application (e.g., Developer Mode, Developer Trust, USB connection, Wi-Fi) before retrying. Confidence: 0.85
 - Use GitFlow with `develop` as the integration branch, `feature/*` for new features, `bugfix/*` for bug fixes, `hotfix/*` for urgent production patches, and `release/*` for release preparation; `main` is production-only. Confidence: 0.80
 - After completing a phase of a roadmap/plan, always update the roadmap document to record the current phase, add notes about deviations from what was initially planned, and review for any relevant observations after updating. Confidence: 0.75
+- When debugging on a physical device in release mode (where `kDebugMode` is false), temporarily replace guarded `print()` with unconditional prints to capture runtime logs via `flutter run`, then revert after diagnosing. Confidence: 0.80
+- Before launching a new `flutter run` on a physical device, always clean up any existing Flutter processes (`pkill -f "flutter run"`, `pkill -f "flutter_tools"`) to avoid port/device conflicts. Confidence: 0.85
+- When a complex problem lacks a clean solution in the current context (e.g., it depends on an external service, upstream bug, or infrastructure not available), write a comprehensive investigation report in `/docs` instead of forcing a suboptimal fix — defer resolution for later study. Confidence: 0.85
+- Before resuming work on an ongoing issue, proactively check Engram for traceability of the problem — review prior observations, solutions tried, and their outcomes to maintain context continuity. Confidence: 0.85
+- When the user asks to monitor logs while they test on a physical device, proactively poll the background process output and report findings as soon as the user signals testing is done — don't wait passively or ask unnecessary questions. Confidence: 0.85
+- When the user gives a direct action instruction (stop a process, relaunch the app, etc.), execute it immediately without preamble, excessive explanation, or delays. The user expects prompt action, not narration. Confidence: 0.90
+- In investigation reports and documentation, always distinguish verified facts from unverified assumptions — mark claims that depend on prior branch/test conditions with explicit "UNVERIFIED" or "PENDING" notes rather than stating them as established facts. Confidence: 0.85

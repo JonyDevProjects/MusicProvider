@@ -1,7 +1,7 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 
 import 'package:spoti5_app/models/track.dart';
@@ -18,23 +18,6 @@ class FakeMusicService implements MusicService {
       const StreamResult(url: 'https://example.com/fake');
 }
 
-/// Fake de AudioPlayer que reporta el DOBLE de la duración real del track,
-/// simulando el bug de just_audio (audioPlayer.duration == 2x track.duration).
-class FakeAudioPlayer extends AudioPlayer {
-  FakeAudioPlayer(this._reportedDuration);
-
-  final Duration _reportedDuration;
-
-  @override
-  Duration? get duration => _reportedDuration;
-
-  @override
-  Stream<Duration> get positionStream => Stream.value(Duration.zero);
-
-  @override
-  Stream<bool> get playingStream => Stream.value(false);
-}
-
 /// PlayerProvider fake con un track de duración conocida.
 class FakePlayerProvider extends ChangeNotifier implements PlayerProvider {
   FakePlayerProvider(int trackDurationSeconds)
@@ -42,12 +25,9 @@ class FakePlayerProvider extends ChangeNotifier implements PlayerProvider {
           id: 'x',
           title: 'Test Track',
           duration: trackDurationSeconds,
-        ),
-        _audioPlayer =
-            FakeAudioPlayer(Duration(seconds: trackDurationSeconds * 2));
+        );
 
   final Track _track;
-  final FakeAudioPlayer _audioPlayer;
 
   @override
   Track? get currentTrack => _track;
@@ -56,10 +36,28 @@ class FakePlayerProvider extends ChangeNotifier implements PlayerProvider {
   bool get isLoading => false;
 
   @override
-  AudioPlayer get audioPlayer => _audioPlayer;
+  String? get error => null;
+
+  @override
+  AudioPlayer get audioPlayer => AudioPlayer();
 
   @override
   MusicService get service => FakeMusicService();
+
+  @override
+  bool get playing => false;
+
+  @override
+  Duration get position => Duration.zero;
+
+  @override
+  Duration? get duration => null;
+
+  @override
+  Stream<bool> get playingStream => const Stream.empty();
+
+  @override
+  Stream<Duration> get positionStream => const Stream.empty();
 
   @override
   Future<void> playTrack(Track track) async {}
@@ -69,6 +67,9 @@ class FakePlayerProvider extends ChangeNotifier implements PlayerProvider {
 
   @override
   void togglePlayPause() {}
+
+  @override
+  void seek(Duration position) {}
 }
 
 void main() {

@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:audioplayers/audioplayers.dart';
 import '../models/track.dart';
 import '../services/music_service.dart';
 import '../services/music_service_factory.dart';
@@ -10,57 +10,89 @@ class PlayerProvider with ChangeNotifier {
 
   Track? _currentTrack;
   bool _isLoading = false;
+  String? _error;
+  bool _disposed = false;
+
+  // Tracked via streams for UI compatibility
+  Duration _position = Duration.zero;
+  Duration? _duration;
 
   PlayerProvider({List<MusicService>? services})
-      : _services = services ?? MusicServiceFactory.create();
+      : _services = services ?? MusicServiceFactory.create() {
+    _audioPlayer.onPositionChanged.listen((pos) {
+      _position = pos;
+    });
+    _audioPlayer.onDurationChanged.listen((dur) {
+      _duration = dur;
+    });
+  }
 
   Track? get currentTrack => _currentTrack;
   bool get isLoading => _isLoading;
+  String? get error => _error;
   AudioPlayer get audioPlayer => _audioPlayer;
   MusicService get service => _services.first;
 
+  // Wrapper getters for UI / integration tests
+  bool get playing => _audioPlayer.state == PlayerState.playing;
+  Duration get position => _position;
+  Duration? get duration => _duration;
+  Stream<bool> get playingStream =>
+      _audioPlayer.onPlayerStateChanged.map((s) => s == PlayerState.playing);
+  Stream<Duration> get positionStream => _audioPlayer.onPositionChanged;
+
   Future<void> playTrack(Track track) async {
     _isLoading = true;
+    _error = null;
     _currentTrack = track;
     notifyListeners();
 
     try {
       for (var i = 0; i < _services.length; i++) {
         try {
+          debugPrint('[PlayerProvider] Trying service ${_services[i].runtimeType} for track ${track.id}');
           final result = await _services[i].getStream(track.id);
-          await _audioPlayer.setAudioSource(
-            AudioSource.uri(
-              Uri.parse(result.url),
-              headers: result.headers,
-            ),
-          );
-          _audioPlayer.play();
+          debugPrint('[PlayerProvider] Got stream URL: ${result.url.substring(0, result.url.length.clamp(0, 120))}...');
+          debugPrint('[PlayerProvider] Headers: ${result.headers}');
+
+          final uri = Uri.parse(result.url);
+          if (uri.scheme == 'file') {
+            debugPrint('[PlayerProvider] Playing from file: ${uri.toFilePath()}');
+            await _audioPlayer.play(DeviceFileSource(uri.toFilePath()));
+          } else {
+            debugPrint('[PlayerProvider] Playing from URL: $uri');
+            await _audioPlayer.play(UrlSource(result.url));
+          }
+          debugPrint('[PlayerProvider] Playback started');
           break;
-        } catch (e) {
-          if (kDebugMode) {
-            print('Service ${_services[i].runtimeType} failed: $e');
+        } catch (e, st) {
+          debugPrint('[PlayerProvider] Service ${_services[i].runtimeType} FAILED: $e');
+          debugPrint('[PlayerProvider] Stack trace: $st');
+          if (e.toString().contains('Rate limited')) {
+            _error = 'YouTube rate limit reached. Please wait a few minutes.';
+          }
+          if (e.toString().contains('Download stalled') || e.toString().contains('503')) {
+            _error = 'YouTube download stalled. Please try again in a minute.';
           }
           if (i == _services.length - 1) rethrow;
         }
       }
     } catch (e) {
-      if (kDebugMode) {
-        print('All services failed to play track: $e');
-      }
+      debugPrint('[PlayerProvider] All services failed to play track: $e');
+      _error ??= 'Failed to play track. Please try again.';
     } finally {
       _isLoading = false;
-      notifyListeners();
+      if (!_disposed) notifyListeners();
     }
   }
 
   Future<List<Track>> searchTracks(String query) async {
     for (var i = 0; i < _services.length; i++) {
       try {
+        debugPrint('[PlayerProvider] Searching with ${_services[i].runtimeType}');
         return await _services[i].searchTracks(query);
       } catch (e) {
-        if (kDebugMode) {
-          print('Service ${_services[i].runtimeType} search failed: $e');
-        }
+        debugPrint('[PlayerProvider] Service ${_services[i].runtimeType} search failed: $e');
         if (i == _services.length - 1) rethrow;
       }
     }
@@ -68,15 +100,20 @@ class PlayerProvider with ChangeNotifier {
   }
 
   void togglePlayPause() {
-    if (_audioPlayer.playing) {
+    if (_audioPlayer.state == PlayerState.playing) {
       _audioPlayer.pause();
     } else {
-      _audioPlayer.play();
+      _audioPlayer.resume();
     }
+  }
+
+  void seek(Duration position) {
+    _audioPlayer.seek(position);
   }
 
   @override
   void dispose() {
+    _disposed = true;
     _audioPlayer.dispose();
     super.dispose();
   }
