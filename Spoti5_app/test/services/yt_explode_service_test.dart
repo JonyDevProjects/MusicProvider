@@ -17,15 +17,15 @@ void main() {
       expect(results.first.title, isNotEmpty);
     }, timeout: const Timeout(Duration(seconds: 30)));
 
-    test('getStream returns URL with headers', () async {
+    test('getStream returns CDN URL directly (D4: no headers — audioplayers)', () async {
       final searchResults = await service.searchTracks('Radiohead Creep');
       expect(searchResults, isNotEmpty);
 
       final stream = await service.getStream(searchResults.first.id);
 
       expect(stream.url, isNotEmpty);
-      expect(stream.headers, isNotNull);
-      expect(stream.headers!['User-Agent'], 'Mozilla/5.0');
+      // D4: audioplayers UrlSource does not support custom headers
+      expect(stream.headers, isNull);
     }, timeout: const Timeout(Duration(seconds: 30)));
   });
 }

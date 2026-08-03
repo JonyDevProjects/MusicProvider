@@ -57,7 +57,7 @@ void main() {
       final trackDuration = playerProvider.currentTrack!.duration;
       expect(trackDuration, isNotNull,
           reason: 'Track duration from backend must be present.');
-      final reported = playerProvider.audioPlayer.duration;
+      final reported = playerProvider.duration;
       if (reported != null) {
         expect(reported.inSeconds, lessThanOrEqualTo(trackDuration! * 2),
             reason: 'Reproductor no debe reportar el doble de la duración del track.');

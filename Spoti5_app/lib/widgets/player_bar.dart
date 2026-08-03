@@ -86,7 +86,7 @@ class PlayerBar extends StatelessWidget {
                   )
                 else
                   StreamBuilder<bool>(
-                    stream: playerProvider.audioPlayer.playingStream,
+                    stream: playerProvider.playingStream,
                     builder: (context, snapshot) {
                       final playing = snapshot.data ?? false;
                       return IconButton(
@@ -101,18 +101,18 @@ class PlayerBar extends StatelessWidget {
             const SizedBox(height: 8),
             // Progress Bar
             StreamBuilder<Duration>(
-              stream: playerProvider.audioPlayer.positionStream,
+              stream: playerProvider.positionStream,
               builder: (context, positionSnapshot) {
                 final position = positionSnapshot.data ?? Duration.zero;
                 final duration = track.duration != null
                     ? Duration(seconds: track.duration!)
-                    : playerProvider.audioPlayer.duration ?? Duration.zero;
+                    : playerProvider.duration ?? Duration.zero;
 
                 return ProgressBar(
                   progress: position,
                   total: duration,
                   onSeek: (duration) {
-                    playerProvider.audioPlayer.seek(duration);
+                    playerProvider.seek(duration);
                   },
                   timeLabelTextStyle: const TextStyle(fontSize: 12),
                   thumbRadius: 6,

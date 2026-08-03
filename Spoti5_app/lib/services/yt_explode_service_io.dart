@@ -1,12 +1,19 @@
-import 'dart:io';
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import '../models/track.dart';
 import 'music_service.dart';
 
 class YtExplodeService implements MusicService {
   final YoutubeExplode _yt = YoutubeExplode();
+
+  // Static log buffer for integration testing — captures key lifecycle events
+  static final List<String> logBuffer = [];
+  static void log(String message) {
+    final ts = DateTime.now().toIso8601String();
+    logBuffer.add('[$ts] $message');
+    debugPrint('[YtExplodeService] $message');
+  }
+  static void clearLog() => logBuffer.clear();
 
   @override
   Future<List<Track>> searchTracks(String query) async {
@@ -23,6 +30,8 @@ class YtExplodeService implements MusicService {
   @override
   Future<StreamResult> getStream(String videoId) async {
     try {
+      log('getStream called for: $videoId');
+
       final video = await _yt.videos.get(VideoId(videoId));
       final manifest = await _yt.videos.streamsClient.getManifest(VideoId(videoId));
 
@@ -39,39 +48,23 @@ class YtExplodeService implements MusicService {
       }
       selected ??= audioOnly.first;
 
-      if (kDebugMode) {
-        print('[YtExplodeService] Selected: ${selected.bitrate} codec=${selected.audioCodec}');
-      }
+      log('Selected: ${selected.bitrate} codec=${selected.audioCodec}');
 
-      // Download stream to local file using Dart HTTP client (bypasses AVPlayer networking issues)
-      final uri = selected.url;
-      final request = http.Request('GET', uri)
-        ..headers['User-Agent'] = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1';
-      final response = await http.Client().send(request);
-
-      if (response.statusCode != 200) {
-        throw Exception('Failed to download stream: ${response.statusCode}');
-      }
-
-      // Save to temporary file
-      final tempDir = Directory.systemTemp;
-      final tempFile = File('${tempDir.path}/yt_stream_$videoId.mp4');
-      final sink = tempFile.openWrite();
-      await response.stream.pipe(sink);
-      await sink.close();
-
-      if (kDebugMode) {
-        print('[YtExplodeService] Downloaded stream to: ${tempFile.path} (${tempFile.lengthSync()} bytes)');
-      }
+      // D4: Return CDN URL directly to AVAudioPlayer (via audioplayers).
+      // audioplayers does not support custom headers on UrlSource,
+      // so we pass headers: null. This tests whether AVAudioPlayer
+      // can connect to YouTube CDN without special headers.
+      final cdnUrl = selected.url.toString();
+      log('Returning CDN URL directly');
 
       return StreamResult(
-        url: tempFile.uri.toString(),
+        url: cdnUrl,
         headers: null,
         durationSeconds: video.duration?.inSeconds,
       );
     } catch (e, st) {
-      print('[YtExplodeService] getStream FAILED: $e');
-      print('[YtExplodeService] Stack trace: $st');
+      log('getStream FAILED: $e');
+      log('Stack trace: $st');
       rethrow;
     }
   }
