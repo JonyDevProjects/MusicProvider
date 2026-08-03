@@ -45,10 +45,17 @@
 
 ## Checklist antes de empezar
 
-- [ ] Verificar que `feature/ios-streaming-proxy` existe y está actualizada
-- [ ] Verificar que el backend de Node.js está configurado (package.json, dependencias)
-- [ ] Verificar que `yt-dlp` está instalado en macOS (`yt-dlp --version`)
-- [ ] Verificar que Cloudflare Tunnel o Ngrok está instalado
+- [x] Verificar que `feature/ios-streaming-proxy` existe y está actualizada — ✅ Creado desde `develop` con docs committeados (e8b28e5)
+- [x] Verificar que el backend de Node.js está configurado (package.json, dependencias) — ✅ Express 5.2.1, CORS, axios, yt-dlp wrapper con `getStreamInfo()`
+- [x] Verificar que `yt-dlp` está instalado en macOS (`yt-dlp --version`) — ✅ v2026.06.09
+- [x] Verificar que Cloudflare Tunnel o Ngrok está instalado — ✅ cloudflared v2026.6.1
+
+### Estado pendiente de implementación (Fase 1)
+- [ ] T-1.1: Crear endpoint `GET /api/audio/stream?videoId={id}` en `src/server.ts`
+- [ ] T-1.2: Integrar `yt-dlp` para resolver URL del CDN (parcialmente listo vía `getStreamInfo()`)
+- [ ] T-1.3: Implementar proxy de bytes con soporte Range headers (HTTP 206)
+- [ ] T-1.4: Agregar manejo de errores y logging
+- [ ] T-1.7-T-1.9: Configuración Flutter para URL del proxy
 
 ---
 

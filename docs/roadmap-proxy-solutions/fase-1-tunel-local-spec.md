@@ -1,6 +1,6 @@
 # Spec: Fase 1 — Corto Plazo: Validación con Túnel Local
 
-**Status**: `pending`
+**Status**: `ready` — Entorno preparado, pendiente de implementación
 **Rama**: `feature/proxy-short-tunnel`
 **Rama base**: `feature/ios-streaming-proxy`
 **Dependencias**: Ninguna (fase inicial)

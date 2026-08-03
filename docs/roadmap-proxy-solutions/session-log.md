@@ -48,6 +48,43 @@ docs/roadmap-proxy-solutions/
 
 ---
 
+## Sesión 1 (2026-08-03) — Preparación del entorno para Fase 1
+
+**Commits**: e8b28e5  
+**Branch**: `feature/proxy-short-tunnel`  
+**Objetivo**: Dejar el proyecto en estado óptimo antes de iniciar la Fase 1
+
+### Acciones
+- Merge de `fix/ios-D4-audioplayers` a `develop` (confirma implementación D4 + test results)
+- Creación de `feature/ios-streaming-proxy` desde `develop`
+- Commiteo de documentación del roadmap proxy y docs de cellular playback en `feature/ios-streaming-proxy`
+- Creación de `feature/proxy-short-tunnel` desde `feature/ios-streaming-proxy`
+
+### Estado de la solución
+| Componente | Estado | Detalle |
+|------------|--------|---------|
+| Branch `feature/ios-streaming-proxy` | ✅ | Creado desde develop, docs commiteados (e8b28e5) |
+| Branch `feature/proxy-short-tunnel` | ✅ | Creado desde ios-streaming-proxy, listo para Fase 1 |
+| Backend Node.js (package.json, server.ts, ytdlpWrapper.ts) | ✅ | Express, CORS, yt-dlp wrapper con getStreamInfo() |
+| yt-dlp (macOS) | ✅ | v2026.06.09 |
+| cloudflared (Tunnel) | ✅ | v2026.6.1 |
+| Endpoint `/api/audio/stream` | ❌ | Pendiente de implementación (T-1.1, T-1.3) |
+| Configuración Flutter (ApiService, env) | ❌ | Pendiente de implementación (T-1.7, T-1.8, T-1.9) |
+
+### Hallazgos
+- `feature/ios-streaming-proxy` no existía previamente — fue creado durante esta sesión
+- `src/ytdlpWrapper.ts` ya tiene `getStreamInfo()` que resuelve URLs de YouTube CDN vía yt-dlp, cubriendo parcialmente T-1.2
+- `src/server.ts` no tiene el endpoint `/api/audio/stream` — requiere implementación para proxy de bytes con Range headers
+
+### Próximos pasos
+1. Iniciar Fase 1 en `feature/proxy-short-tunnel`
+2. Implementar endpoint `/api/audio/stream` con yt-dlp + proxy de bytes + Range headers (T-1.1 a T-1.4)
+3. Configurar Cloudflare Tunnel (T-1.5, T-1.6)
+4. Actualizar app Flutter para apuntar al proxy (T-1.7 a T-1.9)
+5. Probar en iPhone con 4G/5G (T-1.10)
+
+---
+
 ## Plantilla para próximas sesiones
 
 ```markdown
