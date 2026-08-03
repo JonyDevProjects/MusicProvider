@@ -3,11 +3,11 @@
 ## Resumen de estado
 
 **Fase actual**: Fase 1 — Corto Plazo: Validación con Túnel Local  
-**Status**: `pending` (specs creados, pendiente de implementación)
+**Status**: `ready` (entorno preparado, pendiente de implementación)
 
 | Fase | Rama | Status | Spec |
 |------|------|--------|------|
-| 1 - Túnel Local | `feature/proxy-short-tunnel` | `pending` | [fase-1-tunel-local-spec.md](./fase-1-tunel-local-spec.md) |
+| 1 - Túnel Local | `feature/proxy-short-tunnel` | `ready` | [fase-1-tunel-local-spec.md](./fase-1-tunel-local-spec.md) |
 | 2 - Piped API | `feature/proxy-mid-piped` | `pending` | [fase-2-piped-api-spec.md](./fase-2-piped-api-spec.md) |
 | 3 - VPS Backend | `feature/proxy-long-vps` | `pending` | [fase-3-vps-backend-spec.md](./fase-3-vps-backend-spec.md) |
 
