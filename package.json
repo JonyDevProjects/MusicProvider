@@ -18,7 +18,8 @@
     "axios": "^1.7.2",
     "commander": "^12.1.0",
     "cors": "^2.8.6",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "lru-cache": "^11.5.2"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.1",

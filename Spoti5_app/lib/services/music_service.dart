@@ -15,4 +15,8 @@ class StreamResult {
 abstract class MusicService {
   Future<List<Track>> searchTracks(String query);
   Future<StreamResult> getStream(String videoId);
+
+  /// Pre-resolve stream info for the given video IDs to warm caches.
+  /// Implementations that don't use a remote cache can no-op.
+  Future<void> warmupCache(List<String> videoIds);
 }

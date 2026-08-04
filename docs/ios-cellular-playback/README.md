@@ -27,6 +27,7 @@ Se implementó un proxy HTTP local que intercepta las peticiones de AVPlayer y l
 | [session-log.md](session-log.md) | Log detallado de cada sesión con hallazgos |
 | [findings.md](findings.md) | Hallazgos técnicos consolidados |
 | [next-steps.md](next-steps.md) | Qué falta por hacer |
+| [ios-physical-device-flow.md](ios-physical-device-flow.md) | Flujo de funcionamiento en iPhone físico (túnel + proxy), setup y datos verificados |
 
 ## Archivos de código relevantes
 

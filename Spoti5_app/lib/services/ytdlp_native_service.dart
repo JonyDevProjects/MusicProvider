@@ -34,4 +34,9 @@ class YtdlpNativeService implements MusicService {
       durationSeconds: info.duration?.toInt(),
     );
   }
+
+  @override
+  Future<void> warmupCache(List<String> videoIds) async {
+    // Native yt-dlp service resolves streams directly — no remote cache to warm.
+  }
 }

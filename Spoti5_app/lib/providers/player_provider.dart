@@ -90,7 +90,15 @@ class PlayerProvider with ChangeNotifier {
     for (var i = 0; i < _services.length; i++) {
       try {
         debugPrint('[PlayerProvider] Searching with ${_services[i].runtimeType}');
-        return await _services[i].searchTracks(query);
+        final results = await _services[i].searchTracks(query);
+
+        // Warmup: dispatch async resolve requests for the top 3 tracks so the
+        // backend cache (yt-dlp stream URLs) is pre-populated while the user
+        // reads the search results. Fire-and-forget — does not block or await.
+        final warmupIds = results.take(3).map((t) => t.id).toList();
+        _services[i].warmupCache(warmupIds);
+
+        return results;
       } catch (e) {
         debugPrint('[PlayerProvider] Service ${_services[i].runtimeType} search failed: $e');
         if (i == _services.length - 1) rethrow;

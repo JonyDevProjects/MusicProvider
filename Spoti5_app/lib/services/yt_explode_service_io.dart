@@ -72,4 +72,9 @@ class YtExplodeService implements MusicService {
   void close() {
     _yt.close();
   }
+
+  @override
+  Future<void> warmupCache(List<String> videoIds) async {
+    // YtExplode resolves streams directly — no remote cache to warm.
+  }
 }

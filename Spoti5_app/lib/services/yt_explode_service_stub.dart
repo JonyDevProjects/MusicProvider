@@ -11,4 +11,9 @@ class YtExplodeService implements MusicService {
   Future<StreamResult> getStream(String videoId) {
     throw UnsupportedError('youtube_explode_dart is not available on web');
   }
+
+  @override
+  Future<void> warmupCache(List<String> videoIds) async {
+    // Stub — youtube_explode_dart is not available on web.
+  }
 }
