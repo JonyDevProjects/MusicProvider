@@ -16,6 +16,9 @@ class FakeMusicService implements MusicService {
   @override
   Future<StreamResult> getStream(String videoId) async =>
       const StreamResult(url: 'https://example.com/fake');
+
+  @override
+  Future<void> warmupCache(List<String> videoIds) async {}
 }
 
 /// PlayerProvider fake con un track de duración conocida.

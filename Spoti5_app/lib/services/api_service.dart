@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io' if (dart.library.html) 'stub_io.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'dart:async';
 import '../models/track.dart';
 import 'music_service.dart';
 
@@ -15,9 +16,14 @@ class ApiService implements MusicService {
     return 'http://localhost:3000/api';
   }
 
+  // Persistent HTTP client with connection pooling / keep-alive.
+  // Reuses TCP+TLS connections to the tunnel server for successive requests,
+  // avoiding renegotiation overhead on each metadata call.
+  static final http.Client _client = http.Client();
+
   @override
   Future<List<Track>> searchTracks(String query) async {
-    final response = await http.get(Uri.parse('$baseUrl/search?q=$query'));
+    final response = await _client.get(Uri.parse('$baseUrl/search?q=$query'));
     
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
@@ -37,7 +43,7 @@ class ApiService implements MusicService {
     // Pre-resolve: warm the backend yt-dlp cache so AVPlayer's probe request
     // hits cache immediately instead of triggering yt-dlp (~3-5s) inline.
     try {
-      final response = await http.get(Uri.parse('$baseUrl/audio/resolve?videoId=$videoId'));
+      final response = await _client.get(Uri.parse('$baseUrl/audio/resolve?videoId=$videoId'));
       if (response.statusCode == 200) {
         debugPrint('[ApiService] Stream pre-resolved and cached for $videoId');
       } else {
@@ -49,5 +55,28 @@ class ApiService implements MusicService {
 
     final url = await getStreamUrl(videoId);
     return StreamResult(url: url);
+  }
+
+  @override
+  Future<void> warmupCache(List<String> videoIds) async {
+    // Fire-and-forget: dispatch async GET requests to /api/audio/resolve for
+    // each video ID so the backend yt-dlp cache is pre-populated while the
+    // user reads search results. Failures are logged but never block the caller.
+    for (final videoId in videoIds) {
+      unawaited(_resolveAndCache(videoId));
+    }
+  }
+
+  Future<void> _resolveAndCache(String videoId) async {
+    try {
+      final response = await _client.get(Uri.parse('$baseUrl/audio/resolve?videoId=$videoId'));
+      if (response.statusCode == 200) {
+        debugPrint('[ApiService] Warmup cached stream for $videoId');
+      } else {
+        debugPrint('[ApiService] Warmup resolve returned ${response.statusCode} for $videoId');
+      }
+    } catch (e) {
+      debugPrint('[ApiService] Warmup resolve failed for $videoId (non-critical): $e');
+    }
   }
 }
