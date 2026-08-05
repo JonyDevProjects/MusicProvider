@@ -42,8 +42,11 @@ void main() {
       expect(found, isTrue, reason: 'No TrackResult-Creep found in results.');
 
       // 4. Tap the first result.
+      // Use a timed pump instead of pumpAndSettle() because playback starts
+      // immediately and audioplayers' FramePositionUpdater keeps scheduling
+      // frame callbacks, preventing pumpAndSettle from ever settling.
       await tester.tap(result.first);
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(seconds: 2));
 
       // 5. Verify PlayerBar is active and shows the track.
       final playerProvider = Provider.of<PlayerProvider>(
@@ -62,6 +65,12 @@ void main() {
         expect(reported.inSeconds, lessThanOrEqualTo(trackDuration! * 2),
             reason: 'Reproductor no debe reportar el doble de la duración del track.');
       }
+
+      // 7. Cleanup: stop playback and dispose the audio player to prevent
+      // audioplayers' FramePositionUpdater from leaking scheduler callbacks
+      // that cause 'animation still running' exceptions during teardown.
+      await playerProvider.audioPlayer.stop();
+      playerProvider.audioPlayer.dispose();
     },
   );
 }

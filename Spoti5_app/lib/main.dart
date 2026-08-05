@@ -1,10 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:spoti5_app/native/frb_generated.dart';
 import 'screens/home_screen.dart';
 import 'providers/player_provider.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize the Flutter Rust Bridge for platforms that have the native
+  // library bundled (macOS, iOS, Linux). On Android the FRB plugin is not
+  // registered yet, so init() throws — catch and continue; the factory will
+  // fall back to YtExplodeService (pure Dart) automatically.
+  try {
+    await RustLib.init();
+    debugPrint('RustLib initialized successfully');
+  } catch (e) {
+    debugPrint('RustLib init skipped: $e');
+  }
 
   runApp(
     MultiProvider(
