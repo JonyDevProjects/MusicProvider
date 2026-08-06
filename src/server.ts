@@ -173,17 +173,29 @@ app.get('/api/audio/stream', async (req, res) => {
 
       // Pipear los chunks de audio al cliente
       proxyRes.pipe(res);
+
+      proxyRes.on('error', (err) => {
+        console.error(`[stream] Error leyendo del CDN para ${videoId}:`, err.message);
+        res.end();
+      });
+
+      proxyRes.on('end', () => {
+        console.log(`[stream] Descarga desde CDN completada para ${videoId}`);
+      });
     });
 
     proxyReq.on('error', (err) => {
-      console.error('Error en proxyReq al CDN:', err.message);
+      console.error(`[stream] Error de conexión al CDN para ${videoId}:`, err.message);
       if (!res.headersSent) {
         res.status(502).json({ error: 'Bad Gateway: No se pudo conectar al CDN' });
+      } else {
+        res.end(); // Terminate the response if headers were already sent
       }
     });
 
     // Abortar request al CDN si el cliente (iPhone) cancela la conexión
     req.on('close', () => {
+      console.log(`[stream] Cliente cerró la conexión para ${videoId}. Cancelando proxyReq...`);
       proxyReq.destroy();
     });
 
