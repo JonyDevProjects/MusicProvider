@@ -12,6 +12,8 @@ class PlayerProvider with ChangeNotifier {
   bool _isLoading = false;
   String? _error;
   bool _disposed = false;
+  String? _currentPlaybackUrl;
+  Duration _pausedPosition = Duration.zero;
 
   // Tracked via streams for UI compatibility
   Duration _position = Duration.zero;
@@ -19,11 +21,16 @@ class PlayerProvider with ChangeNotifier {
 
   PlayerProvider({List<MusicService>? services})
       : _services = services ?? MusicServiceFactory.create() {
-    _audioPlayer.onPositionChanged.listen((pos) {
+     _audioPlayer.onPositionChanged.listen((pos) {
       _position = pos;
     });
     _audioPlayer.onDurationChanged.listen((dur) {
       _duration = dur;
+    });
+    _audioPlayer.onPlayerStateChanged.listen((state) {
+      if (!_disposed) {
+        notifyListeners();
+      }
     });
   }
 
@@ -61,6 +68,7 @@ class PlayerProvider with ChangeNotifier {
             await _audioPlayer.play(DeviceFileSource(uri.toFilePath()));
           } else {
             debugPrint('[PlayerProvider] Playing from URL: $uri');
+            _currentPlaybackUrl = result.url;
             await _audioPlayer.play(UrlSource(result.url));
           }
           debugPrint('[PlayerProvider] Playback started');
@@ -109,9 +117,19 @@ class PlayerProvider with ChangeNotifier {
 
   void togglePlayPause() {
     if (_audioPlayer.state == PlayerState.playing) {
+      _pausedPosition = _position;
       _audioPlayer.pause();
-    } else {
-      _audioPlayer.resume();
+    } else if (_currentPlaybackUrl != null) {
+      final seekPosition = _pausedPosition;
+      _pausedPosition = Duration.zero;
+      // On Android, play() may create a fresh MediaPlayer instance that
+      // starts from position 0. We listen for the first "playing" state
+      // transition and then seek to the paused position.
+      _audioPlayer.onPlayerStateChanged
+        .where((s) => s == PlayerState.playing)
+        .first
+        .then((_) => _audioPlayer.seek(seekPosition));
+      _audioPlayer.play(UrlSource(_currentPlaybackUrl!));
     }
   }
 

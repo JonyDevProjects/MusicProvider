@@ -85,16 +85,13 @@ class PlayerBar extends StatelessWidget {
                     ),
                   )
                 else
-                  StreamBuilder<bool>(
-                    stream: playerProvider.playingStream,
-                    builder: (context, snapshot) {
-                      final playing = snapshot.data ?? false;
-                      return IconButton(
-                        icon: Icon(playing ? Icons.pause : Icons.play_arrow),
-                        iconSize: 32,
-                        onPressed: playerProvider.togglePlayPause,
-                      );
-                    },
+                  IconButton(
+                    icon: Icon(playerProvider.playing
+                        ? Icons.pause
+                        : Icons.play_arrow),
+                    iconSize: 32,
+                    tooltip: playerProvider.playing ? 'Pause' : 'Play',
+                    onPressed: playerProvider.togglePlayPause,
                   ),
               ],
             ),
