@@ -75,16 +75,18 @@ Durante la ejecución de las fases 1 a 3 surgieron las siguientes desviaciones n
 **Objetivo**: Demostrar que el reproductor funciona sin fallos en todas las plataformas objetivo.
 
 ### 4.1. Prueba en Android (Físico / Emulador)
-- [ ] Levantar backend local.
-- [ ] Compilar y correr en Android apuntando al `BASE_URL` del backend (o al `10.0.2.2` en emulador).
-- [ ] Buscar una canción ("Radiohead Creep") y reproducirla. Debe funcionar al 100%.
+- [x] Levantar backend local (`npm run dev:server` corriendo en `0.0.0.0:3000`).
+- [x] Compilar y correr en Android apuntando al `BASE_URL` del backend (o al `10.0.2.2` en emulador).
+- [x] Buscar una canción ("Radiohead Creep") y reproducirla. Funcionó al 100%.
+- **Resultados**: Emulador `medium_phone` (auto-detectó 10.0.2.2) ✅ | Dispositivo físico `RNE L21` (IP LAN 192.168.1.46) ✅ | Dispositivo físico vía túnel Cloudflare ✅
 
 ### 4.2. Prueba en iOS (Físico)
-- [ ] Levantar el túnel de Cloudflare.
-- [ ] Lanzar app en iPhone usando `--dart-define=BASE_URL=https://<tunnel_url>`.
-- [ ] Apagar el WiFi del iPhone, dejándolo en red celular.
-- [ ] Buscar y reproducir un track. Debe funcionar (usará los bytes enviados por el backend).
+- [x] Levantar el túnel de Cloudflare (`https://apply-barnes-actual-when.trycloudflare.com`).
+- [x] Lanzar app en iPhone en release mode con `--dart-define=BASE_URL=https://<tunnel_url>`.
+- [x] Apagar el WiFi del iPhone, dejándolo en red celular.
+- [x] Buscar y reproducir "Radiohead Creep". Funcionó correctamente vía túnel HTTPS.
+- **Resultados**: iPhone físico (iOS 18.7.8) ✅ — Playback started tras ~9.4s, streaming funciona vía túnel en red celular.
 
 ### 4.3. Documentar resultados
-- [ ] Registrar tiempos de carga y estabilidad.
-- [ ] Dar por concluido el hito y mergear `feature/unified-proxy-playback` a `develop`.
+- [x] Registrar tiempos de carga y estabilidad (ver tabla en `phase4-validation.md`).
+- [x] Dar por concluido el hito y mergear `feature/unified-proxy-playback` a `develop`.
