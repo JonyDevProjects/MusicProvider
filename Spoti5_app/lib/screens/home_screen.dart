@@ -90,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           
-          // Error Message
+          // Error Message (Search)
           if (_error != null)
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -99,6 +99,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: const TextStyle(color: Colors.red),
               ),
             ),
+            
+          // Error Message (Playback / Proxy connection)
+          if (context.watch<PlayerProvider>().error != null)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: Text(
+                context.watch<PlayerProvider>().error!,
+                style: const TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+            ),
+
 
           // Search Results
           Expanded(
