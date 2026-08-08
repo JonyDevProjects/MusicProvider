@@ -1,5 +1,4 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
@@ -40,9 +39,6 @@ class FakePlayerProvider extends ChangeNotifier implements PlayerProvider {
 
   @override
   String? get error => null;
-
-  @override
-  AudioPlayer get audioPlayer => AudioPlayer();
 
   @override
   MusicService get service => FakeMusicService();

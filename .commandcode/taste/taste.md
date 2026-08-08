@@ -20,14 +20,10 @@ See [architecture/taste.md](architecture/taste.md)
 See [testing-strategy/taste.md](testing-strategy/taste.md)
 # spoti5-deploy
 - For deploying Spoti5 to a physical iPhone (wireless): use `flutter run --release -d <deviceId> --dart-define=BASE_URL=http://<MAC_IP>:3000/api`, where `MAC_IP` is obtained via `ipconfig getifaddr en0`. Confidence: 0.85
+- For deploying Spoti5 to a physical Android device: user prefers USB connection (not wireless/debuggable network), detecting via `flutter devices` then `adb devices`, with `BASE_URL=http://<MAC_IP>:3000/api` for local-network backend access. Confidence: 0.75
 - Spotti5 app embeds backend logic (via FRB/yt-dlp native integration) so starting the Node.js backend on the Mac is not required — the app handles it directly. User explicitly rejects solutions that depend on the backend running on the Mac. Confidence: 0.85
-- Uses Cloudflare Tunnel (`cloudflared tunnel --url http://localhost:<PORT>`) to expose a local backend service via a public HTTPS URL (`*.trycloudflare.com`) for testing on physical iOS devices when local network access is unavailable (e.g., cellular data only). Passes the tunnel URL as `BASE_URL` via `--dart-define`. Confidence: 0.75
+- Uses Cloudflare Tunnel (`cloudflared tunnel --url http://localhost:<PORT>`) to expose a local backend service via a public HTTPS URL (`*.trycloudflare.com`) for testing on physical devices (iOS and Android) when local network access is unavailable (e.g., cellular data only). Passes the tunnel URL as `BASE_URL` via `--dart-define`. Confidence: 0.80
+- When testing Flutter web through a Cloudflare Tunnel, the web build's compiled `BASE_URL` must be set to the tunnel URL via `--dart-define=BASE_URL=<tunnel_url>/api` before running Playwright tests — otherwise the web app's API calls go to the hardcoded local URL (e.g., localhost:3000) and fail with `Failed to fetch`. Confidence: 0.80
 
 # spoti5-config
-- Backend `baseUrl` in `api_service.dart`: detect by platform — `10.0.2.2:3000/api` for Android emulator, `localhost:3000/api` for iOS/Web/Desktop; use `Platform.isAndroid` with a `stub_io.dart` for web builds. Confidence: 0.90
-- PlayerBar duration: always use `track.duration` from the backend (yt-dlp seconds) for the progress bar total, never `audioPlayer.duration` (just_audio may report double). Confidence: 0.95
-- For fixing YouTube HTTP 403 on audio playback: use `AudioSource.uri` with headers (`User-Agent: Mozilla/5.0`) instead of `setUrl()`. Confidence: 0.90
-- On iOS (which blocks `exec()` of external binaries), use `youtube_explode_dart` (pure Dart) as the primary music service via the Strategy Pattern. Confidence: 0.80
-- audioplayers `UrlSource` does NOT support custom headers — header-based CDN-bypass solutions (e.g., `User-Agent: Mozilla/5.0`) are unavailable with audioplayers, unlike just_audio's `AudioSource.uri`. Confidence: 0.80
-
-
+See [spoti5-config/taste.md](spoti5-config/taste.md)

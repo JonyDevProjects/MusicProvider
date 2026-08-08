@@ -1,11 +1,14 @@
+import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart';
-import 'package:audioplayers/audioplayers.dart';
 import '../models/track.dart';
 import '../services/music_service.dart';
 import '../services/music_service_factory.dart';
+import 'audio/base_audio_adapter.dart';
+import 'audio/audioplayers_adapter.dart';
+import 'audio/just_audio_adapter.dart';
 
 class PlayerProvider with ChangeNotifier {
-  final AudioPlayer _audioPlayer = AudioPlayer();
+  late final BaseAudioAdapter _audioPlayer;
   final List<MusicService> _services;
 
   Track? _currentTrack;
@@ -21,7 +24,12 @@ class PlayerProvider with ChangeNotifier {
 
   PlayerProvider({List<MusicService>? services})
       : _services = services ?? MusicServiceFactory.create() {
-     _audioPlayer.onPositionChanged.listen((pos) {
+    if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
+      _audioPlayer = JustAudioAdapter();
+    } else {
+      _audioPlayer = AudioPlayersAdapter();
+    }
+    _audioPlayer.onPositionChanged.listen((pos) {
       _position = pos;
     });
     _audioPlayer.onDurationChanged.listen((dur) {
@@ -37,15 +45,14 @@ class PlayerProvider with ChangeNotifier {
   Track? get currentTrack => _currentTrack;
   bool get isLoading => _isLoading;
   String? get error => _error;
-  AudioPlayer get audioPlayer => _audioPlayer;
   MusicService get service => _services.first;
 
   // Wrapper getters for UI / integration tests
-  bool get playing => _audioPlayer.state == PlayerState.playing;
+  bool get playing => _audioPlayer.state == AdapterPlayerState.playing;
   Duration get position => _position;
   Duration? get duration => _duration;
   Stream<bool> get playingStream =>
-      _audioPlayer.onPlayerStateChanged.map((s) => s == PlayerState.playing);
+      _audioPlayer.onPlayerStateChanged.map((s) => s == AdapterPlayerState.playing);
   Stream<Duration> get positionStream => _audioPlayer.onPositionChanged;
 
   Future<void> playTrack(Track track) async {
@@ -65,11 +72,11 @@ class PlayerProvider with ChangeNotifier {
           final uri = Uri.parse(result.url);
           if (uri.scheme == 'file') {
             debugPrint('[PlayerProvider] Playing from file: ${uri.toFilePath()}');
-            await _audioPlayer.play(DeviceFileSource(uri.toFilePath()));
+            await _audioPlayer.playFile(uri.toFilePath());
           } else {
             debugPrint('[PlayerProvider] Playing from URL: $uri');
             _currentPlaybackUrl = result.url;
-            await _audioPlayer.play(UrlSource(result.url));
+            await _audioPlayer.playUrl(result.url, headers: result.headers);
           }
           debugPrint('[PlayerProvider] Playback started');
           break;
@@ -116,20 +123,12 @@ class PlayerProvider with ChangeNotifier {
   }
 
   void togglePlayPause() {
-    if (_audioPlayer.state == PlayerState.playing) {
+    if (_audioPlayer.state == AdapterPlayerState.playing) {
       _pausedPosition = _position;
       _audioPlayer.pause();
     } else if (_currentPlaybackUrl != null) {
-      final seekPosition = _pausedPosition;
       _pausedPosition = Duration.zero;
-      // On Android, play() may create a fresh MediaPlayer instance that
-      // starts from position 0. We listen for the first "playing" state
-      // transition and then seek to the paused position.
-      _audioPlayer.onPlayerStateChanged
-        .where((s) => s == PlayerState.playing)
-        .first
-        .then((_) => _audioPlayer.seek(seekPosition));
-      _audioPlayer.play(UrlSource(_currentPlaybackUrl!));
+      _audioPlayer.resume();
     }
   }
 
