@@ -3,6 +3,7 @@ import cors from 'cors';
 import { search, getStreamInfo, getPlaylistInfo, downloadTrack } from './ytdlpWrapper.js';
 import type { YtdlpStreamInfo } from './ytdlpWrapper.js';
 import path from 'path';
+import { pathToFileURL } from 'url';
 import https from 'https';
 import http from 'http';
 import { LRUCache } from 'lru-cache';
@@ -41,8 +42,9 @@ async function getCachedStreamInfo(videoId: string): Promise<YtdlpStreamInfo> {
   return info;
 }
 
-// Servir la aplicación web de Flutter
-app.use(express.static(path.join(process.cwd(), 'Spoti5_app', 'build', 'web')));
+// Configurable static directory for Flutter web build (allows test fixtures)
+const WEB_BUILD_DIR = process.env.WEB_BUILD_DIR || path.join(process.cwd(), 'Spoti5_app', 'build', 'web');
+app.use(express.static(WEB_BUILD_DIR));
 
 app.get('/api/search', async (req, res) => {
   try {
@@ -238,6 +240,16 @@ app.post('/api/download', async (req, res) => {
   }
 });
 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 MusicProvider Server corriendo en http://0.0.0.0:${PORT}`);
-});
+// Export app and cache for testing (supertest) and cache tests
+export { app, streamUrlCache, getCachedStreamInfo, CACHE_TTL, WEB_BUILD_DIR, httpsAgent, httpAgent };
+
+// Only start the server when this module is the entry point
+const isMainModule = process.argv[1]
+  ? pathToFileURL(process.argv[1]).href === import.meta.url
+  : false;
+
+if (isMainModule) {
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 MusicProvider Server corriendo en http://0.0.0.0:${PORT}`);
+  });
+}
