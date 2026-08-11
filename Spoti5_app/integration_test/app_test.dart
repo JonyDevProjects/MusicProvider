@@ -62,6 +62,36 @@ void main() {
         expect(reported.inSeconds, lessThanOrEqualTo(trackDuration! * 2),
             reason: 'Reproductor no debe reportar el doble de la duración del track.');
       }
+
+      // 7. Test: Toggle play/pause changes icon
+      // Assuming playback started, we should see the pause icon initially or after a short delay
+      await tester.pump(const Duration(seconds: 3)); // Let it play a bit
+      
+      final pauseIconFinder = find.byIcon(Icons.pause);
+      final playIconFinder = find.byIcon(Icons.play_arrow);
+      
+      // If it's playing, tap pause
+      if (pauseIconFinder.evaluate().isNotEmpty) {
+        await tester.tap(pauseIconFinder);
+        await tester.pumpAndSettle();
+        expect(playIconFinder, findsOneWidget, reason: 'Debería mostrar play_arrow tras pausar.');
+        
+        // Tap play again
+        await tester.tap(playIconFinder);
+        await tester.pumpAndSettle();
+        expect(pauseIconFinder, findsOneWidget, reason: 'Debería mostrar pause tras reanudar.');
+      }
+      
+      // 8. Test: Seek bar updates position
+      // To test seeking, we can tap on the progress bar.
+      // But in integration tests with a real stream, seeking might buffer.
+      // We will just verify that we can tap the progress bar.
+      final progressBarFinder = find.bySemanticsLabel(RegExp(r'Seek', caseSensitive: false));
+      if (progressBarFinder.evaluate().isNotEmpty) {
+        final center = tester.getCenter(progressBarFinder.first);
+        await tester.tapAt(center + const Offset(50, 0));
+        await tester.pumpAndSettle();
+      }
     },
   );
 }

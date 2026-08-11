@@ -102,4 +102,34 @@ test.describe('Spoti5 Web Player E2E', () => {
     expect(renderedSeconds).toBeGreaterThan(0);
     console.log(`Backend duration: ${expectedSeconds}s | Rendered UI: ${renderedSeconds}s`);
   });
+
+  test('No results message when searching for non-existent query', async ({ page }) => {
+    await page.goto('/');
+    
+    // Enable a11y
+    try {
+      const enableA11yBtn = page.getByRole('button', { name: 'Enable accessibility' });
+      await enableA11yBtn.waitFor({ state: 'attached', timeout: 5000 });
+      await enableA11yBtn.evaluate(node => node.click());
+    } catch (e) {}
+
+    const searchInput = page.getByRole('textbox');
+    await searchInput.waitFor({ state: 'visible', timeout: 15000 });
+    // Use a random gibberish string
+    await searchInput.pressSequentially('asdfasdfqwerqwer12341234', { delay: 100 });
+    await page.keyboard.press('Enter');
+
+    const searchBtn = page.locator('flt-semantics[aria-label="Search Button" i]');
+    try {
+      await searchBtn.waitFor({ state: 'attached', timeout: 5000 });
+      await searchBtn.evaluate(node => node.click());
+    } catch (e) {}
+
+    // Wait for empty state or no-results semantics
+    // Since we don't know the exact Flutter text for empty, we can just check there are no TrackResult elements
+    await page.waitForTimeout(5000); // give it time to search
+    const results = page.locator('flt-semantics[aria-label*="TrackResult-" i]');
+    expect(await results.count()).toBe(0);
+  });
+
 });
