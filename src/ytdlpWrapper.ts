@@ -72,27 +72,21 @@ function runYtdlp(args: string[]): Promise<string> {
   });
 }
 
-export async function search(query: string, limit: number = 10): Promise<YtdlpSearchResult[]> {
-  const searchUrl = `ytsearch${limit}:${query}`;
-  console.log(`[yt-dlp] Searching: "${query}" (limit: ${limit})`);
-  
-  const stdout = await runYtdlp([
-    '--dump-json',
-    '--flat-playlist',
-    '--no-warnings',
-    searchUrl
-  ]);
+import yts from 'yt-search';
 
-  const rawEntries = parseNdjson(stdout);
-  return rawEntries
-    .filter(entry => entry && entry.id)
-    .map(entry => ({
-      id: entry.id,
-      title: entry.title || 'Unknown',
-      duration: entry.duration || null,
-      thumbnail: entry.thumbnail || (entry.thumbnails && entry.thumbnails.length > 0 ? entry.thumbnails[entry.thumbnails.length - 1].url : null),
-      channel: entry.channel || null
-    }));
+export async function search(query: string, limit: number = 10): Promise<YtdlpSearchResult[]> {
+  console.log(`[yt-search] Searching: "${query}" (limit: ${limit})`);
+  
+  const results = await yts(query);
+  const videos = results.videos.slice(0, limit);
+
+  return videos.map(video => ({
+    id: video.videoId,
+    title: video.title,
+    duration: video.seconds,
+    thumbnail: video.thumbnail || null,
+    channel: video.author.name
+  }));
 }
 
 export async function getStreamInfo(videoIdOrUrl: string): Promise<YtdlpStreamInfo> {

@@ -10,3 +10,4 @@ test-results/
 
 # Rust build artifacts
 **/target/
+coverage/

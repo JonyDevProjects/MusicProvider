@@ -20,7 +20,8 @@
     "commander": "^12.1.0",
     "cors": "^2.8.6",
     "express": "^5.2.1",
-    "lru-cache": "^11.5.2"
+    "lru-cache": "^11.5.2",
+    "yt-search": "^2.13.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.1",
@@ -29,6 +30,8 @@
     "@types/express": "^5.0.6",
     "@types/node": "^20.14.9",
     "@types/supertest": "^7.2.1",
+    "@types/yt-search": "^2.10.3",
+    "@vitest/coverage-v8": "^1.6.0",
     "supertest": "^7.2.2",
     "tsx": "^4.16.2",
     "typescript": "^5.9.3",
