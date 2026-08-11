@@ -1,0 +1,80 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    # Corre una vez al día a medianoche para validar que yt-dlp y youtube_explode_dart sigan funcionando
+    - cron: '0 0 * * *'
+
+jobs:
+  backend-and-web:
+    name: Backend & E2E Web Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Backend Unit & Integration Tests (Vitest)
+        run: npm run test -- --coverage
+
+      - name: Upload Backend Coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage
+          path: coverage/
+          retention-days: 7
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright E2E Tests
+        run: npm run test:e2e
+      
+      - name: Upload Playwright Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: tests/e2e-report/
+          retention-days: 7
+
+  flutter-unit-tests:
+    name: Flutter Unit & Widget Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Spoti5_app
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run Flutter Tests
+        run: flutter test --coverage
+
+      - name: Upload Flutter Coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: flutter-coverage
+          path: Spoti5_app/coverage/
+          retention-days: 7
