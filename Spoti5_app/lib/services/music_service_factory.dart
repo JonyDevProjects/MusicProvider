@@ -11,8 +11,7 @@ class MusicServiceFactory {
     if (kIsWeb) {
       services = [ApiService()];
     } else {
-      // Fase 2: Estandarización de ApiService para TODAS las plataformas.
-      // Se utiliza YtExplodeService solo como un graceful fallback temporal.
+      // Fase 4.5: SDD Opción B (Backend Optimization) - Híbrido desactivado
       services = [ApiService(), createYtExplodeService()];
     }
 
@@ -22,3 +21,4 @@ class MusicServiceFactory {
     return services;
   }
 }
+

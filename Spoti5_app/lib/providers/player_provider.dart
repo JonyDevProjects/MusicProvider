@@ -22,9 +22,11 @@ class PlayerProvider with ChangeNotifier {
   Duration _position = Duration.zero;
   Duration? _duration;
 
-  PlayerProvider({List<MusicService>? services})
+  PlayerProvider({List<MusicService>? services, BaseAudioAdapter? audioAdapter})
       : _services = services ?? MusicServiceFactory.create() {
-    if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
+    if (audioAdapter != null) {
+      _audioPlayer = audioAdapter;
+    } else if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
       _audioPlayer = JustAudioAdapter();
     } else {
       _audioPlayer = AudioPlayersAdapter();

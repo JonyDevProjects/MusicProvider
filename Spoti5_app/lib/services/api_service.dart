@@ -21,9 +21,14 @@ class ApiService implements MusicService {
   // avoiding renegotiation overhead on each metadata call.
   static final http.Client _client = http.Client();
 
+  @visibleForTesting
+  static http.Client? mockClient;
+  
+  static http.Client get effectiveClient => mockClient ?? _client;
+
   @override
   Future<List<Track>> searchTracks(String query) async {
-    final response = await _client.get(Uri.parse('$baseUrl/search?q=$query'));
+    final response = await effectiveClient.get(Uri.parse('$baseUrl/search?q=$query'));
     
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
@@ -43,7 +48,7 @@ class ApiService implements MusicService {
     // Pre-resolve: warm the backend yt-dlp cache so AVPlayer's probe request
     // hits cache immediately instead of triggering yt-dlp (~3-5s) inline.
     try {
-      final response = await _client.get(Uri.parse('$baseUrl/audio/resolve?videoId=$videoId'));
+      final response = await effectiveClient.get(Uri.parse('$baseUrl/audio/resolve?videoId=$videoId'));
       if (response.statusCode == 200) {
         debugPrint('[ApiService] Stream pre-resolved and cached for $videoId');
       } else {
@@ -69,7 +74,7 @@ class ApiService implements MusicService {
 
   Future<void> _resolveAndCache(String videoId) async {
     try {
-      final response = await _client.get(Uri.parse('$baseUrl/audio/resolve?videoId=$videoId'));
+      final response = await effectiveClient.get(Uri.parse('$baseUrl/audio/resolve?videoId=$videoId'));
       if (response.statusCode == 200) {
         debugPrint('[ApiService] Warmup cached stream for $videoId');
       } else {
