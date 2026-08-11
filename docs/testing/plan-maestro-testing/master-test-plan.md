@@ -204,6 +204,13 @@ Objetivo: Formalizar testing manual y anadir testing de rendimiento.
 2. Performance baseline tests — curl-based timing
 3. Accessibility checklist
 
+### Fase 4.5: Optimización de Búsqueda (Desvío Post-Perf)
+Objetivo: Mitigar el overhead de ~1.7s de yt-dlp en el endpoint de búsqueda descubierto durante el baseline.
+
+1. Implementar y probar Opción A (Cliente Flutter híbrido con youtube_explode_dart).
+2. Implementar y probar Opción B (Backend Node.js con yt-search/youtubei.js).
+3. Re-evaluar performance y asegurar que las pruebas E2E/Unit de fases anteriores siguen pasando.
+
 ### Fase 5: CI/CD Pipeline (2-3 dias)
 Objetivo: Automatizar todo en CI.
 
