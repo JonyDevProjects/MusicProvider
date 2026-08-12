@@ -52,69 +52,76 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('Spoti5'),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          // Search Bar
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _searchController,
-                    decoration: InputDecoration(
-                      hintText: 'Search songs, artists...',
-                      prefixIcon: const Icon(Icons.search),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-                    ),
-                    onSubmitted: (_) => _performSearch(),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Tooltip(
-                  message: 'Search Button',
-                  child: IconButton(
-                    icon: const Icon(Icons.send),
-                    color: Theme.of(context).colorScheme.primary,
-                    onPressed: _performSearch,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          
-          // Error Message (Search)
-          if (_error != null)
+      body: SingleChildScrollView(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Search Bar
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Text(
-                _error!,
-                style: const TextStyle(color: Colors.red),
-              ),
-            ),
-            
-          // Error Message (Playback / Proxy connection)
-          if (context.watch<PlayerProvider>().error != null)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: Text(
-                context.watch<PlayerProvider>().error!,
-                style: const TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _searchController,
+                      decoration: InputDecoration(
+                        hintText: 'Search songs, artists...',
+                        prefixIcon: const Icon(Icons.search),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 20),
+                      ),
+                      onSubmitted: (_) => _performSearch(),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Tooltip(
+                    message: 'Search Button',
+                    child: IconButton(
+                      icon: const Icon(Icons.send),
+                      color: Theme.of(context).colorScheme.primary,
+                      onPressed: _performSearch,
+                    ),
+                  ),
+                ],
               ),
             ),
 
+            // Error Message (Search)
+            if (_error != null)
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  _error!,
+                  style: const TextStyle(color: Colors.red),
+                ),
+              ),
 
-          // Search Results
-          Expanded(
-            child: _isSearching
+            // Error Message (Playback / Proxy connection)
+            if (context.watch<PlayerProvider>().error != null)
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                child: Text(
+                  context.watch<PlayerProvider>().error!,
+                  style: const TextStyle(
+                      color: Colors.redAccent, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+
+            // Search Results
+            _isSearching
                 ? const Center(child: CircularProgressIndicator())
                 : _searchResults.isEmpty
                     ? const Center(
@@ -124,11 +131,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       )
                     : ListView.builder(
+                        shrinkWrap: true,
+                        physics: const ClampingScrollPhysics(),
                         itemCount: _searchResults.length,
                         itemBuilder: (context, index) {
                           final track = _searchResults[index];
                           return Semantics(
-                            label: 'TrackResult-${track.title} (${_formatDuration(track.duration)})',
+                            label:
+                                'TrackResult-${track.title} (${_formatDuration(track.duration)})',
                             button: true,
                             child: ListTile(
                               leading: ClipRRect(
@@ -165,11 +175,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                         },
                       ),
-          ),
 
-          // Player Bar at the bottom
-          const PlayerBar(),
-        ],
+            // Player Bar at the bottom
+            const PlayerBar(),
+          ],
+        ),
       ),
     );
   }
