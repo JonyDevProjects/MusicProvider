@@ -57,6 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('Spoti5'),
         centerTitle: true,
       ),
+      bottomNavigationBar: const PlayerBar(),
       body: SingleChildScrollView(
         padding: EdgeInsets.only(
           bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -175,9 +176,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                         },
                       ),
-
-            // Player Bar at the bottom
-            const PlayerBar(),
           ],
         ),
       ),
