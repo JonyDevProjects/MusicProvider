@@ -2,27 +2,17 @@ import express from 'express';
 import cors from 'cors';
 import { search, getStreamInfo, getPlaylistInfo, downloadTrack } from './ytdlpWrapper.js';
 import type { YtdlpStreamInfo } from './ytdlpWrapper.js';
+import { resolveStreamInfo, streamUrlCache, CACHE_TTL } from './streamCache.js';
 import path from 'path';
 import { pathToFileURL } from 'url';
 import https from 'https';
 import http from 'http';
-import { LRUCache } from 'lru-cache';
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 
 app.use(cors());
 app.use(express.json());
-
-// LRU cache for yt-dlp resolved stream URLs.
-// YouTube CDN URLs are valid for ~5-15 minutes, so a 5-minute TTL is safe.
-// max: 100 entries prevents unbounded memory growth (memory leak fix).
-// ttl: entries auto-expire after the TTL without manual cleanup.
-const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
-const streamUrlCache = new LRUCache<string, YtdlpStreamInfo>({
-  max: 100,
-  ttl: CACHE_TTL,
-});
 
 // HTTP agents with Keep-Alive to reuse TCP/TLS connections to the YouTube CDN.
 // This avoids a full TCP handshake + TLS negotiation on every chunk request,
@@ -31,15 +21,7 @@ const httpsAgent = new https.Agent({ keepAlive: true });
 const httpAgent = new http.Agent({ keepAlive: true });
 
 async function getCachedStreamInfo(videoId: string): Promise<YtdlpStreamInfo> {
-  const cached = streamUrlCache.get(videoId);
-  if (cached) {
-    console.log(`[cache] Stream URL cache HIT for: ${videoId}`);
-    return cached;
-  }
-  console.log(`[cache] Stream URL cache MISS for: ${videoId}, resolving via yt-dlp...`);
-  const info = await getStreamInfo(videoId);
-  streamUrlCache.set(videoId, info);
-  return info;
+  return resolveStreamInfo(videoId, getStreamInfo);
 }
 
 // Configurable static directory for Flutter web build (allows test fixtures)
