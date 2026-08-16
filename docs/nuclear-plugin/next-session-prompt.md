@@ -14,10 +14,10 @@ proyecto TypeScript/ESM que está siendo convertido de un servidor Express stand
 a un plugin de Nuclear (reproductor de música de código abierto).
 
 ## Estado actual
-- Etapas 1 y 2 del plan (docs/nuclear-plugin/IMPLEMENTATION_PLAN.md) están COMPLETAS y COMMITEADAS.
+- Etapas 1, 2, 3 y 4 del plan (docs/nuclear-plugin/IMPLEMENTATION_PLAN.md) están COMPLETAS y COMMITEADAS.
 - Rama actual: chore/isolate-nuclear-plugin (working tree clean).
-- El plugin buildea con `npx tsup` → `dist/index.js` (CJS, 26.4 KB, cero require()).
-- 23 tests existentes pasan con `npm test`.
+- El plugin buildea con `npx tsup` → `dist/index.js` (CJS, 26.5 KB, cero require()).
+- 29 tests existentes pasan con `npm test`.
 
 ## Tarea principal
 Continuar con la Etapa 5 y Etapa 6 del plan:
