@@ -68,10 +68,10 @@
 | 2.2 | Crear src/index.ts con ciclo de vida Nuclear (onLoad/onEnable/onDisable/onUnload) | ✅ Completada | 2026-08-16 |
 | 2.2 | Implementar StreamingProvider con api.Ytdlp.search() y api.Ytdlp.getStream() | ✅ Completada | 2026-08-16 |
 | 2.2 | Mappear tipos SDK (snake_case) → modelo interno (camelCase) | ✅ Completada | 2026-08-16 |
-| 3 | Implementar searchForTrackV2 usando api.Ytdlp + tipo Track | ⬜ Pendiente | — |
-| 3 | Agregar manejo de playlists (api.Ytdlp.getPlaylist) | ⬜ Pendiente | — |
-| 4.1 | Ajustar tests unitarios para validar retornos crudos | ⬜ Pendiente | — |
-| 4.2 | CI/CD (test.yml) pasa con nuevo empaquetado | ⬜ Pendiente | — |
+| 3 | Implementar searchForTrackV2 usando api.Ytdlp + tipo Track | ✅ Completada | 2026-08-16 |
+| 3 | Agregar manejo de playlists (api.Ytdlp.getPlaylist) | ✅ Completada | 2026-08-16 |
+| 4.1 | Ajustar tests unitarios para validar retornos crudos | ✅ Completada | 2026-08-16 |
+| 4.2 | CI/CD (test.yml) pasa con nuevo empaquetado | ✅ Completada | 2026-08-16 |
 | 5 | Cargar plugin en Nuclear, probar búsqueda y playback | ⬜ Pendiente | — |
 | 6 | Resolver edge cases (streams largos, range headers) | ⬜ Pendiente | — |
 
