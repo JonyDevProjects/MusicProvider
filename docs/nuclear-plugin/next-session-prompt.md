@@ -129,13 +129,21 @@ El agente debe consultar estos recursos de Nuclear (fuera del repo):
 - `npx tsup` → ✅ `dist/index.js` generado (26.4 KB, cero `require()`)
 - Simulación `evaluatePlugin` (`new Function('exports','module','require',code)`) → ✅ Carga, registra/desregistra proveedor, ejecuta lifecycle completo
 
+### Etapa 3 — Integración de la API de Nuclear (✅ COMPLETA)
+| Sub-tarea | Estado | Fecha |
+|-----------|--------|-------|
+| Implementar searchForTrackV2 usando api.Ytdlp + tipo Track | ✅ | 2026-08-16 |
+| Agregar manejo de playlists (api.Ytdlp.getPlaylist) | ✅ | 2026-08-16 |
+
+### Etapa 4 — Empaquetado y Verificación (✅ COMPLETA)
+| Sub-tarea | Estado | Fecha |
+|-----------|--------|-------|
+| Ajustar tests para validar retornos crudos vs HTTP | ✅ | 2026-08-16 |
+| CI/CD (`test.yml`) pasa con nuevo empaquetado | ✅ | 2026-08-16 |
+
 ### Etapas Pendientes
 | Etapa | Sub-tarea | Estado |
 |-------|-----------|--------|
-| 3 | Implementar searchForTrackV2 usando api.Ytdlp + tipo Track | ✅ |
-| 3 | Agregar manejo de playlists (api.Ytdlp.getPlaylist) | ✅ |
-| 4.1 | Ajustar tests para validar retornos crudos vs HTTP | ✅ |
-| 4.2 | CI/CD (`test.yml`) pasa con nuevo empaquetado | ✅ |
 | 5 | Cargar plugin en Nuclear, probar búsqueda y playback | ⬜ |
 | 6 | Resolver edge cases (streams largos, range headers) | ⬜ |
 
@@ -171,7 +179,7 @@ El agente debe consultar estos recursos de Nuclear (fuera del repo):
 ```bash
 # Ver estado
 git checkout chore/isolate-nuclear-plugin
-npm test          # 23 tests deben pasar
+npm test          # 29 tests deben pasar
 npx tsc --noEmit  # verificación de tipos
 npx tsup          # genera dist/index.js sin require()
 
@@ -206,5 +214,6 @@ console.log('onEnable:', typeof plugin.onEnable);
 | `src/cli.ts` | CLI standalone | ✅ Sin cambios |
 | `tsconfig.json` | `"type": "module"` (ESM source) | ✅ Sin cambios |
 | `AGENTS.md` | Convenciones: ESM + `.js` extension obligatoria | ✅ Sin cambios |
-| `tests/ytdlpWrapper.test.ts` | Tests de lógica pura (23 tests) | ✅ Verde |
+| `tests/index.test.ts` | Tests de integración del Plugin Nuclear | ✅ Creado |
+| `tests/ytdlpWrapper.test.ts` | Tests de lógica pura (29 tests en total) | ✅ Verde |
 | `.commandcode/taste/` | Preferencias aprendidas (ver sección 2) | — |
