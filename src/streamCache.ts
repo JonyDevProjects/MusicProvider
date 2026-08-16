@@ -3,7 +3,8 @@ import type { YtdlpStreamInfo } from './ytdlpWrapper.js';
 
 export const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
-export const streamUrlCache = new LRUCache<string, YtdlpStreamInfo>({
+// Cache the promise itself to prevent race conditions (multiple yt-dlp calls for same ID)
+export const streamUrlCache = new LRUCache<string, Promise<YtdlpStreamInfo>>({
   max: 100,
   ttl: CACHE_TTL,
 });
@@ -15,10 +16,18 @@ export async function resolveStreamInfo(
   const cached = streamUrlCache.get(videoId);
   if (cached) {
     console.log(`[cache] Stream URL cache HIT for: ${videoId}`);
-    return cached;
+    return cached; // Returns the pending or resolved promise
   }
+  
   console.log(`[cache] Stream URL cache MISS for: ${videoId}, resolving via yt-dlp...`);
-  const info = await fetchFn(videoId);
-  streamUrlCache.set(videoId, info);
-  return info;
+  
+  // Create the promise and cache it immediately
+  const promise = Promise.resolve(fetchFn(videoId)).catch((err) => {
+    // If it fails, remove it from cache so subsequent requests retry
+    streamUrlCache.delete(videoId);
+    throw err;
+  });
+  
+  streamUrlCache.set(videoId, promise);
+  return promise;
 }

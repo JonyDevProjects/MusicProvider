@@ -51,8 +51,13 @@ function toStream(url: string, info: YtdlpStreamInfo, sourceId: string): Stream 
         ? 'audio/ogg'
         : undefined;
 
+  // Append a range parameter to force the YouTube CDN to return an HTTP 206 Partial Content response.
+  // This circumvents issues where internal players (like Web Audio API) fetch without Range headers,
+  // which YouTube rejects with HTTP 403 for long streams, causing infinite loading loops.
+  const chunkedUrl = url.includes('&range=') ? url : `${url}&range=0-99999999999`;
+
   return {
-    url,
+    url: chunkedUrl,
     protocol: 'https',
     mimeType,
     codec: info.codec || undefined,

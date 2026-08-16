@@ -105,13 +105,13 @@ describe('Nuclear Plugin Integration', () => {
     expect(mockApi.Ytdlp.getStream).toHaveBeenCalledWith('vid1');
     
     expect(stream).toEqual({
-      url: 'https://example.com/stream',
+      url: 'https://example.com/stream&range=0-99999999999',
       protocol: 'https',
       mimeType: 'audio/mp4',
       codec: 'mp4a.40.2',
       container: 'm4a',
       durationMs: 120000,
-      source: { provider: 'music-provider', id: 'vid1' }
+      source: { provider: 'music-provider', id: 'vid1' },
     });
 
     // Second call (cache hit)
