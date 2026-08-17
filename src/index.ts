@@ -16,6 +16,10 @@ import { resolveStreamInfo } from './streamCache.js';
 const PROVIDER_ID = 'music-provider';
 const PROVIDER_NAME = 'MusicProvider';
 
+const STREAMING_ID = `${PROVIDER_ID}-streaming`;
+const PLAYLIST_ID = `${PROVIDER_ID}-playlist`;
+const METADATA_ID = `${PROVIDER_ID}-metadata`;
+
 function sdkToInternal(info: SDKStreamInfo): YtdlpStreamInfo {
   return {
     streamUrl: info.stream_url,
@@ -38,7 +42,7 @@ function toStreamCandidate(
     durationMs: duration ? Math.round(duration * 1000) : undefined,
     thumbnail: thumbnail ?? undefined,
     failed: false,
-    source: { provider: PROVIDER_ID, id },
+    source: { provider: STREAMING_ID, id },
   };
 }
 
@@ -64,21 +68,89 @@ function toStream(url: string, info: YtdlpStreamInfo, sourceId: string): Stream 
     codec: info.codec || undefined,
     container: info.container || undefined,
     durationMs: info.duration ? Math.round(info.duration * 1000) : undefined,
-    source: { provider: PROVIDER_ID, id: sourceId },
+    source: { provider: STREAMING_ID, id: sourceId },
   };
+}
+
+function parseDuration(text: string): number {
+  if (!text) return 0;
+  const parts = text.split(':').map(Number);
+  if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
+  if (parts.length === 2) return parts[0] * 60 + parts[1];
+  return 0;
+}
+
+async function scrapeYoutube(api: NuclearPluginAPI, query: string, limit: number) {
+  try {
+    console.log(`[${PROVIDER_NAME}] Starting YouTube scrape for: "${query}"`);
+    const res = await api.Http.fetch(`https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Accept-Encoding': 'gzip, deflate, br'
+      }
+    });
+    
+    if (res.status !== 200) {
+      console.warn(`[${PROVIDER_NAME}] YouTube returned status ${res.status}`);
+    }
+
+    const match = res.body.match(/var ytInitialData = (\{.+?\});<\/script>/);
+    if (!match) {
+      console.warn(`[${PROVIDER_NAME}] No ytInitialData found in HTML`);
+      return [];
+    }
+    
+    const json = JSON.parse(match[1]);
+    const contents = json.contents?.twoColumnSearchResultsRenderer?.primaryContents?.sectionListRenderer?.contents;
+    if (!contents) {
+      console.warn(`[${PROVIDER_NAME}] Invalid ytInitialData structure`);
+      return [];
+    }
+    
+    let videos: any[] = [];
+    for (const section of contents) {
+      if (section.itemSectionRenderer?.contents) {
+        const found = section.itemSectionRenderer.contents
+          .filter((c: any) => c.videoRenderer)
+          .map((c: any) => c.videoRenderer);
+        videos = videos.concat(found);
+      }
+    }
+    
+    console.log(`[${PROVIDER_NAME}] Scrape found ${videos.length} videos, limiting to ${limit}`);
+    
+    return videos.slice(0, limit).map(v => {
+      const thumbs = v.thumbnail?.thumbnails || [];
+      const thumbnail = thumbs.length > 0 ? thumbs[thumbs.length - 1].url : null;
+      const durationStr = v.lengthText?.simpleText || '';
+      return {
+        id: v.videoId,
+        title: v.title?.runs?.[0]?.text || 'Unknown',
+        duration: parseDuration(durationStr),
+        thumbnail,
+        channel: v.ownerText?.runs?.[0]?.text || 'Unknown'
+      };
+    });
+  } catch (error) {
+    console.error(`[${PROVIDER_NAME}] YouTube scrape failed:`, error);
+    // Fallback to Nuclear's Ytdlp which will fail if yt-dlp isn't installed
+    return await api.Ytdlp.search(query, limit);
+  }
 }
 
 const plugin: NuclearPlugin = {
   onLoad: async (api: NuclearPluginAPI) => {
     const streamingProvider: StreamingProvider = {
-      id: PROVIDER_ID,
+      id: STREAMING_ID,
       kind: 'streaming',
       name: PROVIDER_NAME,
       searchForTrack: async (artist: string, title: string, album?: string) => {
         const query = album
           ? `${artist} - ${title} - ${album}`
           : `${artist} - ${title}`;
-        const results = await api.Ytdlp.search(query, 10);
+        
+        const results = await scrapeYoutube(api, query, 10);
         return results.map(r =>
           toStreamCandidate(r.id, r.title, r.duration, r.thumbnail),
         );
@@ -92,7 +164,7 @@ const plugin: NuclearPlugin = {
           ? `${artist} - ${title} - ${album}`
           : `${artist} - ${title}`;
           
-        const results = await api.Ytdlp.search(query, 10);
+        const results = await scrapeYoutube(api, query, 10);
         return results.map(r =>
           toStreamCandidate(r.id, r.title, r.duration, r.thumbnail),
         );
@@ -107,7 +179,7 @@ const plugin: NuclearPlugin = {
     };
 
     const playlistProvider: PlaylistProvider = {
-      id: PROVIDER_ID,
+      id: PLAYLIST_ID,
       kind: 'playlists',
       name: PROVIDER_NAME,
       matchesUrl: (url: string) => {
@@ -131,7 +203,7 @@ const plugin: NuclearPlugin = {
                 title: entry.title,
                 artists: entry.channel ? [{ name: entry.channel, roles: [] }] : [],
                 durationMs: entry.duration ? Math.round(entry.duration * 1000) : undefined,
-                source: { provider: PROVIDER_ID, id: entry.id },
+                source: { provider: STREAMING_ID, id: entry.id },
                 artwork: entry.thumbnails?.length ? {
                   items: entry.thumbnails.map(t => ({
                     url: t.url,
@@ -149,15 +221,16 @@ const plugin: NuclearPlugin = {
     };
 
     const metadataProvider: MetadataProvider = {
-      id: PROVIDER_ID,
+      id: METADATA_ID,
       kind: 'metadata',
       name: PROVIDER_NAME,
-      searchCapabilities: ['tracks'],
+      searchCapabilities: ['tracks', 'unified'],
+      streamingProviderId: STREAMING_ID,
       search: async (params) => {
         const query = params.query;
         if (!query) return {};
 
-        const results = await api.Ytdlp.search(query, 20);
+        const results = await scrapeYoutube(api, query, 20);
         return {
           tracks: results.map((r) => ({
             title: r.title,
@@ -166,7 +239,7 @@ const plugin: NuclearPlugin = {
             artwork: r.thumbnail
               ? { items: [{ url: r.thumbnail, purpose: 'thumbnail' }] }
               : undefined,
-            source: { provider: PROVIDER_ID, id: r.id },
+            source: { provider: STREAMING_ID, id: r.id },
           })),
         };
       },
@@ -183,7 +256,9 @@ const plugin: NuclearPlugin = {
     console.log(`[${PROVIDER_NAME}] Plugin disabled`);
   },
   onUnload: async (api: NuclearPluginAPI) => {
-    api.Providers.unregister(PROVIDER_ID);
+    api.Providers.unregister(STREAMING_ID);
+    api.Providers.unregister(PLAYLIST_ID);
+    api.Providers.unregister(METADATA_ID);
   },
 };
 
