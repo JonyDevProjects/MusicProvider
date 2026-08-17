@@ -7,7 +7,8 @@ import type {
   YtdlpStreamInfo as SDKStreamInfo,
   Track,
   PlaylistProvider,
-  Playlist
+  Playlist,
+  MetadataProvider
 } from '@nuclearplayer/plugin-sdk';
 import type { YtdlpStreamInfo } from './ytdlpWrapper.js';
 import { resolveStreamInfo } from './streamCache.js';
@@ -147,8 +148,33 @@ const plugin: NuclearPlugin = {
       }
     };
 
+    const metadataProvider: MetadataProvider = {
+      id: PROVIDER_ID,
+      kind: 'metadata',
+      name: PROVIDER_NAME,
+      searchCapabilities: ['tracks'],
+      search: async (params) => {
+        const query = params.query;
+        if (!query) return {};
+
+        const results = await api.Ytdlp.search(query, 20);
+        return {
+          tracks: results.map((r) => ({
+            title: r.title,
+            artists: r.channel ? [{ name: r.channel, roles: [] }] : [],
+            durationMs: r.duration ? Math.round(r.duration * 1000) : undefined,
+            artwork: r.thumbnail
+              ? { items: [{ url: r.thumbnail, purpose: 'thumbnail' }] }
+              : undefined,
+            source: { provider: PROVIDER_ID, id: r.id },
+          })),
+        };
+      },
+    };
+
     api.Providers.register(streamingProvider);
     api.Providers.register(playlistProvider);
+    api.Providers.register(metadataProvider);
   },
   onEnable: async (_api: NuclearPluginAPI) => {
     console.log(`[${PROVIDER_NAME}] Plugin enabled`);

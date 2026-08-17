@@ -32,9 +32,9 @@ describe('Nuclear Plugin Integration', () => {
     registeredPlaylistProvider = undefined;
   });
 
-  it('should register both providers on load', async () => {
+  it('should register all providers on load', async () => {
     await plugin.onLoad!(mockApi);
-    expect(mockApi.Providers.register).toHaveBeenCalledTimes(2);
+    expect(mockApi.Providers.register).toHaveBeenCalledTimes(3);
     expect(registeredProvider).toBeDefined();
     expect(registeredProvider?.id).toBe('music-provider');
     expect(registeredProvider?.kind).toBe('streaming');
