@@ -98,15 +98,13 @@ async function scrapeYoutube(api: NuclearPluginAPI, query: string, limit: number
     const html = typeof res.body === 'string' ? res.body : await (res as any).text?.() || '';
     const match = html.match(/var ytInitialData = (\{.+?\});<\/script>/);
     if (!match) {
-      console.warn(`[${PROVIDER_NAME}] No ytInitialData found in HTML`);
-      return [];
+      throw new Error(`No ytInitialData found in HTML`);
     }
     
     const json = JSON.parse(match[1]);
     const contents = json.contents?.twoColumnSearchResultsRenderer?.primaryContents?.sectionListRenderer?.contents;
     if (!contents) {
-      console.warn(`[${PROVIDER_NAME}] Invalid ytInitialData structure`);
-      return [];
+      throw new Error(`Invalid ytInitialData structure`);
     }
     
     let videos: any[] = [];
