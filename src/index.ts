@@ -80,7 +80,7 @@ function parseDuration(text: string): number {
   return 0;
 }
 
-async function scrapeYoutube(api: NuclearPluginAPI, query: string, limit: number) {
+async function scrapeYoutube(api: NuclearPluginAPI, query: string, limit: number): Promise<any[]> {
   try {
     console.log(`[${PROVIDER_NAME}] Starting YouTube scrape for: "${query}"`);
     const res = await api.Http.fetch(`https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`, {
@@ -95,7 +95,8 @@ async function scrapeYoutube(api: NuclearPluginAPI, query: string, limit: number
       console.warn(`[${PROVIDER_NAME}] YouTube returned status ${res.status}`);
     }
 
-    const match = res.body.match(/var ytInitialData = (\{.+?\});<\/script>/);
+    const html = typeof res.body === 'string' ? res.body : await (res as any).text?.() || '';
+    const match = html.match(/var ytInitialData = (\{.+?\});<\/script>/);
     if (!match) {
       console.warn(`[${PROVIDER_NAME}] No ytInitialData found in HTML`);
       return [];
@@ -135,12 +136,17 @@ async function scrapeYoutube(api: NuclearPluginAPI, query: string, limit: number
   } catch (error) {
     console.error(`[${PROVIDER_NAME}] YouTube scrape failed:`, error);
     // Fallback to Nuclear's Ytdlp which will fail if yt-dlp isn't installed
-    return await api.Ytdlp.search(query, limit);
+    return (await api.Ytdlp.search(query, limit)) as any[];
   }
 }
 
 const plugin: NuclearPlugin = {
-  onLoad: async (api: NuclearPluginAPI) => {
+  onLoad: async (_api: NuclearPluginAPI) => {
+    console.log(`[${PROVIDER_NAME}] Plugin loaded`);
+  },
+  onEnable: async (api: NuclearPluginAPI) => {
+    console.log(`[${PROVIDER_NAME}] Plugin enabled`);
+    
     const streamingProvider: StreamingProvider = {
       id: STREAMING_ID,
       kind: 'streaming',
@@ -249,13 +255,14 @@ const plugin: NuclearPlugin = {
     api.Providers.register(playlistProvider);
     api.Providers.register(metadataProvider);
   },
-  onEnable: async (_api: NuclearPluginAPI) => {
-    console.log(`[${PROVIDER_NAME}] Plugin enabled`);
-  },
-  onDisable: async (_api: NuclearPluginAPI) => {
+  onDisable: async (api: NuclearPluginAPI) => {
     console.log(`[${PROVIDER_NAME}] Plugin disabled`);
+    api.Providers.unregister(STREAMING_ID);
+    api.Providers.unregister(PLAYLIST_ID);
+    api.Providers.unregister(METADATA_ID);
   },
   onUnload: async (api: NuclearPluginAPI) => {
+    console.log(`[${PROVIDER_NAME}] Plugin unloaded`);
     api.Providers.unregister(STREAMING_ID);
     api.Providers.unregister(PLAYLIST_ID);
     api.Providers.unregister(METADATA_ID);

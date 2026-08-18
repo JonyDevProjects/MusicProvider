@@ -8,6 +8,9 @@ describe('Nuclear Plugin Integration', () => {
   let registeredPlaylistProvider: PlaylistProvider | undefined;
   
   const mockApi = {
+    Http: {
+      fetch: vi.fn(),
+    },
     Ytdlp: {
       search: vi.fn(),
       getStream: vi.fn(),
@@ -32,19 +35,38 @@ describe('Nuclear Plugin Integration', () => {
     registeredPlaylistProvider = undefined;
   });
 
-  it('should register all providers on load', async () => {
-    await plugin.onLoad!(mockApi);
+  it('should register all providers on enable', async () => {
+    await plugin.onEnable!(mockApi);
     expect(mockApi.Providers.register).toHaveBeenCalledTimes(3);
     expect(registeredProvider).toBeDefined();
-    expect(registeredProvider?.id).toBe('music-provider');
+    expect(registeredProvider?.id).toBe('music-provider-streaming');
     expect(registeredProvider?.kind).toBe('streaming');
     expect(registeredPlaylistProvider).toBeDefined();
     expect(registeredPlaylistProvider?.kind).toBe('playlists');
   });
 
+  it('should unregister all providers on disable', async () => {
+    await plugin.onDisable!(mockApi);
+    expect(mockApi.Providers.unregister).toHaveBeenCalledTimes(3);
+    expect(mockApi.Providers.unregister).toHaveBeenCalledWith('music-provider-streaming');
+    expect(mockApi.Providers.unregister).toHaveBeenCalledWith('music-provider-playlist');
+    expect(mockApi.Providers.unregister).toHaveBeenCalledWith('music-provider-metadata');
+  });
+
+  it('should unregister all providers on unload', async () => {
+    await plugin.onUnload!(mockApi);
+    expect(mockApi.Providers.unregister).toHaveBeenCalledTimes(3);
+    expect(mockApi.Providers.unregister).toHaveBeenCalledWith('music-provider-streaming');
+    expect(mockApi.Providers.unregister).toHaveBeenCalledWith('music-provider-playlist');
+    expect(mockApi.Providers.unregister).toHaveBeenCalledWith('music-provider-metadata');
+  });
+
   it('should search for track using Ytdlp and map to StreamCandidate', async () => {
-    await plugin.onLoad!(mockApi);
+    await plugin.onEnable!(mockApi);
     
+    // Mock HTTP fetch for scrapeYoutube failure so it falls back to Ytdlp
+    (mockApi.Http.fetch as any).mockRejectedValue(new Error('Network error'));
+
     // Mock Ytdlp search response
     const mockSearchResults = [
       { id: 'vid1', title: 'Test Song', duration: 120, thumbnail: 'thumb.jpg' }
@@ -61,13 +83,16 @@ describe('Nuclear Plugin Integration', () => {
       durationMs: 120000,
       thumbnail: 'thumb.jpg',
       failed: false,
-      source: { provider: 'music-provider', id: 'vid1' }
+      source: { provider: 'music-provider-streaming', id: 'vid1' }
     });
   });
 
   it('should search for track using searchForTrackV2', async () => {
-    await plugin.onLoad!(mockApi);
+    await plugin.onEnable!(mockApi);
     
+    // Mock HTTP fetch for scrapeYoutube failure so it falls back to Ytdlp
+    (mockApi.Http.fetch as any).mockRejectedValue(new Error('Network error'));
+
     const mockSearchResults = [
       { id: 'vid2', title: 'Test Song V2', duration: 130, thumbnail: 'thumb2.jpg' }
     ];
@@ -86,7 +111,7 @@ describe('Nuclear Plugin Integration', () => {
   });
 
   it('should get stream URL, map types, and cache the result', async () => {
-    await plugin.onLoad!(mockApi);
+    await plugin.onEnable!(mockApi);
     
     // Mock Ytdlp getStream response (snake_case)
     const mockSdkStreamInfo = {
@@ -111,7 +136,7 @@ describe('Nuclear Plugin Integration', () => {
       codec: 'mp4a.40.2',
       container: 'm4a',
       durationMs: 120000,
-      source: { provider: 'music-provider', id: 'vid1' },
+      source: { provider: 'music-provider-streaming', id: 'vid1' },
     });
 
     // Second call (cache hit)
@@ -121,7 +146,7 @@ describe('Nuclear Plugin Integration', () => {
   });
 
   it('should fetch and map a playlist', async () => {
-    await plugin.onLoad!(mockApi);
+    await plugin.onEnable!(mockApi);
     
     const mockPlaylist = {
       id: 'pl1',
@@ -147,10 +172,5 @@ describe('Nuclear Plugin Integration', () => {
     expect(playlist.items[0].track.title).toBe('Track 1');
     expect(playlist.items[0].track.artists[0].name).toBe('Channel 1');
     expect(playlist.items[0].track.durationMs).toBe(100000);
-  });
-
-  it('should unregister the provider on unload', async () => {
-    await plugin.onUnload!(mockApi);
-    expect(mockApi.Providers.unregister).toHaveBeenCalledWith('music-provider');
   });
 });

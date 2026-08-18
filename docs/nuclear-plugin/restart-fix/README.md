@@ -150,10 +150,10 @@ docs/nuclear-plugin/restart-fix/
 
 | Tarea | Descripción | Estado |
 |---|---|---|
-| 2.1 | Diseñar el nuevo mapeo de hooks: qué código va en `onLoad` vs `onEnable` vs `onDisable` vs `onUnload`. | ⬜ |
-| 2.2 | Decidir si `onDisable` desregistra proveedores (Opción A vs B — ver tabla de arriba). | ⬜ |
-| 2.3 | Diseñar la estrategia de tests: qué tests existentes (`tests/index.test.ts`) deben actualizarse y qué nuevos tests agregar para validar el nuevo ciclo de vida. | ⬜ |
-| 2.4 | Escribir specs en `docs/archive/bugs/requires-restart-after-install.md` (actualizar con root cause confirmado). | ⬜ |
+| 2.1 | Diseñar el nuevo mapeo de hooks: qué código va en `onLoad` vs `onEnable` vs `onDisable` vs `onUnload`. | ✅ Completada |
+| 2.2 | Decidir si `onDisable` desregistra proveedores (Opción A vs B — ver tabla de arriba). | ✅ Completada |
+| 2.3 | Diseñar la estrategia de tests: qué tests existentes (`tests/index.test.ts`) deben actualizarse y qué nuevos tests agregar para validar el nuevo ciclo de vida. | ✅ Completada |
+| 2.4 | Escribir specs en `docs/archive/bugs/requires-restart-after-install.md` (actualizar con root cause confirmado). | ✅ Completada |
 
 **Salida esperada**: Diseño de la solución con mapping de hooks, estrategia de tests, y specs actualizados.
 
@@ -163,14 +163,14 @@ docs/nuclear-plugin/restart-fix/
 
 | Tarea | Descripción | Estado |
 |---|---|---|
-| 3.1 | Modificar `src/index.ts`: mover registro de proveedores de `onLoad` a `onEnable`. | ⬜ |
-| 3.2 | Añadir `unregister` en `onDisable` (Opción A). | ⬜ |
-| 3.3 | Añadir logging estructurado en los hooks (para validación empírica). | ⬜ |
-| 3.4 | Actualizar `tests/index.test.ts`: cambiar `plugin.onLoad!` → `plugin.onEnable!` en los tests que verifican el registro. | ⬜ |
-| 3.5 | Agregar test nuevo: verificar que `onEnable` registra 3 proveedores y `onDisable`/`onUnload` los desregistra. | ⬜ |
-| 3.6 | Correr `npx vitest run` — todos los tests deben pasar. | ⬜ |
-| 3.7 | Correr `npx tsc --noEmit` — 0 errores de tipo. | ⬜ |
-| 3.8 | Correr `npx tsup` — bundle limpio sin `require()` problemáticos. | ⬜ |
+| 3.1 | Modificar `src/index.ts`: mover registro de proveedores de `onLoad` a `onEnable`. | ✅ Completada |
+| 3.2 | Añadir `unregister` en `onDisable` (Opción A). | ✅ Completada |
+| 3.3 | Añadir logging estructurado en los hooks (para validación empírica). | ✅ Completada |
+| 3.4 | Actualizar `tests/index.test.ts`: cambiar `plugin.onLoad!` → `plugin.onEnable!` en los tests que verifican el registro. | ✅ Completada |
+| 3.5 | Agregar test nuevo: verificar que `onEnable` registra 3 proveedores y `onDisable`/`onUnload` los desregistra. | ✅ Completada |
+| 3.6 | Correr `npx vitest run` — todos los tests deben pasar. | ✅ Completada |
+| 3.7 | Correr `npx tsc --noEmit` — 0 errores de tipo. | ✅ Completada |
+| 3.8 | Correr `npx tsup` — bundle limpio sin `require()` problemáticos. | ✅ Completada |
 
 **Salida esperada**: Código implementado, tests actualizados y pasando, build exitoso.
 
@@ -180,7 +180,7 @@ docs/nuclear-plugin/restart-fix/
 
 | Tarea | Descripción | Estado |
 |---|---|---|
-| 4.1 | Construir `dist/index.js` con el fix aplicado. | ⬜ |
+| 4.1 | Construir `dist/index.js` con el fix aplicado. | ✅ Completada |
 | 4.2 | Cargar el plugin en una versión de desarrollo de Nuclear desde el panel de Plugins. | ⬜ |
 | 4.3 | Habilitar el plugin desde la UI (NO reiniciar). | ⬜ |
 | 4.4 | Verificar que el proveedor `MusicProvider` aparece inmediatamente en la lista de fuentes de streaming y metadatos. | ⬜ |
@@ -193,9 +193,9 @@ docs/nuclear-plugin/restart-fix/
 
 | Tarea | Descripción | Estado |
 |---|---|---|
-| 5.1 | Actualizar `docs/nuclear-plugin/IMPLEMENTATION_PLAN.md` — marcar el bug como resuelto en el estado de implementación. | ⬜ |
-| 5.2 | Escribir `docs/nuclear-plugin/restart-fix/session-log.md` con el log completo de sesiones. | ⬜ |
-| 5.3 | Escribir `docs/nuclear-plugin/restart-fix/next-session-prompt.md`. | ⬜ |
+| 5.1 | Actualizar `docs/nuclear-plugin/IMPLEMENTATION_PLAN.md` — marcar el bug como resuelto en el estado de implementación. | ✅ Completada |
+| 5.2 | Escribir `docs/nuclear-plugin/restart-fix/session-log.md` con el log completo de sesiones. | ✅ Completada |
+| 5.3 | Escribir `docs/nuclear-plugin/restart-fix/next-session-prompt.md`. | ✅ Completada |
 | 5.4 | Guardar hallazgos en Engram (memo de root cause y patrón de ciclo de vida). | ✅ Parcial (root cause guardado) |
 
 ---

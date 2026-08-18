@@ -9,12 +9,16 @@ Tras cargar o instalar el plugin `MusicProvider` en Nuclear, la fuente no aparec
 
 Este comportamiento anómalo se ha comparado con otros plugins de la comunidad (ej. `omnisource`), los cuales sí se integran dinámicamente ("en caliente") a las listas de fuentes sin requerir un reinicio de la aplicación.
 
-## Posibles Causas a Investigar en la Siguiente Sesión
-1. **Errores en el registro de la API**: Posiblemente los IDs (`STREAMING_ID`, `METADATA_ID`, `PLAYLIST_ID`) no están siendo emitidos correctamente al bus de eventos de Nuclear durante el hook `onLoad` o `onEnable`.
-2. **Caché persistente del ProvidersHost**: En sesiones anteriores se identificó que Nuclear almacena la configuración de los proveedores activos en una base de datos local (history/settings). Si las llamadas de registro (`api.Providers.register`) colisionan o no disparan el re-render en React, el estado interno se queda desincronizado hasta que se reinicia.
-3. **Manejo incorrecto de eventos del ciclo de vida**: Es necesario revisar el contrato del `@nuclearplayer/plugin-sdk` para entender si faltan llamadas específicas durante el método `onEnable()` que informen a la UI que un nuevo `MetadataProvider` y `StreamingProvider` han entrado en línea.
+## Causa Raíz Confirmada (2026-08-18)
+Durante la sesión de diagnóstico se determinó lo siguiente:
+El registro de los proveedores (Streaming, Playlist, Metadata) se realizaba erróneamente en el hook `onLoad` en lugar de `onEnable`.
+Según el ciclo de vida de Nuclear:
+- Durante la instalación desde la UI, el hook `onLoad` no recibe el objeto `api` y, por tanto, no se ejecuta.
+- `onEnable` sí recibe siempre el `api` al activarse el plugin (ya sea por instalación "en caliente" o durante el inicio).
 
-## Plan de Acción Recomendado
-1. Clonar un plugin de referencia (como `nuclear-plugin-omnisource`) y comparar exhaustivamente su archivo principal (`index.ts`) con el nuestro para identificar diferencias en los hooks de registro.
-2. Añadir logs extra en `onEnable()` de MusicProvider para verificar si Nuclear está ejecutando esta función de ciclo de vida correctamente tras la adición del plugin.
-3. Implementar la solución y validar instalando el plugin "en caliente" en una versión de desarrollo de Nuclear.
+Como los proveedores se registraban en `onLoad`, el plugin no avisaba a la interfaz que estaban disponibles cuando se añadían desde la UI. Sin embargo, al reiniciar Nuclear, el `onLoad` se invocaba correctamente, por eso funcionaba tras el reinicio.
+
+## Specs de la Solución Implementada
+1. Mover `api.Providers.register(...)` de `onLoad` hacia `onEnable`.
+2. Incluir lógica de limpieza `api.Providers.unregister(...)` dentro de `onDisable` y `onUnload`.
+3. Actualizar la base de tests `tests/index.test.ts` para que utilicen el hook `onEnable`.

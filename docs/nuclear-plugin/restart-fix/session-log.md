@@ -76,3 +76,33 @@
 ### Próximos pasos
 
 Ver `docs/nuclear-plugin/RESTART_FIX_ROADMAP.md` — Fases 2 a 5 pendientes de ejecución.
+
+## Sesión 2 (2026-08-18) — Implementación
+
+**Agente**: Antigravity
+
+**Resumen de la Sesión:**
+Continuando desde la Sesión 1 donde se completó el diagnóstico y análisis de causa raíz, en esta sesión procedimos a ejecutar la Fase 3 del plan de implementación.
+
+1. **Refactorización de `src/index.ts` (Fase 3.1 - 3.3)**:
+   - Se movió el registro de `api.Providers.register` de `onLoad` a `onEnable` para asegurar que el registro de los providers de `MusicProvider` se realice tanto durante el arranque de la app (startup) como durante una instalación en caliente desde la interfaz (UI).
+   - Se implementaron métodos `api.Providers.unregister` dentro de los hooks `onDisable` y `onUnload` para asegurar que, si el usuario desactiva el plugin, los providers se quiten de la lista de reproducción.
+
+2. **Refactorización de `tests/index.test.ts` (Fase 3.4 - 3.5)**:
+   - Se reemplazó el uso de `plugin.onLoad!(mockApi)` por `plugin.onEnable!(mockApi)` en todos los tests existentes.
+   - Se agregaron nuevos tests para verificar el comportamiento de unregistro (`unregister`) en los eventos de deshabilitado y descarga del plugin.
+   - Se corrigieron identificadores (`music-provider-streaming`, `music-provider-playlist`, `music-provider-metadata`) en los checks del test.
+
+3. **Corrección de TypeScript Errors**:
+   - Al ejecutar la validación, se encontraron errores de tipado de TypeScript debido a que el retorno de `api.Http.fetch` en `@nuclearplayer/plugin-sdk` trataba a `res.body` como un `ReadableStream` y requería conversión. Se ajustó el método `scrapeYoutube` para invocar `res.text()` en caso de ser necesario y asignar tipos correctos (`Promise<any[]>`).
+
+4. **Validaciones**:
+   - Se ejecutó `npx vitest run` arrojando éxito en todos los tests.
+   - Se ejecutó `npx tsc --noEmit` confirmando que no hay errores de tipo.
+   - Se ejecutó `npx tsup` para construir el bundle (`dist/index.js`), el cual se generó correctamente.
+
+**Estado Actual**:
+Implementación completada con éxito. El plugin ahora registra los providers en el lifecycle method adecuado.
+
+**Próximos Pasos**:
+La Fase 4 (Validación en Nuclear Runtime) requiere intervención humana o de un entorno donde el reproductor Nuclear pueda cargar este bundle `.js` generado para probarlo en el flujo de UI.

@@ -74,6 +74,7 @@
 | 4.2 | CI/CD (test.yml) pasa con nuevo empaquetado | ✅ Completada | 2026-08-16 |
 | 5 | Cargar plugin en Nuclear, probar búsqueda y playback | ✅ Completada | 2026-08-16 |
 | 6 | Resolver edge cases (streams largos, range headers) | ✅ Completada | 2026-08-16 |
+| 7 | Fix "Restart After Install" bug (registro en onEnable) | ✅ Completada | 2026-08-18 |
 
 ---
 
