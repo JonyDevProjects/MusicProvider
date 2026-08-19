@@ -109,79 +109,98 @@ app.get('/api/audio/stream', async (req, res) => {
     // YouTube CDN rechaza requests sin Range (HTTP 403). Si el cliente no envía Range,
     // solicitamos desde el byte 0 hasta el final (equivalente a full file, pero con 206).
     const rangeHeader = req.headers.range || 'bytes=0-';
-    const client = targetUrl.startsWith('https') ? https : http;
-    const agent = targetUrl.startsWith('https') ? httpsAgent : httpAgent;
 
-    const options = {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Range': rangeHeader
-      },
-      // Reuse the TCP/TLS connection across chunk requests (keep-alive)
-      agent: agent,
-    };
-
-    // Hop-by-hop headers must not be forwarded when proxying.
     const hopByHopHeaders = new Set([
       'connection', 'keep-alive', 'proxy-authenticate', 'proxy-authorization',
       'te', 'trailers', 'transfer-encoding', 'upgrade',
     ]);
 
-    // 3. Hacer request al CDN y pipear respuesta
-    const proxyReq = client.get(targetUrl, options, (proxyRes) => {
-      // Re-enviar status y headers del CDN al iPhone
-      res.status(proxyRes.statusCode || 200);
+    let currentProxyReq: http.ClientRequest | undefined;
 
-      // Forward CDN headers, skipping hop-by-hop ones
-      Object.keys(proxyRes.headers).forEach(key => {
-        if (!hopByHopHeaders.has(key.toLowerCase())) {
-          res.setHeader(key, proxyRes.headers[key] as string | string[]);
+    req.on('close', () => {
+      console.log(`[stream] Cliente cerró la conexión para ${videoId}. Cancelando proxyReq...`);
+      if (currentProxyReq) currentProxyReq.destroy();
+    });
+
+    const makeRequest = (targetUrl: string, isRetry = false) => {
+      const client = targetUrl.startsWith('https') ? https : http;
+      const agent = targetUrl.startsWith('https') ? httpsAgent : httpAgent;
+
+      const options = {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          'Range': rangeHeader
+        },
+        agent: agent,
+      };
+
+      const proxyReq = client.get(targetUrl, options, async (proxyRes) => {
+        if (proxyRes.statusCode === 403 && !isRetry) {
+          console.warn(`[stream] URL caducada o Forbidden (403) para ${videoId}. Regenerando stream...`);
+          streamUrlCache.delete(videoId);
+          try {
+            const newInfo = await getCachedStreamInfo(videoId);
+            console.log(`[stream] Stream regenerado con éxito para ${videoId}. Reintentando proxy...`);
+            proxyReq.destroy();
+            makeRequest(newInfo.streamUrl, true);
+            return;
+          } catch (refreshErr: any) {
+            console.error(`[stream] Falló la regeneración para ${videoId}:`, refreshErr.message);
+            if (!res.headersSent) {
+              res.status(403).json({ error: 'URL caducada y fallo al regenerar' });
+            } else {
+              res.end();
+            }
+            return;
+          }
+        }
+
+        if (res.headersSent) {
+          console.warn(`[stream] Headers ya enviados para ${videoId}, procediendo con precaución.`);
+        } else {
+          res.status(proxyRes.statusCode || 200);
+          Object.keys(proxyRes.headers).forEach(key => {
+            if (!hopByHopHeaders.has(key.toLowerCase())) {
+              res.setHeader(key, proxyRes.headers[key] as string | string[]);
+            }
+          });
+          if (!proxyRes.headers['content-type']) {
+            res.setHeader('Content-Type', 'audio/mp4');
+          }
+          res.setHeader('Accept-Ranges', 'bytes');
+          if (proxyRes.headers['content-length']) {
+            res.setHeader('Content-Length', proxyRes.headers['content-length'] as string);
+          }
+          if (proxyRes.headers['content-range']) {
+            res.setHeader('Content-Range', proxyRes.headers['content-range'] as string);
+          }
+        }
+
+        proxyRes.pipe(res);
+
+        proxyRes.on('error', (err) => {
+          console.error(`[stream] Error leyendo del CDN para ${videoId}:`, err.message);
+          res.end();
+        });
+
+        proxyRes.on('end', () => {
+          console.log(`[stream] Descarga desde CDN completada para ${videoId}`);
+        });
+      });
+
+      proxyReq.on('error', (err) => {
+        console.error(`[stream] Error de conexión al CDN para ${videoId}:`, err.message);
+        if (!res.headersSent) {
+          res.status(502).json({ error: 'Bad Gateway: No se pudo conectar al CDN' });
+        } else {
+          res.end();
         }
       });
 
-      // Ensure pristine Content-Type
-      if (!proxyRes.headers['content-type']) {
-        res.setHeader('Content-Type', 'audio/mp4');
-      }
+      currentProxyReq = proxyReq;
+    };
 
-      // Ensure Accept-Ranges is always present for seeking support
-      res.setHeader('Accept-Ranges', 'bytes');
-
-      // Forward Content-Length and Content-Range explicitly if the CDN provided them
-      if (proxyRes.headers['content-length']) {
-        res.setHeader('Content-Length', proxyRes.headers['content-length'] as string);
-      }
-      if (proxyRes.headers['content-range']) {
-        res.setHeader('Content-Range', proxyRes.headers['content-range'] as string);
-      }
-
-      // Pipear los chunks de audio al cliente
-      proxyRes.pipe(res);
-
-      proxyRes.on('error', (err) => {
-        console.error(`[stream] Error leyendo del CDN para ${videoId}:`, err.message);
-        res.end();
-      });
-
-      proxyRes.on('end', () => {
-        console.log(`[stream] Descarga desde CDN completada para ${videoId}`);
-      });
-    });
-
-    proxyReq.on('error', (err) => {
-      console.error(`[stream] Error de conexión al CDN para ${videoId}:`, err.message);
-      if (!res.headersSent) {
-        res.status(502).json({ error: 'Bad Gateway: No se pudo conectar al CDN' });
-      } else {
-        res.end(); // Terminate the response if headers were already sent
-      }
-    });
-
-    // Abortar request al CDN si el cliente (iPhone) cancela la conexión
-    req.on('close', () => {
-      console.log(`[stream] Cliente cerró la conexión para ${videoId}. Cancelando proxyReq...`);
-      proxyReq.destroy();
-    });
+    makeRequest(targetUrl);
 
   } catch (error: any) {
     console.error('Error en /api/audio/stream:', error.message);
