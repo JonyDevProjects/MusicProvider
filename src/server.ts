@@ -1,8 +1,14 @@
 import express from 'express';
 import cors from 'cors';
+import {
+  defaultStreamCache,
+  DEFAULT_CACHE_TTL,
+  type StreamData,
+  type SearchResult,
+  type PlaylistData
+} from './core/index.js';
 import { search, getStreamInfo, getPlaylistInfo, downloadTrack } from './ytdlpWrapper.js';
-import type { YtdlpStreamInfo } from './ytdlpWrapper.js';
-import { resolveStreamInfo, streamUrlCache, CACHE_TTL } from './streamCache.js';
+import { resolveStreamInfo } from './streamCache.js';
 import path from 'path';
 import { pathToFileURL } from 'url';
 import https from 'https';
@@ -20,7 +26,10 @@ app.use(express.json());
 const httpsAgent = new https.Agent({ keepAlive: true });
 const httpAgent = new http.Agent({ keepAlive: true });
 
-async function getCachedStreamInfo(videoId: string): Promise<YtdlpStreamInfo> {
+export const CACHE_TTL = DEFAULT_CACHE_TTL;
+export const streamUrlCache = defaultStreamCache;
+
+async function getCachedStreamInfo(videoId: string): Promise<StreamData> {
   return resolveStreamInfo(videoId, getStreamInfo);
 }
 
@@ -137,7 +146,7 @@ app.get('/api/audio/stream', async (req, res) => {
       const proxyReq = client.get(targetUrl, options, async (proxyRes) => {
         if (proxyRes.statusCode === 403 && !isRetry) {
           console.warn(`[stream] URL caducada o Forbidden (403) para ${videoId}. Regenerando stream...`);
-          streamUrlCache.delete(videoId);
+          defaultStreamCache.delete(videoId);
           try {
             const newInfo = await getCachedStreamInfo(videoId);
             console.log(`[stream] Stream regenerado con éxito para ${videoId}. Reintentando proxy...`);
@@ -242,7 +251,7 @@ app.post('/api/download', async (req, res) => {
 });
 
 // Export app and cache for testing (supertest) and cache tests
-export { app, streamUrlCache, getCachedStreamInfo, CACHE_TTL, WEB_BUILD_DIR, httpsAgent, httpAgent };
+export { app, getCachedStreamInfo, WEB_BUILD_DIR, httpsAgent, httpAgent };
 
 // Only start the server when this module is the entry point
 const isMainModule = process.argv[1]

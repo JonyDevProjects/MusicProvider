@@ -10,8 +10,13 @@ import type {
   Playlist,
   MetadataProvider
 } from '@nuclearplayer/plugin-sdk';
-import type { YtdlpStreamInfo } from './ytdlpWrapper.js';
-import { resolveStreamInfo } from './streamCache.js';
+import {
+  scrapeYoutube as coreScrapeYoutube,
+  resolveStreamInfo,
+  type StreamData,
+  type HttpLike,
+  type SearchResult
+} from './core/index.js';
 
 const PROVIDER_ID = 'music-provider';
 const PROVIDER_NAME = 'MusicProvider';
@@ -20,7 +25,7 @@ const STREAMING_ID = `${PROVIDER_ID}-streaming`;
 const PLAYLIST_ID = `${PROVIDER_ID}-playlist`;
 const METADATA_ID = `${PROVIDER_ID}-metadata`;
 
-function sdkToInternal(info: SDKStreamInfo): YtdlpStreamInfo {
+function sdkToInternal(info: SDKStreamInfo): StreamData {
   return {
     streamUrl: info.stream_url,
     duration: info.duration,
@@ -46,7 +51,7 @@ function toStreamCandidate(
   };
 }
 
-function toStream(url: string, info: YtdlpStreamInfo, sourceId: string): Stream {
+function toStream(url: string, info: StreamData, sourceId: string): Stream {
   const ext = info.container || '';
   const mimeType = ext.includes('m4a') || ext.includes('mp4')
     ? 'audio/mp4'
@@ -72,70 +77,45 @@ function toStream(url: string, info: YtdlpStreamInfo, sourceId: string): Stream 
   };
 }
 
-function parseDuration(text: string): number {
-  if (!text) return 0;
-  const parts = text.split(':').map(Number);
-  if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
-  if (parts.length === 2) return parts[0] * 60 + parts[1];
-  return 0;
+function createHttpAdapter(api: NuclearPluginAPI): HttpLike {
+  return {
+    fetch: async (url: string, init?: { headers?: Record<string, string>; method?: string }) => {
+      const res = await api.Http.fetch(url, {
+        headers: {
+          'Accept-Encoding': 'gzip, deflate, br',
+          ...(init?.headers || {})
+        },
+        method: init?.method
+      });
+      const body = typeof res.body === 'string' ? res.body : await (res as any).text?.() || '';
+      return {
+        status: res.status,
+        body,
+        headers: (res as any).headers
+      };
+    }
+  };
 }
 
-async function scrapeYoutube(api: NuclearPluginAPI, query: string, limit: number): Promise<any[]> {
-  try {
-    console.log(`[${PROVIDER_NAME}] Starting YouTube scrape for: "${query}"`);
-    const res = await api.Http.fetch(`https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Accept-Encoding': 'gzip, deflate, br'
-      }
-    });
-    
-    if (res.status !== 200) {
-      console.warn(`[${PROVIDER_NAME}] YouTube returned status ${res.status}`);
-    }
+async function scrapeYoutube(api: NuclearPluginAPI, query: string, limit: number): Promise<SearchResult[]> {
+  const http = createHttpAdapter(api);
+  return coreScrapeYoutube(http, query, limit, async (fallbackQuery, fallbackLimit) => {
+    // Fallback to Nuclear's Ytdlp which will fail if yt-dlp isn't installed in host
+    const results = await api.Ytdlp.search(fallbackQuery, fallbackLimit);
+    return (results as any[]).map(r => ({
+      id: r.id || r.videoId,
+      title: r.title || 'Unknown',
+      duration: r.duration || null,
+      thumbnail: r.thumbnail || null,
+      channel: r.channel || r.author || null
+    }));
+  });
+}
 
-    const html = typeof res.body === 'string' ? res.body : await (res as any).text?.() || '';
-    const match = html.match(/var ytInitialData = (\{.+?\});<\/script>/);
-    if (!match) {
-      throw new Error(`No ytInitialData found in HTML`);
-    }
-    
-    const json = JSON.parse(match[1]);
-    const contents = json.contents?.twoColumnSearchResultsRenderer?.primaryContents?.sectionListRenderer?.contents;
-    if (!contents) {
-      throw new Error(`Invalid ytInitialData structure`);
-    }
-    
-    let videos: any[] = [];
-    for (const section of contents) {
-      if (section.itemSectionRenderer?.contents) {
-        const found = section.itemSectionRenderer.contents
-          .filter((c: any) => c.videoRenderer)
-          .map((c: any) => c.videoRenderer);
-        videos = videos.concat(found);
-      }
-    }
-    
-    console.log(`[${PROVIDER_NAME}] Scrape found ${videos.length} videos, limiting to ${limit}`);
-    
-    return videos.slice(0, limit).map(v => {
-      const thumbs = v.thumbnail?.thumbnails || [];
-      const thumbnail = thumbs.length > 0 ? thumbs[thumbs.length - 1].url : null;
-      const durationStr = v.lengthText?.simpleText || '';
-      return {
-        id: v.videoId,
-        title: v.title?.runs?.[0]?.text || 'Unknown',
-        duration: parseDuration(durationStr),
-        thumbnail,
-        channel: v.ownerText?.runs?.[0]?.text || 'Unknown'
-      };
-    });
-  } catch (error) {
-    console.error(`[${PROVIDER_NAME}] YouTube scrape failed:`, error);
-    // Fallback to Nuclear's Ytdlp which will fail if yt-dlp isn't installed
-    return (await api.Ytdlp.search(query, limit)) as any[];
-  }
+function isValidVideoId(id: string): boolean {
+  if (!id || typeof id !== 'string') return false;
+  // Non-empty string without unsafe control characters or spaces
+  return id.trim().length > 0 && !/\s/.test(id);
 }
 
 const plugin: NuclearPlugin = {
@@ -174,6 +154,9 @@ const plugin: NuclearPlugin = {
         );
       },
       getStreamUrl: async (candidateId: string) => {
+        if (!isValidVideoId(candidateId)) {
+          throw new Error(`Invalid video ID format: ${candidateId}`);
+        }
         const info = await resolveStreamInfo(candidateId, async (id) => {
           const sdkInfo = await api.Ytdlp.getStream(id);
           return sdkToInternal(sdkInfo);

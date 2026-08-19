@@ -2,60 +2,24 @@ import { execFile, spawn } from 'child_process';
 import path from 'path';
 import fs from 'fs';
 import { getBinaryPath } from './ytdlpSetup.js';
+import {
+  search as coreSearch,
+  getStreamInfo as coreGetStreamInfo,
+  getPlaylistInfo as coreGetPlaylistInfo,
+  normalizeUrl,
+  type SearchResult,
+  type StreamData,
+  type PlaylistData,
+  type PlaylistEntry
+} from './core/index.js';
 
-export interface YtdlpSearchResult {
-  id: string;
-  title: string;
-  duration: number | null;
-  thumbnail: string | null;
-  channel: string | null;
-}
+// Backward-compatible type aliases
+export type YtdlpSearchResult = SearchResult;
+export type YtdlpStreamInfo = StreamData;
+export type YtdlpPlaylistEntry = PlaylistEntry;
+export type YtdlpPlaylistInfo = PlaylistData;
 
-export interface YtdlpStreamInfo {
-  streamUrl: string;
-  duration: number | null;
-  title: string | null;
-  container: string | null;
-  codec: string | null;
-}
-
-export interface YtdlpPlaylistEntry {
-  id: string;
-  title: string;
-  duration: number | null;
-  thumbnail: string | null;
-  channel: string | null;
-}
-
-export interface YtdlpPlaylistInfo {
-  id: string;
-  title: string;
-  entries: YtdlpPlaylistEntry[];
-}
-
-function normalizeUrl(videoIdOrUrl: string): string {
-  if (videoIdOrUrl.startsWith('http://') || videoIdOrUrl.startsWith('https://')) {
-    return videoIdOrUrl;
-  }
-  return `https://www.youtube.com/watch?v=${videoIdOrUrl}`;
-}
-
-function parseNdjson(stdout: string): any[] {
-  return stdout
-    .split('\n')
-    .map(line => line.trim())
-    .filter(line => line.length > 0)
-    .map(line => {
-      try {
-        return JSON.parse(line);
-      } catch {
-        return null;
-      }
-    })
-    .filter(item => item !== null);
-}
-
-function runYtdlp(args: string[]): Promise<string> {
+export function runYtdlp(args: string[]): Promise<string> {
   const binaryPath = getBinaryPath();
   if (!fs.existsSync(binaryPath)) {
     return Promise.reject(new Error('yt-dlp is not installed. Please run setup first.'));
@@ -72,83 +36,16 @@ function runYtdlp(args: string[]): Promise<string> {
   });
 }
 
-import yts from 'yt-search';
-
 export async function search(query: string, limit: number = 10): Promise<YtdlpSearchResult[]> {
-  console.log(`[yt-search] Searching: "${query}" (limit: ${limit})`);
-  
-  const results = await yts(query);
-  const videos = results.videos.slice(0, limit);
-
-  return videos.map(video => ({
-    id: video.videoId,
-    title: video.title,
-    duration: video.seconds,
-    thumbnail: video.thumbnail || null,
-    channel: video.author.name
-  }));
+  return coreSearch(query, limit);
 }
 
 export async function getStreamInfo(videoIdOrUrl: string): Promise<YtdlpStreamInfo> {
-  const url = normalizeUrl(videoIdOrUrl);
-  console.log(`[yt-dlp] Fetching stream info for: ${url}`);
-
-  const stdout = await runYtdlp([
-    '-f',
-    'bestaudio[ext=m4a]/bestaudio[ext=webm]/bestaudio',
-    '--dump-json',
-    '--no-playlist',
-    '--no-warnings',
-    url
-  ]);
-
-  const info = JSON.parse(stdout);
-  if (!info.url) {
-    throw new Error('No stream URL returned by yt-dlp');
-  }
-
-  return {
-    streamUrl: info.url,
-    duration: info.duration || null,
-    title: info.title || null,
-    container: info.ext || null,
-    codec: info.acodec || null
-  };
+  return coreGetStreamInfo(videoIdOrUrl, runYtdlp);
 }
 
 export async function getPlaylistInfo(playlistUrl: string): Promise<YtdlpPlaylistInfo> {
-  console.log(`[yt-dlp] Fetching playlist metadata: ${playlistUrl}`);
-  
-  const stdout = await runYtdlp([
-    '--dump-json',
-    '--flat-playlist',
-    '--no-warnings',
-    playlistUrl
-  ]);
-
-  const rawEntries = parseNdjson(stdout);
-  if (rawEntries.length === 0) {
-    throw new Error('No entries found in playlist');
-  }
-
-  const playlistTitle = rawEntries.find(entry => entry.playlist_title)?.playlist_title || 'Unknown Playlist';
-  const playlistId = rawEntries.find(entry => entry.playlist_id)?.playlist_id || '';
-
-  const entries: YtdlpPlaylistEntry[] = rawEntries
-    .filter(entry => entry && entry.id)
-    .map(entry => ({
-      id: entry.id,
-      title: entry.title || 'Unknown',
-      duration: entry.duration || null,
-      thumbnail: entry.thumbnail || (entry.thumbnails && entry.thumbnails.length > 0 ? entry.thumbnails[entry.thumbnails.length - 1].url : null),
-      channel: entry.channel || null
-    }));
-
-  return {
-    id: playlistId,
-    title: playlistTitle,
-    entries
-  };
+  return coreGetPlaylistInfo(playlistUrl, runYtdlp);
 }
 
 export function downloadTrack(

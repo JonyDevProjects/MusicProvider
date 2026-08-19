@@ -1,0 +1,1195 @@
+{
+  "timestamp": "2026-08-19T22:40:49.581Z",
+  "environment": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "nodeVersion": "v24.15.0",
+    "osRelease": "25.5.0",
+    "cpus": "Apple M1 Pro",
+    "totalMemory": "16384.00 MB"
+  },
+  "tracksCount": 10,
+  "runsPerTrack": 3,
+  "apiModel": {
+    "model": "api",
+    "modelName": "Modelo API (Express / getCachedStreamInfo)",
+    "timestamp": "2026-08-19T22:39:24.422Z",
+    "runsPerTrack": 3,
+    "environment": {
+      "platform": "darwin",
+      "arch": "arm64",
+      "nodeVersion": "v24.15.0",
+      "osRelease": "25.5.0",
+      "cpus": "Apple M1 Pro",
+      "totalMemory": "16384.00 MB"
+    },
+    "tracksResults": [
+      {
+        "track": {
+          "id": "L_LUpnjgPso",
+          "title": "We Will Rock You",
+          "artist": "Queen",
+          "category": "short",
+          "durationSec": 134,
+          "description": "Canción corta (~2m), rock clásico, alta disponibilidad"
+        },
+        "coldRunsMs": [
+          2036.762084,
+          2020.0627089999998,
+          2087.4252500000002
+        ],
+        "warmRunsMs": [
+          0.13716699999986304,
+          0.005333000000064203,
+          0.0039999999999054126
+        ],
+        "coldMetrics": {
+          "count": 3,
+          "min": 2020.06,
+          "max": 2087.43,
+          "mean": 2048.08,
+          "median": 2036.76,
+          "p50": 2036.76,
+          "p95": 2082.36,
+          "p99": 2086.41,
+          "stddev": 28.64
+        },
+        "warmMetrics": {
+          "count": 3,
+          "min": 0,
+          "max": 0.14,
+          "mean": 0.05,
+          "median": 0.01,
+          "p50": 0.01,
+          "p95": 0.12,
+          "p99": 0.13,
+          "stddev": 0.06
+        },
+        "streamUrl": "https://rr1---sn-gqn-n89e.googlevideo.com/videoplayback?expire=1787200689&ei=UTCGarHcCf6FmLAPsNiiwQ4&ip=2a0c%3A5a81%3Af488%3A7700%3A4c16%3Ad4f7%3A35c6%3A6981&id=o-AEsua6LYqDQnM2fXLnrTPFRANsYjvU7tibTOVTkMeIRK&itag=140&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&cps=567&met=1787179089%2C&mh=LY&mm=18%2C29&mn=sn-gqn-n89e%2Csn-h5q7dns7&ms=aub%2Crdu&mv=m&mvi=1&pl=41&rms=aub%2Caub&initcwndbps=3133750&bui=AR3QkAnFz9Y32EVVuzhUvYb8uIZf4Dqd7_igTZv8GTIR_-ZE8rDLOw82HRwEguCyQVEknsjwlRFsjOl3&spc=KBGBckT3yKoTUPzdRIveCq9L5P9yIz9NHByjslKq7wVvpz8IbVzJsQU-yw&vprv=1&svpuc=1&mime=audio%2Fmp4&rqh=1&gir=yes&clen=584002313&dur=36085.363&lmt=1777840320275581&mt=1787178561&fvip=4&keepalive=yes&fexp=51565115%2C51946838&c=VISIONOS&txp=5532534&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AE0s2JYwRAIgHn8opbNoupgjJhpiK42QaPJqfqhsR_Z-zpZSEEudq-cCIE-nJHA2XAzivhpMjjqBYco2gh3V08nCQDCdd7KoW1II&lsparams=cps%2Cmet%2Cmh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Crms%2Cinitcwndbps&lsig=APaTxxMwRAIgbJGoyAuBwR8eD8yR17GWrIom0v2uF-jDGw-OWMePNr8CIAYhOwjRVSd59-kppT5Xf_p0-bGzI3qM9JNBCDnR4D7V",
+        "peakMemoryBytes": 115392512
+      },
+      {
+        "track": {
+          "id": "dQw4w9WgXcQ",
+          "title": "Never Gonna Give You Up",
+          "artist": "Rick Astley",
+          "category": "standard",
+          "durationSec": 213,
+          "description": "Canción estándar (~3.5m), pop clásico, CDN ultra-caliente"
+        },
+        "coldRunsMs": [
+          2244.884499999999,
+          2945.868457999999,
+          2328.092915999998
+        ],
+        "warmRunsMs": [
+          0.05083300000114832,
+          0.006417000000510598,
+          0.0043750000004365575
+        ],
+        "coldMetrics": {
+          "count": 3,
+          "min": 2244.88,
+          "max": 2945.87,
+          "mean": 2506.28,
+          "median": 2328.09,
+          "p50": 2328.09,
+          "p95": 2884.09,
+          "p99": 2933.51,
+          "stddev": 312.69
+        },
+        "warmMetrics": {
+          "count": 3,
+          "min": 0,
+          "max": 0.05,
+          "mean": 0.02,
+          "median": 0.01,
+          "p50": 0.01,
+          "p95": 0.05,
+          "p99": 0.05,
+          "stddev": 0.02
+        },
+        "streamUrl": "https://rr2---sn-gqn-n89l.googlevideo.com/videoplayback?expire=1787200698&ei=WjCGat3SBafkxN8Px4j1qQw&ip=2a0c%3A5a81%3Af488%3A7700%3A4c16%3Ad4f7%3A35c6%3A6981&id=o-ABWcknluM2kNee-jkTH2qVBnd56XadeVOtxY55O2JvRb&itag=140&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&cps=1154&met=1787179098%2C&mh=7c&mm=18%2C29&mn=sn-gqn-n89l%2Csn-h5qzen7d&ms=aub%2Crdu&mv=m&mvi=2&pl=41&rms=aub%2Caub&initcwndbps=3048750&bui=AR3QkAlayBL7z0TXbEgyq7RSDT7by7RnWoYZVaczhZpF15aTqxnim_7gpK6eeOTO80khxBjnu4AAB0WW&spc=KBGBcsg_TJOd-t502rF1WFKk4rj8-fAIvy6qj3ALSmJABhc3CdB9q6x7Vph9Mmc&vprv=1&svpuc=1&mime=audio%2Fmp4&rqh=1&gir=yes&clen=3449447&dur=213.089&lmt=1766955925572207&mt=1787178799&fvip=4&keepalive=yes&fexp=51565116%2C51946838%2C52135441&c=VISIONOS&txp=5532534&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AE0s2JYwRAIgdGA5tV-ThVj2c8eVScpBJVTIkle_C3NTE9C1KPqvU0ECIDry5apZ7DEjbrTjukwivl45pEn4xqJsQc1uUtSC2B1A&lsparams=cps%2Cmet%2Cmh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Crms%2Cinitcwndbps&lsig=APaTxxMwRAIgHGFmfL5UZe6utwi--I5UanzEmXdNZ6D72r907_sW40cCIGpKYX8BNGAQ6jVW3PmF84aCXPQvVAIojftSlctL70LN",
+        "peakMemoryBytes": 122814464
+      },
+      {
+        "track": {
+          "id": "XFkzRNyygfk",
+          "title": "Creep",
+          "artist": "Radiohead",
+          "category": "standard",
+          "durationSec": 239,
+          "description": "Canción estándar (~4m), rock alternativo (referencia en curl-timing.sh)"
+        },
+        "coldRunsMs": [
+          2271.4163750000007,
+          2324.3101669999996,
+          2027.7298329999976
+        ],
+        "warmRunsMs": [
+          0.0399169999982405,
+          0.00429200000144192,
+          0.005207999998674495
+        ],
+        "coldMetrics": {
+          "count": 3,
+          "min": 2027.73,
+          "max": 2324.31,
+          "mean": 2207.82,
+          "median": 2271.42,
+          "p50": 2271.42,
+          "p95": 2319.02,
+          "p99": 2323.25,
+          "stddev": 129.16
+        },
+        "warmMetrics": {
+          "count": 3,
+          "min": 0,
+          "max": 0.04,
+          "mean": 0.02,
+          "median": 0.01,
+          "p50": 0.01,
+          "p95": 0.04,
+          "p99": 0.04,
+          "stddev": 0.02
+        },
+        "streamUrl": "https://rr3---sn-gqn-n89e.googlevideo.com/videoplayback?expire=1787200706&ei=YjCGavfLEeqJvdIPgJm7mQs&ip=2a0c%3A5a81%3Af488%3A7700%3A4c16%3Ad4f7%3A35c6%3A6981&id=o-AK7SMXVJH7oeriKkBLoh7WXAE5H5hXHTKwdc6QX6_H8g&itag=140&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&cps=1134&met=1787179106%2C&mh=md&mm=18%2C29&mn=sn-gqn-n89e%2Csn-ajh5q5-5w&ms=aub%2Crdu&mv=m&mvi=3&pl=41&rms=aub%2Caub&initcwndbps=3067500&bui=AR3QkAkATRl4DDLYrbYIkosTDOc7RruCFI72Il-s0oQVeB2L0-JJ2VI4YNVc0o717Iumsmg934z0x_0V&spc=KBGBchCO_kxKVbP8kCn57rNFMrQQlin1wkUPQhQ8Nx-fgT7X8juYENXrXg&vprv=1&svpuc=1&mime=audio%2Fmp4&rqh=1&gir=yes&clen=3830364&dur=236.634&lmt=1708549634108959&mt=1787178799&fvip=1&keepalive=yes&fexp=51565115%2C51946838&c=VISIONOS&txp=4532434&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AE0s2JYwRAIgM39nkJIA1FcujlMlFOorR7xYig1cbfJpMWVAlsVNaBgCIDOQKCuHMeMxJw_DHpM2vGs1gkttVpnltSJ9yQPhmM0j&lsparams=cps%2Cmet%2Cmh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Crms%2Cinitcwndbps&lsig=APaTxxMwRQIgKQ66XN7Po29ncBdGg12TlS-7YN7YT0ZwzJWES_3Vi_4CIQDrHLwY_aVEIORq76TW8z0jJzxvqR-oQEsAuH2qtPRP6Q%3D%3D",
+        "peakMemoryBytes": 123060224
+      },
+      {
+        "track": {
+          "id": "9bZkp7q19f0",
+          "title": "Gangnam Style",
+          "artist": "PSY",
+          "category": "standard",
+          "durationSec": 252,
+          "description": "Canción estándar (~4.2m), K-pop, multi-stream CDN"
+        },
+        "coldRunsMs": [
+          2947.87975,
+          2607.5015829999975,
+          2890.834583
+        ],
+        "warmRunsMs": [
+          0.040000000000873115,
+          0.003958000001148321,
+          0.003416999999899417
+        ],
+        "coldMetrics": {
+          "count": 3,
+          "min": 2607.5,
+          "max": 2947.88,
+          "mean": 2815.41,
+          "median": 2890.83,
+          "p50": 2890.83,
+          "p95": 2942.18,
+          "p99": 2946.74,
+          "stddev": 148.84
+        },
+        "warmMetrics": {
+          "count": 3,
+          "min": 0,
+          "max": 0.04,
+          "mean": 0.02,
+          "median": 0,
+          "p50": 0,
+          "p95": 0.04,
+          "p99": 0.04,
+          "stddev": 0.02
+        },
+        "streamUrl": "https://rr4---sn-gqn-n89e.googlevideo.com/videoplayback?expire=1787200716&ei=bDCGapSyBuyEp-oP7cag8QY&ip=2a0c%3A5a81%3Af488%3A7700%3A4c16%3Ad4f7%3A35c6%3A6981&id=o-ALR1VUiI5m-jemG3pWw3q90g-OlYA-9vusQ8SDsbm_cG&itag=140&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&cps=1190&met=1787179116%2C&mh=hJ&mm=18%2C29&mn=sn-gqn-n89e%2Csn-h5qzen76&ms=aub%2Crdu&mv=m&mvi=4&pl=41&rms=aub%2Caub&initcwndbps=3067500&bui=AR3QkAnJ-DHVqCQxxYx6oGrlC0rRJ0TNurBZGIBFzeGPEh6OycLIiiIAXjTvNcz1aZ1lDuGBad6YYxTn&spc=KBGBcgJ5pXn8fGSFIeL7cfN2zohn0rYmDG76OXNSYMiJ6fml1IcAiXLCjA&vprv=1&svpuc=1&mime=audio%2Fmp4&rqh=1&gir=yes&clen=4083640&dur=252.261&lmt=1712653867474717&mt=1787178799&fvip=3&keepalive=yes&fexp=51565115%2C51946838&c=VISIONOS&txp=4532434&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AE0s2JYwRQIgSOmOZGECZYdIqmbHbsyEPxUCRRb88McwcHwk39B0lXgCIQCvUTpzp2gRqxw9xxh3Obp_aVx1etGYjlbUd3RX_GcPug%3D%3D&lsparams=cps%2Cmet%2Cmh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Crms%2Cinitcwndbps&lsig=APaTxxMwRgIhAKhw_H-MAEfM06Ly9rozxK4YuLE8OXsmcGvVcAsioyVtAiEAzRTlmZrAhTFgXnrIEWVA3ClhkWXJGIQbXj_Luai6ZQE%3D",
+        "peakMemoryBytes": 123797504
+      },
+      {
+        "track": {
+          "id": "kJQP7kiw5Fk",
+          "title": "Despacito ft. Daddy Yankee",
+          "artist": "Luis Fonsi",
+          "category": "standard",
+          "durationSec": 282,
+          "description": "Canción estándar (~4.7m), pop urbano latino"
+        },
+        "coldRunsMs": [
+          2323.7480420000065,
+          1990.052208000001,
+          2124.820915999997
+        ],
+        "warmRunsMs": [
+          0.033082999994803686,
+          0.003833000002487097,
+          0.0032080000019050203
+        ],
+        "coldMetrics": {
+          "count": 3,
+          "min": 1990.05,
+          "max": 2323.75,
+          "mean": 2146.21,
+          "median": 2124.82,
+          "p50": 2124.82,
+          "p95": 2303.86,
+          "p99": 2319.77,
+          "stddev": 137.07
+        },
+        "warmMetrics": {
+          "count": 3,
+          "min": 0,
+          "max": 0.03,
+          "mean": 0.01,
+          "median": 0,
+          "p50": 0,
+          "p95": 0.03,
+          "p99": 0.03,
+          "stddev": 0.01
+        },
+        "streamUrl": "https://rr6---sn-gqn-n89e.googlevideo.com/videoplayback?expire=1787200724&ei=dDCGarXNC--cp-oPsdfW-AY&ip=2a0c%3A5a81%3Af488%3A7700%3A4c16%3Ad4f7%3A35c6%3A6981&id=o-AAT2QCL1vYBBzc1U6zvR8bgv7TS6Ktkb3uP9iQdU9716&itag=140&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&cps=1165&met=1787179124%2C&mh=Sn&mm=18%2C29&mn=sn-gqn-n89e%2Csn-h5qzen7d&ms=aub%2Crdu&mv=m&mvi=6&pl=41&rms=aub%2Caub&gcr=es&initcwndbps=3067500&bui=AR3QkAlkhhJd3PoZHf0sG9v-otsJj50-ES09ZD2QNXbMei2mizAU8s0vgfost49_h_LMo83RaC-uxWVe&spc=KBGBcviST_cXyatNblQL4O0HLUhJNXC9lgIWpphI23wPNQ2S7SfgmOY5-w&vprv=1&svpuc=1&mime=audio%2Fmp4&rqh=1&gir=yes&clen=4557665&dur=281.565&lmt=1739617030447245&mt=1787178799&fvip=4&keepalive=yes&fexp=51565115%2C51946838&c=VISIONOS&txp=4532534&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cgcr%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AE0s2JYwRAIgJ8E43_-JRvKW_eiXyHwUuA9csEAYBpyeoPC_qYdW91cCIF65k8SOdUbUBf3nmxZzgxbSJB-llAOHcBNLnFYFGQcQ&lsparams=cps%2Cmet%2Cmh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Crms%2Cinitcwndbps&lsig=APaTxxMwRgIhANdPoPfQyl9AkVKaQqagfof2jNWY3f9FHDkWSohRl5iGAiEA4sRgt20K7KygZz4F_XFEw2kWzPTlY25LhdZVc-2Mfgs%3D",
+        "peakMemoryBytes": 124387328
+      },
+      {
+        "track": {
+          "id": "fJ9rUzIMcZQ",
+          "title": "Bohemian Rhapsody",
+          "artist": "Queen",
+          "category": "standard",
+          "durationSec": 359,
+          "description": "Canción estándar-larga (~6m), rock sinfónico con cambios dinámicos"
+        },
+        "coldRunsMs": [
+          2332.8499169999996,
+          2715.119083000005,
+          2473.6100829999996
+        ],
+        "warmRunsMs": [
+          0.03391700000065612,
+          0.0076249999983701855,
+          0.003874999994877726
+        ],
+        "coldMetrics": {
+          "count": 3,
+          "min": 2332.85,
+          "max": 2715.12,
+          "mean": 2507.19,
+          "median": 2473.61,
+          "p50": 2473.61,
+          "p95": 2690.97,
+          "p99": 2710.29,
+          "stddev": 157.86
+        },
+        "warmMetrics": {
+          "count": 3,
+          "min": 0,
+          "max": 0.03,
+          "mean": 0.02,
+          "median": 0.01,
+          "p50": 0.01,
+          "p95": 0.03,
+          "p99": 0.03,
+          "stddev": 0.01
+        },
+        "streamUrl": "https://rr2---sn-gqn-n89l.googlevideo.com/videoplayback?expire=1787200733&ei=fTCGavvjDZzL8uMPxtnGgA0&ip=2a0c%3A5a81%3Af488%3A7700%3A4c16%3Ad4f7%3A35c6%3A6981&id=o-ADOREuFRCsN3KVhkph2GFI96aTAYi7Qh3KIJHQBD5UVv&itag=140&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&cps=1104&met=1787179133%2C&mh=8d&mm=18%2C29&mn=sn-gqn-n89l%2Csn-h5qzen7l&ms=aub%2Crdu&mv=m&mvi=2&pl=41&rms=aub%2Caub&gcr=es&initcwndbps=3048750&bui=AR3QkAkzU1qpnEvaNugL3UkUKayAAeU94KUvcOwbsWU-RJ_jkh2mCxOZyN0TcpXF9EJuvBZ8dkTfuKqI&spc=KBGBcuURKVqcNfW_UjkKPwoF2c7fiaZCDGAakaq-Po0a7ZWN91nRglxtmg&vprv=1&svpuc=1&mime=audio%2Fmp4&rqh=1&gir=yes&clen=5818745&dur=359.491&lmt=1706259507855843&mt=1787178799&fvip=1&keepalive=yes&fexp=51565116%2C51946838&c=VISIONOS&txp=4532434&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cgcr%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AE0s2JYwRgIhAP5jvzv8cSglHgh4TKzebKI82TBz27uayvtztV6Eiq0_AiEA_h3NqTTX31ul_KNcGzpyQe4mDhuXeTB9ZXRo1DmhSUM%3D&lsparams=cps%2Cmet%2Cmh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Crms%2Cinitcwndbps&lsig=APaTxxMwRgIhAN-CDwFinCx2B3gmX153PiBIIoM41KIgF8kQiLSHpLTEAiEArjn7tYoePAPuLmhaOYm3Smyqn1cj8Ag9wVFEA7K_guA%3D",
+        "peakMemoryBytes": 125616128
+      },
+      {
+        "track": {
+          "id": "QkF3oxziUI4",
+          "title": "Stairway to Heaven",
+          "artist": "Led Zeppelin",
+          "category": "long",
+          "durationSec": 482,
+          "description": "Canción larga (~8m), rock progresivo clásico"
+        },
+        "coldRunsMs": [
+          2178.540415999996,
+          2049.367750000005,
+          2119.4373750000013
+        ],
+        "warmRunsMs": [
+          0.0319999999992433,
+          0.0032499999942956492,
+          0.002790999998978805
+        ],
+        "coldMetrics": {
+          "count": 3,
+          "min": 2049.37,
+          "max": 2178.54,
+          "mean": 2115.78,
+          "median": 2119.44,
+          "p50": 2119.44,
+          "p95": 2172.63,
+          "p99": 2177.36,
+          "stddev": 52.8
+        },
+        "warmMetrics": {
+          "count": 3,
+          "min": 0,
+          "max": 0.03,
+          "mean": 0.01,
+          "median": 0,
+          "p50": 0,
+          "p95": 0.03,
+          "p99": 0.03,
+          "stddev": 0.01
+        },
+        "streamUrl": "https://rr2---sn-gqn-n89e.googlevideo.com/videoplayback?expire=1787200741&ei=hTCGaqLQBK-Ep-oP7pKTgAc&ip=2a0c%3A5a81%3Af488%3A7700%3A4c16%3Ad4f7%3A35c6%3A6981&id=o-ANiUR96tM2AW2asjJRYzyzPN5jD50HwWfYNA67B33EYp&itag=140&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&cps=995&met=1787179141%2C&mh=h5&mm=18%2C29&mn=sn-gqn-n89e%2Csn-h5q7kned&ms=aub%2Crdu&mv=m&mvi=2&pl=41&rms=aub%2Caub&initcwndbps=2530000&bui=AR3QkAmSHd2EXPvBXn-osAzH8QYtmMXQQ6tIVbUzGSSypI8NSoDgBIirS9TWlBNzUIeWS89QrS1IWCtI&spc=KBGBcu_Cj1chJAWwq7F4dLcA_B8xYGWVtQM1JYJ2QR5QRNVoSjXfhJmQHw&vprv=1&svpuc=1&mime=audio%2Fmp4&rqh=1&gir=yes&clen=7815737&dur=482.882&lmt=1751239249108813&mt=1787179057&fvip=3&keepalive=yes&fexp=51565115%2C51946838&c=VISIONOS&txp=4532534&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AE0s2JYwRAIgcA-MKhdg1ZYLgmgN2K39kEjB2uH-ezRsuhzZ8g6kA1MCIEwF7m2_ukg6CAsvwz-p_Go4u6XTP2B7Wq3z_SmPZxDK&lsparams=cps%2Cmet%2Cmh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Crms%2Cinitcwndbps&lsig=APaTxxMwRAIgBa_-A57OhddGMyR9OqmX_1cFc0IhrSIItxX5GWRoxRQCIACeXlT74jXmdXKfFW6Iz5uj-mB2LDjlt0Rdf3PaTZ9w",
+        "peakMemoryBytes": 126697472
+      },
+      {
+        "track": {
+          "id": "8Pa9x9fZBtY",
+          "title": "Sultans Of Swing (Alchemy Live)",
+          "artist": "Dire Straits",
+          "category": "long",
+          "durationSec": 667,
+          "description": "Canción larga (~11m), directo extendido"
+        },
+        "coldRunsMs": [
+          2095.4377499999973,
+          2105.4230830000015,
+          1947.7996669999993
+        ],
+        "warmRunsMs": [
+          0.03437500000291038,
+          0.0031670000025769696,
+          0.002749999999650754
+        ],
+        "coldMetrics": {
+          "count": 3,
+          "min": 1947.8,
+          "max": 2105.42,
+          "mean": 2049.55,
+          "median": 2095.44,
+          "p50": 2095.44,
+          "p95": 2104.42,
+          "p99": 2105.22,
+          "stddev": 72.07
+        },
+        "warmMetrics": {
+          "count": 3,
+          "min": 0,
+          "max": 0.03,
+          "mean": 0.01,
+          "median": 0,
+          "p50": 0,
+          "p95": 0.03,
+          "p99": 0.03,
+          "stddev": 0.02
+        },
+        "streamUrl": "https://rr1---sn-gqn-n89l.googlevideo.com/videoplayback?expire=1787200748&ei=jDCGarqFNfT5xN8PjZyHsAs&ip=2a0c%3A5a81%3Af488%3A7700%3A4c16%3Ad4f7%3A35c6%3A6981&id=o-AARD01TiSyxeCCA-O7H_OfCGE9pKYf1TW_fYiF9ih_ZG&itag=140&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&cps=854&met=1787179148%2C&mh=wZ&mm=18%2C29&mn=sn-gqn-n89l%2Csn-ajh5q5-5a&ms=aub%2Crdu&mv=m&mvi=1&pl=41&rms=aub%2Caub&initcwndbps=3048750&bui=AR3QkAmpSuutEGKOMomj-nHAs34iMWCPKPDEcfufHgO8VCTRyl9lybPzg5woohwyBPIEs5L6zAYNcYaE&spc=KBGBcsmhvjeSYOdpeZv5XwtxkmdzHnEXMugL1n39qCuxWPk6rijyOjH6JA&vprv=1&svpuc=1&mime=audio%2Fmp4&rqh=1&gir=yes&clen=10466131&dur=646.652&lmt=1779534252661051&mt=1787178799&fvip=4&keepalive=yes&fexp=51565115%2C51946838&c=VISIONOS&txp=5532534&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AE0s2JYwRgIhAOBtAHqzcOyHxp3DspnfsZk83S2_OL2SqS0nOjheAwqhAiEAzWeLfcKNjTZ8ai1Ur2-eSxtlkzTjOfct3PLLQXGAQps%3D&lsparams=cps%2Cmet%2Cmh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Crms%2Cinitcwndbps&lsig=APaTxxMwRQIhAL03hr7C8Uu2ZFBdUPdbsBuzHfmNhTXrEC1f25rPSEbAAiBVhVDPNcP26cy66OQoCAnJNSJ0uBFQyvyYfOZKOS7KfA%3D%3D",
+        "peakMemoryBytes": 127041536
+      },
+      {
+        "track": {
+          "id": "bM7SZ5SBzyY",
+          "title": "Echoes (Live at Pompeii)",
+          "artist": "Pink Floyd",
+          "category": "long",
+          "durationSec": 990,
+          "description": "Canción muy larga (~16.5m), suite psicodélica"
+        },
+        "coldRunsMs": [],
+        "warmRunsMs": [],
+        "coldMetrics": {
+          "count": 0,
+          "min": 0,
+          "max": 0,
+          "mean": 0,
+          "median": 0,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "stddev": 0
+        },
+        "warmMetrics": {
+          "count": 0,
+          "min": 0,
+          "max": 0,
+          "mean": 0,
+          "median": 0,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "stddev": 0
+        },
+        "error": "yt-dlp failed: ERROR: [youtube] bM7SZ5SBzyY: Please sign in. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies\n",
+        "peakMemoryBytes": 0
+      },
+      {
+        "track": {
+          "id": "TURbeWK2wwg",
+          "title": "Lofi Hip Hop Chill Beats - Study Mix",
+          "artist": "Lofi Girl / Chillhop",
+          "category": "mix",
+          "durationSec": 1800,
+          "description": "Mix continuo (~30m), caso de estrés para streaming/range-requests"
+        },
+        "coldRunsMs": [
+          1928.1043340000033,
+          2436.618459000005,
+          1773.190791000001
+        ],
+        "warmRunsMs": [
+          0.03949999999895226,
+          0.0033750000002328306,
+          0.002666999993380159
+        ],
+        "coldMetrics": {
+          "count": 3,
+          "min": 1773.19,
+          "max": 2436.62,
+          "mean": 2045.97,
+          "median": 1928.1,
+          "p50": 1928.1,
+          "p95": 2385.77,
+          "p99": 2426.45,
+          "stddev": 283.38
+        },
+        "warmMetrics": {
+          "count": 3,
+          "min": 0,
+          "max": 0.04,
+          "mean": 0.02,
+          "median": 0,
+          "p50": 0,
+          "p95": 0.04,
+          "p99": 0.04,
+          "stddev": 0.02
+        },
+        "streamUrl": "https://rr4---sn-gqn-n89e.googlevideo.com/videoplayback?expire=1787200763&ei=mzCGat72ObzFhcIPpMms4Aw&ip=2a0c%3A5a81%3Af488%3A7700%3A4c16%3Ad4f7%3A35c6%3A6981&id=o-AHFEU8_ZM9IcStr_S5CYwSh172Qc4OUjr_9ENQdZs_fb&itag=140&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&cps=339&met=1787179163%2C&mh=9M&mm=31%2C29&mn=sn-gqn-n89e%2Csn-h5qzen7y&ms=au%2Crdu&mv=m&mvi=4&pl=41&rms=au%2Cau&initcwndbps=3067500&bui=AR3QkAkTwnrJc_nwYHOs0qAODNtiSzOMpEzCe64gegszhRsjVh3i1WlHq4sGPxd20dZNSd7vwd50pI7D&spc=KBGBcsVwwlNTikYLu5JmxavGkHXA0AB_kl_X5F4OaVfL8i1zIFX_SqSNjg&vprv=1&svpuc=1&mime=audio%2Fmp4&rqh=1&gir=yes&clen=59956505&dur=3704.650&lmt=1741328552082905&mt=1787178823&fvip=3&keepalive=yes&fexp=51565115%2C51946838&c=VISIONOS&txp=4532534&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AE0s2JYwRAIgBnEyFBXtn857tsVHGf6PdVDykco4uejx9fPt-Ca0m50CIDCacZMwJlAFF_zHpBaA5loDwCcYbJgtep1g09r2iX52&lsparams=cps%2Cmet%2Cmh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Crms%2Cinitcwndbps&lsig=APaTxxMwRAIgZKiyLVO8HYT-dgxTttr773a84eZCRIVFgmoFzz6gpsICIA_wZIOaKZMx-ci69K4ZnMXvkOTWcIgHHZjpsLqV_cRa",
+        "peakMemoryBytes": 128630784
+      }
+    ],
+    "overallColdMetrics": {
+      "count": 27,
+      "min": 1773.19,
+      "max": 2947.88,
+      "mean": 2271.37,
+      "median": 2178.54,
+      "p50": 2178.54,
+      "p95": 2929.36,
+      "p99": 2947.36,
+      "stddev": 310.91
+    },
+    "overallWarmMetrics": {
+      "count": 27,
+      "min": 0,
+      "max": 0.14,
+      "mean": 0.02,
+      "median": 0,
+      "p50": 0,
+      "p95": 0.05,
+      "p99": 0.11,
+      "stddev": 0.03
+    }
+  },
+  "integratedModel": {
+    "model": "integrated",
+    "modelName": "Modelo Integrado (Plugin JS -> api.Ytdlp.getStream -> Stream)",
+    "executionMode": "isolated-sdk",
+    "timestamp": "2026-08-19T22:40:49.581Z",
+    "runsPerTrack": 3,
+    "environment": {
+      "platform": "darwin",
+      "arch": "arm64",
+      "nodeVersion": "v24.15.0",
+      "osRelease": "25.5.0",
+      "cpus": "Apple M1 Pro",
+      "totalMemory": "16384.00 MB"
+    },
+    "tracksResults": [
+      {
+        "track": {
+          "id": "L_LUpnjgPso",
+          "title": "We Will Rock You",
+          "artist": "Queen",
+          "category": "short",
+          "durationSec": 134,
+          "description": "Canción corta (~2m), rock clásico, alta disponibilidad"
+        },
+        "coldRunsMs": [
+          1772.531833999994,
+          1938.7899590000015,
+          2516.014750000002
+        ],
+        "warmRunsMs": [
+          0.04670799999439623,
+          0.0068749999918509275,
+          0.005917000002227724
+        ],
+        "coldMetrics": {
+          "count": 3,
+          "min": 1772.53,
+          "max": 2516.01,
+          "mean": 2075.78,
+          "median": 1938.79,
+          "p50": 1938.79,
+          "p95": 2458.29,
+          "p99": 2504.47,
+          "stddev": 318.61
+        },
+        "warmMetrics": {
+          "count": 3,
+          "min": 0.01,
+          "max": 0.05,
+          "mean": 0.02,
+          "median": 0.01,
+          "p50": 0.01,
+          "p95": 0.04,
+          "p99": 0.05,
+          "stddev": 0.02
+        },
+        "stream": {
+          "url": "https://rr1---sn-gqn-n89e.googlevideo.com/videoplayback?expire=1787200772&ei=pDCGapCGF9eZoccPy-WMUA&ip=2a0c%3A5a81%3Af488%3A7700%3A4c16%3Ad4f7%3A35c6%3A6981&id=o-AAN5eWJ2gG9jZqd943AdzPVHu-z4zvhcvHz8V9_dtCEE&itag=140&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&cps=560&met=1787179172%2C&mh=LY&mm=18%2C29&mn=sn-gqn-n89e%2Csn-h5q7dns7&ms=aub%2Crdu&mv=m&mvi=1&pl=41&rms=aub%2Caub&initcwndbps=3067500&bui=AR3QkAlL6o6VRimnebUmMvyhw_45Rp3WFUQBE9fg_k1vef7HxlJjI82v2T1tzYynwdYLNpp1G6jw8pxH&spc=KBGBcjjlLeDOq-gNAfr6Bsg5mubGm98qJUgWqqekyMU1p_c1hgIvuhPfhg&vprv=1&svpuc=1&mime=audio%2Fmp4&rqh=1&gir=yes&clen=584002313&dur=36085.363&lmt=1777840320275581&mt=1787178799&fvip=4&keepalive=yes&fexp=51565115%2C51946838&c=VISIONOS&txp=5532534&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AE0s2JYwRgIhAIY8ObbrUPyj-vKtX3rZoXfwFcgAyUr5I31ayv47rJj5AiEAnYYpnnfoWupHdvD9rGyaFF-mFmyvvU502WuYeqvDG8I%3D&lsparams=cps%2Cmet%2Cmh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Crms%2Cinitcwndbps&lsig=APaTxxMwRAIgdSTKICOWiTJFBHbPyKvF_q0zY7EiZaCYGO9vymxgUswCIBMotoPGMqYfGBpXwbnEspTZI2ldXr4R9SDPi0-gc5Q2&range=0-99999999999",
+          "protocol": "https",
+          "mimeType": "audio/mp4",
+          "codec": "mp4a.40.2",
+          "container": "m4a",
+          "durationMs": 36085000,
+          "source": {
+            "provider": "music-provider-streaming",
+            "id": "L_LUpnjgPso"
+          }
+        },
+        "peakMemoryBytes": 128155648
+      },
+      {
+        "track": {
+          "id": "dQw4w9WgXcQ",
+          "title": "Never Gonna Give You Up",
+          "artist": "Rick Astley",
+          "category": "standard",
+          "durationSec": 213,
+          "description": "Canción estándar (~3.5m), pop clásico, CDN ultra-caliente"
+        },
+        "coldRunsMs": [
+          2265.9900840000046,
+          2210.174291999996,
+          1878.653833000004
+        ],
+        "warmRunsMs": [
+          0.06187499999941792,
+          0.00812499999301508,
+          0.004708000007667579
+        ],
+        "coldMetrics": {
+          "count": 3,
+          "min": 1878.65,
+          "max": 2265.99,
+          "mean": 2118.27,
+          "median": 2210.17,
+          "p50": 2210.17,
+          "p95": 2260.41,
+          "p99": 2264.87,
+          "stddev": 170.96
+        },
+        "warmMetrics": {
+          "count": 3,
+          "min": 0,
+          "max": 0.06,
+          "mean": 0.02,
+          "median": 0.01,
+          "p50": 0.01,
+          "p95": 0.06,
+          "p99": 0.06,
+          "stddev": 0.03
+        },
+        "stream": {
+          "url": "https://rr2---sn-gqn-n89l.googlevideo.com/videoplayback?expire=1787200780&ei=rDCGap3XGdPkxN8Pudbj-QQ&ip=2a0c%3A5a81%3Af488%3A7700%3A4c16%3Ad4f7%3A35c6%3A6981&id=o-AEZ-gLYbglu2vdCKKaRXPe0TFA0YwGtIik1Ve46Swp-U&itag=140&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&cps=1055&met=1787179180%2C&mh=7c&mm=18%2C29&mn=sn-gqn-n89l%2Csn-h5q7knes&ms=aub%2Crdu&mv=m&mvi=2&pl=41&rms=aub%2Caub&initcwndbps=3048750&bui=AR3QkAlxaefWhM64J8dCMJPNnjxGV2zizs6zcdu9Xgrrr6aj2cAXioZBuEM2vjovRTQNVovigIQE0X1W&spc=KBGBcoivZWryvxTjBUvUr99cvKBa-KvZXavaUMVHV94LTkD5GqH8M8Z8uywty6Y&vprv=1&svpuc=1&mime=audio%2Fmp4&rqh=1&gir=yes&clen=3449447&dur=213.089&lmt=1766955925572207&mt=1787178799&fvip=4&keepalive=yes&fexp=51565115%2C51946838&c=VISIONOS&txp=5532534&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AE0s2JYwRAIgEnPb_W4LbHl77q217--3WnN2OBjAEPOP5Yglxm51wU0CID8S806uu5Bn0M0BTqrgJKUMaAKtdUHBThDsK3XL0bF6&lsparams=cps%2Cmet%2Cmh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Crms%2Cinitcwndbps&lsig=APaTxxMwRAIgMHBknhpo5Yf_exjSxdKxbxrExoBz5V320RmLPRH6U8ACIHqO70GxFPjouEmQmw-WFylNIBIx-KDmxs2tokgc72Jd&range=0-99999999999",
+          "protocol": "https",
+          "mimeType": "audio/mp4",
+          "codec": "mp4a.40.2",
+          "container": "m4a",
+          "durationMs": 213000,
+          "source": {
+            "provider": "music-provider-streaming",
+            "id": "dQw4w9WgXcQ"
+          }
+        },
+        "peakMemoryBytes": 130940928
+      },
+      {
+        "track": {
+          "id": "XFkzRNyygfk",
+          "title": "Creep",
+          "artist": "Radiohead",
+          "category": "standard",
+          "durationSec": 239,
+          "description": "Canción estándar (~4m), rock alternativo (referencia en curl-timing.sh)"
+        },
+        "coldRunsMs": [
+          2157.8954159999994,
+          2034.7306249999965,
+          2369.7022920000018
+        ],
+        "warmRunsMs": [
+          0.033167000001412816,
+          0.004500000010011718,
+          0.003790999995544553
+        ],
+        "coldMetrics": {
+          "count": 3,
+          "min": 2034.73,
+          "max": 2369.7,
+          "mean": 2187.44,
+          "median": 2157.9,
+          "p50": 2157.9,
+          "p95": 2348.52,
+          "p99": 2365.47,
+          "stddev": 138.34
+        },
+        "warmMetrics": {
+          "count": 3,
+          "min": 0,
+          "max": 0.03,
+          "mean": 0.01,
+          "median": 0,
+          "p50": 0,
+          "p95": 0.03,
+          "p99": 0.03,
+          "stddev": 0.01
+        },
+        "stream": {
+          "url": "https://rr3---sn-gqn-n89e.googlevideo.com/videoplayback?expire=1787200788&ei=tDCGatzkEqLN8uMP2JHm0Aw&ip=2a0c%3A5a81%3Af488%3A7700%3A4c16%3Ad4f7%3A35c6%3A6981&id=o-ALvund4fs5DxsB60doG2Vzu-a5ObQ28U7BxRkR834GGk&itag=140&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&cps=1110&met=1787179188%2C&mh=md&mm=18%2C29&mn=sn-gqn-n89e%2Csn-h5qzen7y&ms=aub%2Crdu&mv=m&mvi=3&pl=41&rms=aub%2Caub&initcwndbps=3067500&bui=AR3QkAkanbLZKcQuLSFgNeAlqnJX5oQeVgUG4HQeTrLTV6UtBiCDQBdMvznltgGu76m1wr42JEMfonA8&spc=KBGBctR_h0EauSZDTPxNsTYfZ3BSCSK9Oc85Vfk9A4LTsbV2krm_AZi83A&vprv=1&svpuc=1&mime=audio%2Fmp4&rqh=1&gir=yes&clen=3830364&dur=236.634&lmt=1708549634108959&mt=1787178799&fvip=1&keepalive=yes&fexp=51565116%2C51946838&c=VISIONOS&txp=4532434&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AE0s2JYwRQIhAMtYQbVEgs5yiEiidWXI1Dnboy3vsDoev4M-FsnZDCb6AiAY1YUUUJopATjj8Y8e0x6rveEfqfs8hikUa9Xpe6DTDg%3D%3D&lsparams=cps%2Cmet%2Cmh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Crms%2Cinitcwndbps&lsig=APaTxxMwRgIhALollBMeZe1azlsJgTcvroqfGDdvDkwano8HLOqqIgubAiEAuORms_cGKbOYGWtv1UkgXT5wW4wPJ5OEaFbZEDmqLWo%3D&range=0-99999999999",
+          "protocol": "https",
+          "mimeType": "audio/mp4",
+          "codec": "mp4a.40.2",
+          "container": "m4a",
+          "durationMs": 237000,
+          "source": {
+            "provider": "music-provider-streaming",
+            "id": "XFkzRNyygfk"
+          }
+        },
+        "peakMemoryBytes": 130990080
+      },
+      {
+        "track": {
+          "id": "9bZkp7q19f0",
+          "title": "Gangnam Style",
+          "artist": "PSY",
+          "category": "standard",
+          "durationSec": 252,
+          "description": "Canción estándar (~4.2m), K-pop, multi-stream CDN"
+        },
+        "coldRunsMs": [
+          2299.5474169999943,
+          2137.0583749999932,
+          2276.110416999989
+        ],
+        "warmRunsMs": [
+          0.027500000011059456,
+          0.004207999998470768,
+          0.0036249999975552782
+        ],
+        "coldMetrics": {
+          "count": 3,
+          "min": 2137.06,
+          "max": 2299.55,
+          "mean": 2237.57,
+          "median": 2276.11,
+          "p50": 2276.11,
+          "p95": 2297.2,
+          "p99": 2299.08,
+          "stddev": 71.72
+        },
+        "warmMetrics": {
+          "count": 3,
+          "min": 0,
+          "max": 0.03,
+          "mean": 0.01,
+          "median": 0,
+          "p50": 0,
+          "p95": 0.03,
+          "p99": 0.03,
+          "stddev": 0.01
+        },
+        "stream": {
+          "url": "https://rr4---sn-gqn-n89e.googlevideo.com/videoplayback?expire=1787200796&ei=vDCGasalH7G-mLAP79zd6Qs&ip=2a0c%3A5a81%3Af488%3A7700%3A4c16%3Ad4f7%3A35c6%3A6981&id=o-ADDXuIObGIo9zwPF2-crMHF3a1_6Q6PRTHE62AhoFEiw&itag=140&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&cps=1194&met=1787179196%2C&mh=hJ&mm=18%2C29&mn=sn-gqn-n89e%2Csn-ajh5q5-5o&ms=aub%2Crdu&mv=m&mvi=4&pl=41&rms=aub%2Caub&initcwndbps=3067500&bui=AR3QkAnHgVCMpPYW8rgyadAUm88B6S0JM79cgikD8anQNe6i375k1wNjUqbzPTGLo6pwhCOetZlqZ2U-&spc=KBGBchxAG87UH1hJO4H3dVAQBbg_0G1p1_4Bow_uVJrzvwwlp3zMxIXnbw&vprv=1&svpuc=1&mime=audio%2Fmp4&rqh=1&gir=yes&clen=4083640&dur=252.261&lmt=1712653867474717&mt=1787178799&fvip=4&keepalive=yes&fexp=51565115%2C51946838&c=VISIONOS&txp=4532434&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AE0s2JYwRgIhAPkcgOH6OKdU7IijKFBx5Ziq7XImfkyLKI4cAJIJSITMAiEA6UryhArywcH3EEVieBphgNtPeFzbdZ34yF555DObWXM%3D&lsparams=cps%2Cmet%2Cmh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Crms%2Cinitcwndbps&lsig=APaTxxMwRAIga_Js-yU590Lqys-auyaybfn_5J-7_nl3DTRhT8upa7wCIGvXZz4QOxPmL5t0-kKqFLx8Cb4qyYV1q2k0zlfbraLH&range=0-99999999999",
+          "protocol": "https",
+          "mimeType": "audio/mp4",
+          "codec": "mp4a.40.2",
+          "container": "m4a",
+          "durationMs": 252000,
+          "source": {
+            "provider": "music-provider-streaming",
+            "id": "9bZkp7q19f0"
+          }
+        },
+        "peakMemoryBytes": 133251072
+      },
+      {
+        "track": {
+          "id": "kJQP7kiw5Fk",
+          "title": "Despacito ft. Daddy Yankee",
+          "artist": "Luis Fonsi",
+          "category": "standard",
+          "durationSec": 282,
+          "description": "Canción estándar (~4.7m), pop urbano latino"
+        },
+        "coldRunsMs": [
+          1982.9474159999954,
+          2160.507832999996,
+          2017.5614999999962
+        ],
+        "warmRunsMs": [
+          0.0504170000058366,
+          0.004832999999052845,
+          0.0075409999990370125
+        ],
+        "coldMetrics": {
+          "count": 3,
+          "min": 1982.95,
+          "max": 2160.51,
+          "mean": 2053.67,
+          "median": 2017.56,
+          "p50": 2017.56,
+          "p95": 2146.21,
+          "p99": 2157.65,
+          "stddev": 76.85
+        },
+        "warmMetrics": {
+          "count": 3,
+          "min": 0,
+          "max": 0.05,
+          "mean": 0.02,
+          "median": 0.01,
+          "p50": 0.01,
+          "p95": 0.05,
+          "p99": 0.05,
+          "stddev": 0.02
+        },
+        "stream": {
+          "url": "https://rr6---sn-gqn-n89e.googlevideo.com/videoplayback?expire=1787200804&ei=xDCGasWcGvjjxN8Pxbe30QE&ip=2a0c%3A5a81%3Af488%3A7700%3A4c16%3Ad4f7%3A35c6%3A6981&id=o-AF7HiACgwNpe9nbf-_bOzn8_O_lTsQ9O59L9K0-oTPge&itag=140&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&cps=1141&met=1787179204%2C&mh=Sn&mm=18%2C29&mn=sn-gqn-n89e%2Csn-ajh5q5-5o&ms=aub%2Crdu&mv=m&mvi=6&pl=41&rms=aub%2Caub&gcr=es&initcwndbps=3067500&bui=AR3QkAl25XMauLKWbPzIJNjHXyKCkyPTk28qy8UK9WdFpItQimN2tR0hfQ2FaIkVyj7ZpkF_pQTy_HQb&spc=KBGBcmWytrMgUfzD9ypI08Z_GqWdKmzElxg1i8xodfExRQhQfbUQyB7wZw&vprv=1&svpuc=1&mime=audio%2Fmp4&rqh=1&gir=yes&clen=4557665&dur=281.565&lmt=1739617030447245&mt=1787178799&fvip=2&keepalive=yes&fexp=51565116%2C51946838&c=VISIONOS&txp=4532534&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cgcr%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AE0s2JYwRAIgboD30-BdL79rpIPvBav8ysQY5WNC4zHeibjYSaG_N30CIAOgcTMUncBbbCal4bCd3WQgbmQCso9FcrV7qIFC7IFC&lsparams=cps%2Cmet%2Cmh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Crms%2Cinitcwndbps&lsig=APaTxxMwRAIgK5UQ7-V94inv_0HGsPWO8JhyemHh3NskCt9jaYOGQN8CIBh9q9CU5_ndJCw_hlZwxNrKlSrNACASxbWkexBVugdJ&range=0-99999999999",
+          "protocol": "https",
+          "mimeType": "audio/mp4",
+          "codec": "mp4a.40.2",
+          "container": "m4a",
+          "durationMs": 282000,
+          "source": {
+            "provider": "music-provider-streaming",
+            "id": "kJQP7kiw5Fk"
+          }
+        },
+        "peakMemoryBytes": 133251072
+      },
+      {
+        "track": {
+          "id": "fJ9rUzIMcZQ",
+          "title": "Bohemian Rhapsody",
+          "artist": "Queen",
+          "category": "standard",
+          "durationSec": 359,
+          "description": "Canción estándar-larga (~6m), rock sinfónico con cambios dinámicos"
+        },
+        "coldRunsMs": [
+          2371.278250000003,
+          2019.5166670000035,
+          2542.1277919999993
+        ],
+        "warmRunsMs": [
+          0.02695800000219606,
+          0.0043750000186264515,
+          0.0036250000121071935
+        ],
+        "coldMetrics": {
+          "count": 3,
+          "min": 2019.52,
+          "max": 2542.13,
+          "mean": 2310.97,
+          "median": 2371.28,
+          "p50": 2371.28,
+          "p95": 2525.04,
+          "p99": 2538.71,
+          "stddev": 217.57
+        },
+        "warmMetrics": {
+          "count": 3,
+          "min": 0,
+          "max": 0.03,
+          "mean": 0.01,
+          "median": 0,
+          "p50": 0,
+          "p95": 0.02,
+          "p99": 0.03,
+          "stddev": 0.01
+        },
+        "stream": {
+          "url": "https://rr2---sn-gqn-n89l.googlevideo.com/videoplayback?expire=1787200812&ei=zDCGatu8L9S5mLAP-4jTsQ0&ip=2a0c%3A5a81%3Af488%3A7700%3A4c16%3Ad4f7%3A35c6%3A6981&id=o-AJyP2krpYpjaMt2ov4L2ImsJ4PZUwa-sD8dBAXsS4HIV&itag=140&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&cps=1021&met=1787179212%2C&mh=8d&mm=18%2C29&mn=sn-gqn-n89l%2Csn-h5qzen7l&ms=aub%2Crdu&mv=m&mvi=2&pl=41&rms=aub%2Caub&gcr=es&initcwndbps=3048750&bui=AR3QkAnPsc-WYWww0mDo5xBz4fBFgZJhJ9pefBUpCpHmn5z97L29QPFHk-0Mb8XZ8tT1T2NX67Q_Ss1O&spc=KBGBcrURF_mgHmLan9b8PJR5o9iT_JQXmc6A6GpEF4S35iBGPA2zl7V3_w&vprv=1&svpuc=1&mime=audio%2Fmp4&rqh=1&gir=yes&clen=5818745&dur=359.491&lmt=1706259507855843&mt=1787178799&fvip=1&keepalive=yes&fexp=51565115%2C51946838&c=VISIONOS&txp=4532434&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cgcr%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AE0s2JYwRgIhAOqN_G3FagS_DNKDi_RqATZcpRyc8qqEchYO2zrVP46YAiEA2zQHJxwSlqxrcLRYAZDTm3_w58pGVwHwaF3FEVvEP44%3D&lsparams=cps%2Cmet%2Cmh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Crms%2Cinitcwndbps&lsig=APaTxxMwRAIgRkh-ODqAPyot93RQiEg9MwBrE97tGzhZC-m75l-2jUACIAwWwhm4sa4G1Qk5P2BbYuUe2im7eu0xMBoZDFVcN20D&range=0-99999999999",
+          "protocol": "https",
+          "mimeType": "audio/mp4",
+          "codec": "mp4a.40.2",
+          "container": "m4a",
+          "durationMs": 359000,
+          "source": {
+            "provider": "music-provider-streaming",
+            "id": "fJ9rUzIMcZQ"
+          }
+        },
+        "peakMemoryBytes": 129204224
+      },
+      {
+        "track": {
+          "id": "QkF3oxziUI4",
+          "title": "Stairway to Heaven",
+          "artist": "Led Zeppelin",
+          "category": "long",
+          "durationSec": 482,
+          "description": "Canción larga (~8m), rock progresivo clásico"
+        },
+        "coldRunsMs": [
+          4550.340167000017,
+          2076.339957999997,
+          2448.378792000003
+        ],
+        "warmRunsMs": [
+          0.029207999992650002,
+          0.004249999998137355,
+          0.003499999991618097
+        ],
+        "coldMetrics": {
+          "count": 3,
+          "min": 2076.34,
+          "max": 4550.34,
+          "mean": 3025.02,
+          "median": 2448.38,
+          "p50": 2448.38,
+          "p95": 4340.14,
+          "p99": 4508.3,
+          "stddev": 1089.21
+        },
+        "warmMetrics": {
+          "count": 3,
+          "min": 0,
+          "max": 0.03,
+          "mean": 0.01,
+          "median": 0,
+          "p50": 0,
+          "p95": 0.03,
+          "p99": 0.03,
+          "stddev": 0.01
+        },
+        "stream": {
+          "url": "https://rr2---sn-gqn-n89e.googlevideo.com/videoplayback?expire=1787200823&ei=1zCGatqzF_f4xN8PhuGfwAs&ip=2a0c%3A5a81%3Af488%3A7700%3A4c16%3Ad4f7%3A35c6%3A6981&id=o-AD-bHcjOZwVA7F7FLoPww3D-vF995CDHhdE-hHbo-lrQ&itag=140&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&cps=884&met=1787179223%2C&mh=h5&mm=18%2C29&mn=sn-gqn-n89e%2Csn-h5q7dns7&ms=aub%2Crdu&mv=m&mvi=2&pcm2cms=yes&pl=41&rms=aub%2Caub&initcwndbps=3067500&bui=AR3QkAlqEGmw-lX6XSMjtpX5mGMuLU8PiYL50WbM57d_EPaXtnrLyctYGyhOdFlt0MJbHkvdUkeW8FcS&spc=KBGBconkWpptNtlOs_JiBDmxLSFi9zrIU78Wp02Ur7APtags6v2wtA9YAw&vprv=1&svpuc=1&mime=audio%2Fmp4&rqh=1&gir=yes&clen=7815737&dur=482.882&lmt=1751239249108813&mt=1787178799&fvip=4&keepalive=yes&fexp=51565116%2C51946838&c=VISIONOS&txp=4532534&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AE0s2JYwRAIgAv7i5BqduBXSBmWKKjvFkvsVurcQh1vTbmm_8LUUSbMCIGhBoPt6P9DHvxmPPAXB-EjmLEJdIO7jtS_YWBqbHoju&lsparams=cps%2Cmet%2Cmh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpcm2cms%2Cpl%2Crms%2Cinitcwndbps&lsig=APaTxxMwRgIhALYds6mK_EgtCOZVpWoqeqW0-qr--A4EjJYtNOuP3l2UAiEAnJY95bwStCVKswA4HO1qvQ_SvXcFNw8IfU_yXgV9c9c%3D&range=0-99999999999",
+          "protocol": "https",
+          "mimeType": "audio/mp4",
+          "codec": "mp4a.40.2",
+          "container": "m4a",
+          "durationMs": 483000,
+          "source": {
+            "provider": "music-provider-streaming",
+            "id": "QkF3oxziUI4"
+          }
+        },
+        "peakMemoryBytes": 129744896
+      },
+      {
+        "track": {
+          "id": "8Pa9x9fZBtY",
+          "title": "Sultans Of Swing (Alchemy Live)",
+          "artist": "Dire Straits",
+          "category": "long",
+          "durationSec": 667,
+          "description": "Canción larga (~11m), directo extendido"
+        },
+        "coldRunsMs": [
+          4162.389583000011,
+          2004.7587920000078,
+          2055.3710829999764
+        ],
+        "warmRunsMs": [
+          0.029291999991983175,
+          0.0044169999891892076,
+          0.0036250000121071935
+        ],
+        "coldMetrics": {
+          "count": 3,
+          "min": 2004.76,
+          "max": 4162.39,
+          "mean": 2740.84,
+          "median": 2055.37,
+          "p50": 2055.37,
+          "p95": 3951.69,
+          "p99": 4120.25,
+          "stddev": 1005.4
+        },
+        "warmMetrics": {
+          "count": 3,
+          "min": 0,
+          "max": 0.03,
+          "mean": 0.01,
+          "median": 0,
+          "p50": 0,
+          "p95": 0.03,
+          "p99": 0.03,
+          "stddev": 0.01
+        },
+        "stream": {
+          "url": "https://rr1---sn-gqn-n89l.googlevideo.com/videoplayback?expire=1787200833&ei=4TCGavmpDt6P8uMPubufgAY&ip=2a0c%3A5a81%3Af488%3A7700%3A4c16%3Ad4f7%3A35c6%3A6981&id=o-ADUhHldMKSOl8mBBOMHp5csH8rCw4UdvXOyPEPOk0wyJ&itag=140&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&cps=818&met=1787179233%2C&mh=wZ&mm=18%2C29&mn=sn-gqn-n89l%2Csn-h5q7dns7&ms=aub%2Crdu&mv=m&mvi=1&pl=41&rms=aub%2Caub&initcwndbps=3048750&bui=AR3QkAkSEFxMrx15UiwTConL5t2YxkreMrBYu6_XR3GgwS432XJyd8gWB0jj9g00tOGh6_d80MLpRmOm&spc=KBGBcoq3XbDHftldSmzjiANrhtBpTB76tX6GGsY30cthgaS2Wf0d-CUchw&vprv=1&svpuc=1&mime=audio%2Fmp4&rqh=1&gir=yes&clen=10466131&dur=646.652&lmt=1779534252661051&mt=1787178799&fvip=5&keepalive=yes&fexp=51565115%2C51946838&c=VISIONOS&txp=5532534&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AE0s2JYwRgIhALGAXPF6n20JpP8gGWnSe7dOYvNcETBQOaF-luNhbR2qAiEAjBuAFFA2xMQ7KjHSUHNdHihbhAmB2ZUmQIirMxfl2Bs%3D&lsparams=cps%2Cmet%2Cmh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Crms%2Cinitcwndbps&lsig=APaTxxMwRQIhAINPJu7Gegke88uOGbNbIUQxy0Pftbg3ZxEQR3ecOMFdAiASGa6qsR2QjccFGOaHXxmevNPUNFV42gILr5W5i4fsEQ%3D%3D&range=0-99999999999",
+          "protocol": "https",
+          "mimeType": "audio/mp4",
+          "codec": "mp4a.40.2",
+          "container": "m4a",
+          "durationMs": 647000,
+          "source": {
+            "provider": "music-provider-streaming",
+            "id": "8Pa9x9fZBtY"
+          }
+        },
+        "peakMemoryBytes": 129810432
+      },
+      {
+        "track": {
+          "id": "bM7SZ5SBzyY",
+          "title": "Echoes (Live at Pompeii)",
+          "artist": "Pink Floyd",
+          "category": "long",
+          "durationSec": 990,
+          "description": "Canción muy larga (~16.5m), suite psicodélica"
+        },
+        "coldRunsMs": [],
+        "warmRunsMs": [],
+        "coldMetrics": {
+          "count": 0,
+          "min": 0,
+          "max": 0,
+          "mean": 0,
+          "median": 0,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "stddev": 0
+        },
+        "warmMetrics": {
+          "count": 0,
+          "min": 0,
+          "max": 0,
+          "mean": 0,
+          "median": 0,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "stddev": 0
+        },
+        "error": "yt-dlp failed: ERROR: [youtube] bM7SZ5SBzyY: Private video. Sign in if you've been granted access to this video. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies\n",
+        "peakMemoryBytes": 0
+      },
+      {
+        "track": {
+          "id": "TURbeWK2wwg",
+          "title": "Lofi Hip Hop Chill Beats - Study Mix",
+          "artist": "Lofi Girl / Chillhop",
+          "category": "mix",
+          "durationSec": 1800,
+          "description": "Mix continuo (~30m), caso de estrés para streaming/range-requests"
+        },
+        "coldRunsMs": [
+          3100.248667000007,
+          2214.3421249999956,
+          2218.6176250000135
+        ],
+        "warmRunsMs": [
+          0.028041999990819022,
+          0.0043750000186264515,
+          0.004041000007418916
+        ],
+        "coldMetrics": {
+          "count": 3,
+          "min": 2214.34,
+          "max": 3100.25,
+          "mean": 2511.07,
+          "median": 2218.62,
+          "p50": 2218.62,
+          "p95": 3012.09,
+          "p99": 3082.62,
+          "stddev": 416.62
+        },
+        "warmMetrics": {
+          "count": 3,
+          "min": 0,
+          "max": 0.03,
+          "mean": 0.01,
+          "median": 0,
+          "p50": 0,
+          "p95": 0.03,
+          "p99": 0.03,
+          "stddev": 0.01
+        },
+        "stream": {
+          "url": "https://rr4---sn-gqn-n89e.googlevideo.com/videoplayback?expire=1787200848&ei=8DCGarj6MbS_hcIPvuPPyQ4&ip=2a0c%3A5a81%3Af488%3A7700%3A4c16%3Ad4f7%3A35c6%3A6981&id=o-AAl4nboNNR4mzj8FbmWim7G70N4db4g6DEJ3Lb1MVm3p&itag=140&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&cps=406&met=1787179248%2C&mh=9M&mm=31%2C29&mn=sn-gqn-n89e%2Csn-h5qzen7y&ms=au%2Crdu&mv=m&mvi=4&pcm2cms=yes&pl=41&rms=au%2Cau&pcm2=no&initcwndbps=2530000&bui=AR3QkAnzCFTYf_8L81S1jAgbAEH9comGCw3FfZGTI_o9cLjeQzchTrRbIpVL5sY_yheupqdBzJonxqIW&spc=KBGBcoTBNcQYpLRfPcUvA40fDMx7E1SJ6FyyuhE7a1ZYdjhqO1yKyHwpcg&vprv=1&svpuc=1&mime=audio%2Fmp4&rqh=1&gir=yes&clen=59956505&dur=3704.650&lmt=1741328552082905&mt=1787179085&fvip=3&keepalive=yes&fexp=51565115%2C51946838&c=VISIONOS&txp=4532534&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cpcm2%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AE0s2JYwRQIhAPAc1ad8R7urfVrV1aRzGhWi8Nm67xpkdiK4afYR3ij9AiBlFA8S16Mg39OTbjMv7togBf67Z9nTdFjJotWwJ2lEeA%3D%3D&lsparams=cps%2Cmet%2Cmh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpcm2cms%2Cpl%2Crms%2Cinitcwndbps&lsig=APaTxxMwRgIhAJNF9emsqtU6QZOTxU-imERhnKVK-3GaJNBwCLiWVunPAiEAtUbYSJW0R9NqxJoej6EbS3PkdErzoV7wKQZBEkT5tus%3D&range=0-99999999999",
+          "protocol": "https",
+          "mimeType": "audio/mp4",
+          "codec": "mp4a.40.2",
+          "container": "m4a",
+          "durationMs": 3705000,
+          "source": {
+            "provider": "music-provider-streaming",
+            "id": "TURbeWK2wwg"
+          }
+        },
+        "peakMemoryBytes": 132136960
+      }
+    ],
+    "overallColdMetrics": {
+      "count": 27,
+      "min": 1772.53,
+      "max": 4550.34,
+      "mean": 2362.29,
+      "median": 2210.17,
+      "p50": 2210.17,
+      "p95": 3843.75,
+      "p99": 4449.47,
+      "stddev": 620.87
+    },
+    "overallWarmMetrics": {
+      "count": 27,
+      "min": 0,
+      "max": 0.06,
+      "mean": 0.02,
+      "median": 0,
+      "p50": 0,
+      "p95": 0.05,
+      "p99": 0.06,
+      "stddev": 0.02
+    }
+  },
+  "comparisons": [
+    {
+      "track": {
+        "id": "L_LUpnjgPso",
+        "title": "We Will Rock You",
+        "artist": "Queen",
+        "category": "short",
+        "durationSec": 134,
+        "description": "Canción corta (~2m), rock clásico, alta disponibilidad"
+      },
+      "apiMeanMs": 2048.08,
+      "integratedMeanMs": 2075.78,
+      "deltaMs": 27.7,
+      "deltaPercent": 1.35
+    },
+    {
+      "track": {
+        "id": "dQw4w9WgXcQ",
+        "title": "Never Gonna Give You Up",
+        "artist": "Rick Astley",
+        "category": "standard",
+        "durationSec": 213,
+        "description": "Canción estándar (~3.5m), pop clásico, CDN ultra-caliente"
+      },
+      "apiMeanMs": 2506.28,
+      "integratedMeanMs": 2118.27,
+      "deltaMs": -388.01,
+      "deltaPercent": -15.48
+    },
+    {
+      "track": {
+        "id": "XFkzRNyygfk",
+        "title": "Creep",
+        "artist": "Radiohead",
+        "category": "standard",
+        "durationSec": 239,
+        "description": "Canción estándar (~4m), rock alternativo (referencia en curl-timing.sh)"
+      },
+      "apiMeanMs": 2207.82,
+      "integratedMeanMs": 2187.44,
+      "deltaMs": -20.38,
+      "deltaPercent": -0.92
+    },
+    {
+      "track": {
+        "id": "9bZkp7q19f0",
+        "title": "Gangnam Style",
+        "artist": "PSY",
+        "category": "standard",
+        "durationSec": 252,
+        "description": "Canción estándar (~4.2m), K-pop, multi-stream CDN"
+      },
+      "apiMeanMs": 2815.41,
+      "integratedMeanMs": 2237.57,
+      "deltaMs": -577.84,
+      "deltaPercent": -20.52
+    },
+    {
+      "track": {
+        "id": "kJQP7kiw5Fk",
+        "title": "Despacito ft. Daddy Yankee",
+        "artist": "Luis Fonsi",
+        "category": "standard",
+        "durationSec": 282,
+        "description": "Canción estándar (~4.7m), pop urbano latino"
+      },
+      "apiMeanMs": 2146.21,
+      "integratedMeanMs": 2053.67,
+      "deltaMs": -92.54,
+      "deltaPercent": -4.31
+    },
+    {
+      "track": {
+        "id": "fJ9rUzIMcZQ",
+        "title": "Bohemian Rhapsody",
+        "artist": "Queen",
+        "category": "standard",
+        "durationSec": 359,
+        "description": "Canción estándar-larga (~6m), rock sinfónico con cambios dinámicos"
+      },
+      "apiMeanMs": 2507.19,
+      "integratedMeanMs": 2310.97,
+      "deltaMs": -196.22,
+      "deltaPercent": -7.83
+    },
+    {
+      "track": {
+        "id": "QkF3oxziUI4",
+        "title": "Stairway to Heaven",
+        "artist": "Led Zeppelin",
+        "category": "long",
+        "durationSec": 482,
+        "description": "Canción larga (~8m), rock progresivo clásico"
+      },
+      "apiMeanMs": 2115.78,
+      "integratedMeanMs": 3025.02,
+      "deltaMs": 909.24,
+      "deltaPercent": 42.97
+    },
+    {
+      "track": {
+        "id": "8Pa9x9fZBtY",
+        "title": "Sultans Of Swing (Alchemy Live)",
+        "artist": "Dire Straits",
+        "category": "long",
+        "durationSec": 667,
+        "description": "Canción larga (~11m), directo extendido"
+      },
+      "apiMeanMs": 2049.55,
+      "integratedMeanMs": 2740.84,
+      "deltaMs": 691.29,
+      "deltaPercent": 33.73
+    },
+    {
+      "track": {
+        "id": "bM7SZ5SBzyY",
+        "title": "Echoes (Live at Pompeii)",
+        "artist": "Pink Floyd",
+        "category": "long",
+        "durationSec": 990,
+        "description": "Canción muy larga (~16.5m), suite psicodélica"
+      },
+      "apiMeanMs": 0,
+      "integratedMeanMs": 0,
+      "deltaMs": 0,
+      "deltaPercent": 0
+    },
+    {
+      "track": {
+        "id": "TURbeWK2wwg",
+        "title": "Lofi Hip Hop Chill Beats - Study Mix",
+        "artist": "Lofi Girl / Chillhop",
+        "category": "mix",
+        "durationSec": 1800,
+        "description": "Mix continuo (~30m), caso de estrés para streaming/range-requests"
+      },
+      "apiMeanMs": 2045.97,
+      "integratedMeanMs": 2511.07,
+      "deltaMs": 465.1,
+      "deltaPercent": 22.73
+    }
+  ]
+}
