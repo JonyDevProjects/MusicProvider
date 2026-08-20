@@ -10,13 +10,9 @@ import type {
   Playlist,
   MetadataProvider
 } from '@nuclearplayer/plugin-sdk';
-import {
-  scrapeYoutube as coreScrapeYoutube,
-  resolveStreamInfo,
-  type StreamData,
-  type HttpLike,
-  type SearchResult
-} from './core/index.js';
+import { scrapeYoutube as coreScrapeYoutube } from './core/ytScraper.js';
+import { resolveStreamInfo } from './core/cache.js';
+import type { StreamData, HttpLike, SearchResult } from './core/types.js';
 
 const PROVIDER_ID = 'music-provider';
 const PROVIDER_NAME = 'MusicProvider';

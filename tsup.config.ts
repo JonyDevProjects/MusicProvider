@@ -7,7 +7,7 @@ export default defineConfig({
   outDir: 'dist',
   outExtension: () => ({ js: '.js' }),
   external: ['@nuclearplayer/plugin-sdk'],
-  noExternal: ['lru-cache'],
+  noExternal: [/(.*)/], // Bundle all dependencies (lru-cache, etc.) so Nuclear doesn't need external node_modules
   esbuildOptions: (options) => {
     options.conditions = ['browser'];
     options.mainFields = ['browser', 'module', 'main'];
