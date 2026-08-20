@@ -15,7 +15,7 @@ Estas restricciones provienen de la experiencia acumulada (integración Nuclear 
 | # | Restricción / Hallazgo | Implicación |
 |---|------------------------|-------------|
 | R-1 | El sandbox de plugins de Nuclear **no tiene dependencias HTTP nativas**; los plugins usan `api.Http.fetch` | Todo scraping/HTTP del plugin debe usar la API del host (nunca `axios`/`fetch` de Node) |
-| R-2 | `api.Http.fetch` requiere inyección manual de `Accept-Encoding: gzip, deflate, br` | Reduce el HTML de YouTube de ~2MB a ~300KB; omitirlo degrada latencia |
+| R-2 | `api.Http.fetch` **NO DEBE** enviar cabeceras manuales `Accept-Encoding: gzip, deflate, br` | `reqwest` en Rust (Nuclear) no tiene habilitada la descompresión automática en `Cargo.toml`. Enviarlo devuelve bytes crudos comprimidos en `response.text()`, corrompiendo el HTML y quebrando el parsing de `ytInitialData`. |
 | R-3 | `source.provider` en Nuclear debe coincidir exactamente con el `STREAMING_ID` activo | Si no coincide, Nuclear ejecuta un `searchForTrack` redundante que retrasa el playback 1–2s |
 | R-4 | IDs malformados pasados por plugins competidores crashean el backend Rust de yt-dlp de Nuclear | El plugin DEBE validar inputs antes de llamar a `api.Ytdlp.getStream` |
 | R-5 | Usar `api.Ytdlp.getStream` delega el procesamiento pesado al backend Rust | Aislamiento óptimo; el plugin no descarga binarios ni hace spawn |
