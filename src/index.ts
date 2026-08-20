@@ -76,11 +76,10 @@ function toStream(url: string, info: StreamData, sourceId: string): Stream {
 function createHttpAdapter(api: NuclearPluginAPI): HttpLike {
   return {
     fetch: async (url: string, init?: { headers?: Record<string, string>; method?: string }) => {
+      // Do NOT send manual Accept-Encoding when using reqwest default client without gzip feature,
+      // as reqwest will return raw compressed binary bytes into response.text() causing string corruption.
       const res = await api.Http.fetch(url, {
-        headers: {
-          'Accept-Encoding': 'gzip, deflate, br',
-          ...(init?.headers || {})
-        },
+        headers: init?.headers,
         method: init?.method
       });
       const body = typeof res.body === 'string' ? res.body : await (res as any).text?.() || '';
@@ -96,7 +95,7 @@ function createHttpAdapter(api: NuclearPluginAPI): HttpLike {
 async function scrapeYoutube(api: NuclearPluginAPI, query: string, limit: number): Promise<SearchResult[]> {
   const http = createHttpAdapter(api);
   return coreScrapeYoutube(http, query, limit, async (fallbackQuery, fallbackLimit) => {
-    // Fallback to Nuclear's Ytdlp which will fail if yt-dlp isn't installed in host
+    // Fallback to Nuclear's Ytdlp which delegates to Rust yt-dlp backend
     const results = await api.Ytdlp.search(fallbackQuery, fallbackLimit);
     return (results as any[]).map(r => ({
       id: r.id || r.videoId,

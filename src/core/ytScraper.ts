@@ -9,12 +9,34 @@ export function parseDuration(text: string): number {
 }
 
 export function parseYoutubeSearchHtml(html: string, limit: number = 10): SearchResult[] {
-  const match = html.match(/var ytInitialData = (\{.+?\});<\/script>/);
-  if (!match) {
+  // Try multiple regex patterns to support different YouTube HTML layouts & minifications
+  let jsonStr: string | null = null;
+
+  const patterns = [
+    /var ytInitialData = (\{.+?\});<\/script>/,
+    /ytInitialData\s*=\s*(\{.+?\});\s*(?:var|<\/script>)/,
+    /window\["ytInitialData"\]\s*=\s*(\{.+?\});/,
+    /ytInitialData\s*=\s*(\{.+?\});/
+  ];
+
+  for (const pattern of patterns) {
+    const match = html.match(pattern);
+    if (match && match[1]) {
+      try {
+        JSON.parse(match[1]); // Validate JSON integrity
+        jsonStr = match[1];
+        break;
+      } catch {
+        // Continue to next pattern if parsing failed
+      }
+    }
+  }
+
+  if (!jsonStr) {
     throw new Error('No ytInitialData found in HTML');
   }
 
-  const json = JSON.parse(match[1]);
+  const json = JSON.parse(jsonStr);
   const contents = json.contents?.twoColumnSearchResultsRenderer?.primaryContents?.sectionListRenderer?.contents;
   if (!contents) {
     throw new Error('Invalid ytInitialData structure');
@@ -55,8 +77,7 @@ export async function scrapeYoutube(
     const res = await http.fetch(`https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Accept-Encoding': 'gzip, deflate, br'
+        'Accept-Language': 'en-US,en;q=0.9'
       }
     });
 

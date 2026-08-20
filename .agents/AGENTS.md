@@ -41,6 +41,22 @@ El objetivo actual del proyecto es:
   - `packages/player/src-tauri/src/ytdlp.rs` para ver cómo el backend oficial de Nuclear consume `yt-dlp`.
 - Consulta el skill `nuclear-reference` para más detalles.
 
+### Protocolo de Pruebas Manuales en Nuclear (DevTools)
+
+Para probar este y cualquier otro plugin en el entorno real de Nuclear:
+1. **Ejecutar Nuclear en modo escritorio con Tauri**:
+   ```bash
+   cd /Users/jonathanquishpe/JoniDev/nuclear/packages/player
+   pnpm tauri dev
+   ```
+   *(No usar solo `npm run dev` ni el navegador web directamente, ya que se requiere el backend Rust para habilitar `isTauri` y las llamadas nativas `http_fetch` / `ytdlp`)*.
+2. **Inspeccionar la Consola**:
+   - Abrir DevTools en la ventana de Nuclear con **`Cmd + Option + I`** (o F12).
+   - Revisar la pestaña **Console** para verificar los logs de ciclo de vida (`[Plugin] loaded/enabled`), logs del core (`[Core:Scraper]`), fallbacks y resolución/hits de caché (`[cache] Stream URL cache HIT/MISS`).
+3. **Instalación de Plugins**:
+   - Para cargar plugins desde la UI ("Add Plugin"), seleccionar siempre una carpeta externa de staging limpia (ej. `/Users/jonathanquishpe/JoniDev/music-provider-plugin`) que contenga únicamente el bundle compilado (`index.js`) y el `package.json`, evitando directorios con archivos de desarrollo `.ts` o `node_modules`.
+   - Evitar enviar cabeceras manuales `Accept-Encoding: gzip, deflate, br` en `api.Http.fetch`, ya que `reqwest` en Rust no descomprime automáticamente a menos que tenga habilitado el feature en Cargo.toml.
+
 ## Ecosistema configurado (Gentle-AI inspired)
 
 Este proyecto tiene configurados los siguientes componentes del ecosistema:
