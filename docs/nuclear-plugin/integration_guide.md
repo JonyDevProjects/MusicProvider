@@ -19,7 +19,7 @@ El entorno Node.js es permisivo con el sistema de archivos y procesos. El entorn
 
 ## Pasos para la Integración Física
 
-1.  **Clonar el código base:** Asegurarse de tener el repositorio de Nuclear actualizado localmente en `/Users/jonathanquishpe/JoniDev/nuclear`.
+1.  **Clonar el código base:** Asegurarse de tener el repositorio de Nuclear actualizado localmente en el directorio hermano `../nuclear`.
 2.  **Scaffolding del Plugin:** Usar el script o la metodología documentada en `.agents/skills/writing-plugins/SKILL.md` (si existe en Nuclear) o crear una nueva carpeta dentro del workspace de plugins (o externamente si se publica en npm).
 3.  **Migrar Parseo:** Copiar la lógica de parseo NDJSON de `MusicProvider/src/ytdlpWrapper.ts`.
 4.  **Implementar Interfaz SDK:** Envolver la lógica migrada dentro de una clase que implemente `MetadataProvider` o `StreamProvider` (importado de `@nuclearplayer/plugin-sdk`).

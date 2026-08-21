@@ -41,7 +41,7 @@ El objetivo actual del proyecto es:
 2. Adaptar la interfaz a los estándares del `@nuclearplayer/plugin-sdk`.
 3. Empaquetar todo el proyecto como un plugin independiente de Nuclear, permitiéndole a Nuclear usar yt-dlp y yt-search.
 
-- **Ubicación de Referencia**: El código base original de Nuclear se encuentra en `/Users/jonathanquishpe/JoniDev/nuclear`.
+- **Ubicación de Referencia**: El código base original de Nuclear se encuentra en el repositorio hermano `../nuclear` (o `~/JoniDev/nuclear`).
 - Cuando diseñes nuevas funciones, interfaces o flujos de trabajo, **DEBES revisar el código de Nuclear**. En especial:
   - `packages/plugin-sdk/` para entender cómo se declaran los tipos de plugins y cómo retornan la información.
   - `packages/player/src-tauri/src/ytdlp.rs` para ver cómo el backend oficial de Nuclear consume `yt-dlp`.
@@ -52,7 +52,7 @@ El objetivo actual del proyecto es:
 Para probar este y cualquier otro plugin en el entorno real de Nuclear:
 1. **Ejecutar Nuclear en modo escritorio con Tauri**:
    ```bash
-   cd /Users/jonathanquishpe/JoniDev/nuclear/packages/player
+   cd ../nuclear/packages/player
    pnpm tauri dev
    ```
    *(No usar solo `npm run dev` ni el navegador web directamente, ya que se requiere el backend Rust para habilitar `isTauri` y las llamadas nativas `http_fetch` / `ytdlp`)*.
@@ -60,7 +60,7 @@ Para probar este y cualquier otro plugin en el entorno real de Nuclear:
    - Abrir DevTools en la ventana de Nuclear con **`Cmd + Option + I`** (o F12).
    - Revisar la pestaña **Console** para verificar los logs de ciclo de vida (`[Plugin] loaded/enabled`), logs del core (`[Core:Scraper]`), fallbacks y resolución/hits de caché (`[cache] Stream URL cache HIT/MISS`).
 3. **Instalación de Plugins**:
-   - Para cargar plugins desde la UI ("Add Plugin"), seleccionar siempre una carpeta externa de staging limpia (ej. `/Users/jonathanquishpe/JoniDev/music-provider-plugin`) que contenga únicamente el bundle compilado (`index.js`) y el `package.json`, evitando directorios con archivos de desarrollo `.ts` o `node_modules`.
+   - Para cargar plugins desde la UI ("Add Plugin"), seleccionar siempre una carpeta externa de staging limpia (ej. `../music-provider-plugin` o `~/music-provider-plugin`) que contenga únicamente el bundle compilado (`index.js`) y el `package.json`, evitando directorios con archivos de desarrollo `.ts` o `node_modules`.
    - Evitar enviar cabeceras manuales `Accept-Encoding: gzip, deflate, br` en `api.Http.fetch`, ya que `reqwest` en Rust no descomprime automáticamente a menos que tenga habilitado el feature en Cargo.toml.
 
 ## Ecosistema configurado (Gentle-AI inspired)

@@ -29,4 +29,4 @@
 
 - **Sandbox sin `node_modules`**: El plugin se evalúa mediante `esbuild-wasm` en el webview de Nuclear con un set estricto de módulos permitidos (`@nuclearplayer/plugin-sdk`, `@nuclearplayer/ui`, `react`). Todo lo demás debe estar embebido en `dist/index.js`.
 - **Entorno Host**: Las llamadas nativas (`api.Http.fetch`, `api.Ytdlp`) dependen del backend en Rust de Nuclear (`isTauri: true`).
-- **Pruebas Oficiales**: Para auditoría de logs, se ejecuta `cd /Users/jonathanquishpe/JoniDev/nuclear/packages/player && pnpm tauri dev` y se inspecciona la consola con `Cmd + Option + I`.
+- **Pruebas Oficiales**: Para auditoría de logs, se ejecuta `cd ../nuclear/packages/player && pnpm tauri dev` y se inspecciona la consola con `Cmd + Option + I`.

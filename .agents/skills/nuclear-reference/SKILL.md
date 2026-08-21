@@ -7,7 +7,7 @@ description: Guía de integración y referencia cruzada con el repositorio princ
 
 Este proyecto (`MusicProvider`) es una Prueba de Concepto (PoC) aislada. El código que aquí desarrollamos está destinado a convertirse en un **Plugin de TypeScript** para Nuclear. 
 
-Cuando realices tareas complejas, modelado de datos o diseño de arquitecturas en este repositorio, **DEBES apoyarte en el repositorio principal** (`/Users/jonathanquishpe/JoniDev/nuclear`) para asegurar la alineación conceptual.
+Cuando realices tareas complejas, modelado de datos o diseño de arquitecturas en este repositorio, **DEBES apoyarte en el repositorio principal** (`../nuclear` o `~/JoniDev/nuclear`) para asegurar la alineación conceptual.
 
 ## ¿Qué buscar en Nuclear?
 
@@ -29,16 +29,16 @@ El entorno de Plugins de Nuclear tiene limitaciones de dependencias en comparaci
 
 ### Flujo de Trabajo Recomendado
 1. Diseña la interfaz TS en MusicProvider.
-2. Compara tu interfaz usando el comando `cat` o la herramienta `view_file` apuntando a `/Users/jonathanquishpe/JoniDev/nuclear/packages/plugin-sdk/...`.
+2. Compara tu interfaz apuntando a `../nuclear/packages/plugin-sdk/...`.
 3. Ajusta la nomenclatura en MusicProvider.
 4. Desarrolla y prueba con `npm test`.
 
 ### Protocolo de Pruebas en Vivo con Nuclear
 1. Arrancar Nuclear en modo escritorio (Tauri):
    ```bash
-   cd /Users/jonathanquishpe/JoniDev/nuclear/packages/player && pnpm tauri dev
+   cd ../nuclear/packages/player && pnpm tauri dev
    ```
 2. Abrir DevTools con `Cmd + Option + I` en macOS (pestaña **Console**).
-3. Compilar el plugin con `npm run build` e instalar desde carpeta de staging limpia (ej. `~/JoniDev/music-provider-plugin`).
+3. Compilar el plugin con `npm run package` e instalar desde carpeta de staging limpia (ej. `../music-provider-plugin`).
 4. Monitorear los logs en consola (`[MusicProvider]`, `[Core:Scraper]`, `[cache] Stream URL cache HIT/MISS`).
 

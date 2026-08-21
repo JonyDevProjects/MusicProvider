@@ -4,7 +4,7 @@
 
 *   **Origen:** El proyecto principal de música (Nuclear) utiliza la herramienta de línea de comandos `yt-dlp` en su backend escrito en Rust (`src-tauri/src/ytdlp.rs`) para resolver metadatos y descargar streams de audio de diversas plataformas.
 *   **Necesidad:** Surgió la necesidad de crear una aplicación "standalone" (totalmente independiente y aislada del proyecto principal) para poder probar funcionalidades, flujos de streaming e integraciones con `yt-dlp` de manera ágil antes de integrarlas al reproductor final.
-*   **Requerimientos:** Se solicitó una herramienta que pudiera extraer tracks de audio, obtener metadatos básicos (título, artista, miniatura, url de stream) y descargar los archivos físicos en un directorio específico (`/Users/jonathanquishpe/Desktop/Tmp/MusicProvider`).
+*   **Requerimientos:** Se solicitó una herramienta que pudiera extraer tracks de audio, obtener metadatos básicos (título, artista, miniatura, url de stream) y descargar los archivos físicos en un directorio específico (`~/Desktop/Tmp/MusicProvider`).
 *   **Situación Previa:** No existía un entorno de pruebas local en TypeScript que replicara de forma fiel cómo el backend de Nuclear invoca y parsea la información asíncrona de `yt-dlp`.
 
 ## 2. Decisiones de Diseño Arquitectónico
@@ -30,7 +30,7 @@ La herramienta ha sido implementada de forma completa y está operativa en su ni
 
 ### Estructura del Directorio
 ```text
-/Users/jonathanquishpe/Desktop/Tmp/MusicProvider/
+MusicProvider/
 ├── .agents/                 # Ecosistema de agentes (Reglas y Skills documentados para IA)
 ├── bin/                     # Carpeta autogenerada donde reside el binario de yt-dlp
 ├── docs/                    # Documentación del proyecto (este archivo)

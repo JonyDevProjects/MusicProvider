@@ -49,7 +49,7 @@
 - [x] Ejecutar `npm run package` localmente.
 - [x] Probar la instalación del `.zip` resultante y staging en Nuclear en vivo siguiendo el protocolo oficial:
   ```bash
-  cd /Users/jonathanquishpe/JoniDev/nuclear/packages/player && pnpm tauri dev
+  cd ../nuclear/packages/player && pnpm tauri dev
   ```
 - [x] Inspeccionar DevTools (`Cmd + Option + I`) para validar activación, búsqueda y reproducción.
 - [x] Persistir avances en `docs/future-roadmap/phase4/session-log.md` y en la memoria de Engram.

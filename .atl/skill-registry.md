@@ -7,12 +7,12 @@ Last updated: 2026-08-18
 ## Sources scanned
 
 - .agents/skills
-- /Users/jonathanquishpe/.config/agents/skills
-- /Users/jonathanquishpe/.agents/skills
-- /Users/jonathanquishpe/.config/opencode/skills
-- /Users/jonathanquishpe/.gemini/skills
-- /Users/jonathanquishpe/.copilot/skills
-- /Users/jonathanquishpe/.codex/skills
+- ~/.config/agents/skills
+- ~/.agents/skills
+- ~/.config/opencode/skills
+- ~/.gemini/skills
+- ~/.copilot/skills
+- ~/.codex/skills
 
 ## Contract
 
@@ -24,19 +24,19 @@ Last updated: 2026-08-18
 
 | Skill | Trigger / description | Scope | Path |
 | --- | --- | --- | --- |
-| `branch-pr` | Create Gentle AI pull requests with issue-first checks. Trigger: creating, opening, or preparing PRs for review. | user | `/Users/jonathanquishpe/.config/opencode/skills/branch-pr/SKILL.md` |
-| `chained-pr` | Trigger: PRs over 400 lines, stacked PRs, review slices. Split oversized changes into chained PRs that protect review focus. | user | `/Users/jonathanquishpe/.config/opencode/skills/chained-pr/SKILL.md` |
-| `cognitive-doc-design` | Design docs that reduce cognitive load. Trigger: writing guides, READMEs, RFCs, onboarding, architecture, or review-facing docs. | user | `/Users/jonathanquishpe/.config/opencode/skills/cognitive-doc-design/SKILL.md` |
-| `comment-writer` | Write warm, direct collaboration comments. Trigger: PR feedback, issue replies, reviews, Slack messages, or GitHub comments. | user | `/Users/jonathanquishpe/.config/opencode/skills/comment-writer/SKILL.md` |
-| `find-skills` | Helps users discover and install agent skills when they ask questions like "how do I do X", "find a skill for X", "is there a skill that can...", or express interest in extending capabilities. This skill should be used when the user is looking for functionality that might exist as an installable skill. | user | `/Users/jonathanquishpe/.agents/skills/find-skills/SKILL.md` |
-| `go-testing` | Trigger: Go tests, go test coverage, Bubbletea teatest, golden files. Apply focused Go testing patterns. | user | `/Users/jonathanquishpe/.config/opencode/skills/go-testing/SKILL.md` |
-| `issue-creation` | Create Gentle AI issues with issue-first checks. Trigger: creating GitHub issues, bug reports, or feature requests. | user | `/Users/jonathanquishpe/.config/opencode/skills/issue-creation/SKILL.md` |
-| `judgment-day` | Trigger: judgment day, dual review, adversarial review, juzgar. Run blind dual review, fix confirmed issues, then re-judge. | user | `/Users/jonathanquishpe/.config/opencode/skills/judgment-day/SKILL.md` |
-| `music-provider` | Guía de integración y resolución de problemas con el wrapper de yt-dlp y la descarga de audio. | project | `/Users/jonathanquishpe/JoniDev/MusicProvider/.agents/skills/music-provider/SKILL.md` |
-| `nuclear-reference` | Guía de integración y referencia cruzada con el repositorio principal de Nuclear. Obligatorio al diseñar funcionalidades que serán portadas. | project | `/Users/jonathanquishpe/JoniDev/MusicProvider/.agents/skills/nuclear-reference/SKILL.md` |
-| `skill-creator` | Trigger: new skills, agent instructions, documenting AI usage patterns. Create LLM-first skills with valid frontmatter. | user | `/Users/jonathanquishpe/.config/opencode/skills/skill-creator/SKILL.md` |
-| `skill-improver` | Trigger: improve skills, audit skills, refactor skills, skill quality. Audit and upgrade existing LLM-first skills. | user | `/Users/jonathanquishpe/.config/opencode/skills/skill-improver/SKILL.md` |
-| `work-unit-commits` | Plan commits as reviewable work units. Trigger: implementation, commit splitting, chained PRs, or keeping tests and docs with code. | user | `/Users/jonathanquishpe/.config/opencode/skills/work-unit-commits/SKILL.md` |
+| `branch-pr` | Create Gentle AI pull requests with issue-first checks. Trigger: creating, opening, or preparing PRs for review. | user | `~/.config/opencode/skills/branch-pr/SKILL.md` |
+| `chained-pr` | Trigger: PRs over 400 lines, stacked PRs, review slices. Split oversized changes into chained PRs that protect review focus. | user | `~/.config/opencode/skills/chained-pr/SKILL.md` |
+| `cognitive-doc-design` | Design docs that reduce cognitive load. Trigger: writing guides, READMEs, RFCs, onboarding, architecture, or review-facing docs. | user | `~/.config/opencode/skills/cognitive-doc-design/SKILL.md` |
+| `comment-writer` | Write warm, direct collaboration comments. Trigger: PR feedback, issue replies, reviews, Slack messages, or GitHub comments. | user | `~/.config/opencode/skills/comment-writer/SKILL.md` |
+| `find-skills` | Helps users discover and install agent skills when they ask questions like "how do I do X", "find a skill for X", "is there a skill that can...", or express interest in extending capabilities. This skill should be used when the user is looking for functionality that might exist as an installable skill. | user | `~/.agents/skills/find-skills/SKILL.md` |
+| `go-testing` | Trigger: Go tests, go test coverage, Bubbletea teatest, golden files. Apply focused Go testing patterns. | user | `~/.config/opencode/skills/go-testing/SKILL.md` |
+| `issue-creation` | Create Gentle AI issues with issue-first checks. Trigger: creating GitHub issues, bug reports, or feature requests. | user | `~/.config/opencode/skills/issue-creation/SKILL.md` |
+| `judgment-day` | Trigger: judgment day, dual review, adversarial review, juzgar. Run blind dual review, fix confirmed issues, then re-judge. | user | `~/.config/opencode/skills/judgment-day/SKILL.md` |
+| `music-provider` | Guía de integración y resolución de problemas con el wrapper de yt-dlp y la descarga de audio. | project | `~/JoniDev/MusicProvider/.agents/skills/music-provider/SKILL.md` |
+| `nuclear-reference` | Guía de integración y referencia cruzada con el repositorio principal de Nuclear. Obligatorio al diseñar funcionalidades que serán portadas. | project | `~/JoniDev/MusicProvider/.agents/skills/nuclear-reference/SKILL.md` |
+| `skill-creator` | Trigger: new skills, agent instructions, documenting AI usage patterns. Create LLM-first skills with valid frontmatter. | user | `~/.config/opencode/skills/skill-creator/SKILL.md` |
+| `skill-improver` | Trigger: improve skills, audit skills, refactor skills, skill quality. Audit and upgrade existing LLM-first skills. | user | `~/.config/opencode/skills/skill-improver/SKILL.md` |
+| `work-unit-commits` | Plan commits as reviewable work units. Trigger: implementation, commit splitting, chained PRs, or keeping tests and docs with code. | user | `~/.config/opencode/skills/work-unit-commits/SKILL.md` |
 
 ## Loading protocol
 

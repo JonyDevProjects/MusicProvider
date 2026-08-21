@@ -83,11 +83,11 @@ Para probar el plugin en vivo dentro de la aplicación de escritorio de Nuclear:
    ```
 2. Iniciar Nuclear en modo Tauri dev:
    ```bash
-   cd /Users/jonathanquishpe/JoniDev/nuclear/packages/player
+   cd ../nuclear/packages/player
    pnpm tauri dev
    ```
 3. Abrir DevTools (`Cmd + Option + I` en macOS o F12).
-4. Ir a **Settings > Plugins > Add Plugin** y seleccionar la carpeta de staging generada (`/Users/jonathanquishpe/JoniDev/music-provider-plugin`).
+4. Ir a **Settings > Plugins > Add Plugin** y seleccionar la carpeta de staging generada (`../music-provider-plugin`).
 5. Verificar en la pestaña **Console** los logs `[MusicProvider] Plugin enabled` y `[cache] Stream URL cache HIT`.
 
 ---

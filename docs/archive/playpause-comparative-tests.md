@@ -96,7 +96,7 @@ Three changes in `Spoti5_app/lib/`:
 ### Step 1: Start the Backend Server
 
 ```bash
-cd /Users/jonathanquishpe/JoniDev/MusicProvider
+cd ~/JoniDev/MusicProvider
 npx tsx src/server.ts
 ```
 
@@ -115,7 +115,7 @@ Verify: `curl -s -o /dev/null -w "%{http_code}" https://<subdomain>.trycloudflar
 ### Step 3: Deploy App (Local Network Mode)
 
 ```bash
-cd /Users/jonathanquishpe/JoniDev/MusicProvider/Spoti5_app
+cd ~/JoniDev/MusicProvider/Spoti5_app
 MAC_IP=$(ipconfig getifaddr en0)
 
 # iPhone (wireless)
@@ -131,7 +131,7 @@ flutter run --release -d FFY5T17C16022581 --dart-define=BASE_URL=http://${MAC_IP
 ### Step 4: Deploy App (Cloudflare Tunnel Mode)
 
 ```bash
-cd /Users/jonathanquishpe/JoniDev/MusicProvider/Spoti5_app
+cd ~/JoniDev/MusicProvider/Spoti5_app
 TUNNEL_URL="https://<subdomain>.trycloudflare.com"
 
 # iPhone (wireless)

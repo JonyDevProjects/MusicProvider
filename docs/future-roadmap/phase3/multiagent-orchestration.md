@@ -65,7 +65,7 @@ agy --print \
   --model gemini-3.7-flash-high \
   --mode accept-edits \
   --print-timeout 10m \
-  --add-dir /Users/jonathanquishpe/JoniDev/Spoti5 \
+  --add-dir ../Spoti5 \
   "<PROMPT_CON_CONTEXTO_Y_SKILL>"
 ```
 

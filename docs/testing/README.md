@@ -84,14 +84,14 @@ Para validar el plugin en el entorno real de Nuclear:
    ```
 2. **Iniciar Nuclear en modo desarrollo**:
    ```bash
-   cd /Users/jonathanquishpe/JoniDev/nuclear/packages/player
+   cd ../nuclear/packages/player
    pnpm tauri dev
    ```
 3. **Abrir DevTools**:
    - Presionar `Cmd + Option + I` (o F12).
 4. **Cargar el Plugin**:
    - En Nuclear, ir a **Settings > Plugins > Add Plugin**.
-   - Seleccionar la carpeta externa de staging limpia (`/Users/jonathanquishpe/JoniDev/music-provider-plugin`).
+   - Seleccionar la carpeta externa de staging limpia (`../music-provider-plugin`).
 5. **Comprobar la Consola de DevTools**:
    - `[MusicProvider] Plugin enabled`: Indica carga exitosa.
    - `[Core:Scraper]`: Logs de scraping de búsqueda.
