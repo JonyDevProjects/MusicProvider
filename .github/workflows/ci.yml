@@ -47,5 +47,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: music-provider-plugin
-          path: music-provider-plugin.zip
+          path: |
+            plugin.zip
+            music-provider-plugin.zip
           retention-days: 7

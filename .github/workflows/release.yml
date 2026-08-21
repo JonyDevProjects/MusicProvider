@@ -38,7 +38,9 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: music-provider-plugin.zip
+          files: |
+            plugin.zip
+            music-provider-plugin.zip
           generate_release_notes: true
           draft: false
           prerelease: false

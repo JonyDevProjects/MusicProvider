@@ -10,7 +10,8 @@ const ROOT_DIR = path.resolve(__dirname, '..');
 const DIST_DIR = path.join(ROOT_DIR, 'dist');
 const STAGING_DIR = path.join(ROOT_DIR, 'dist', 'plugin-staging');
 const EXTERNAL_STAGING_DIR = path.resolve(ROOT_DIR, '..', 'music-provider-plugin');
-const OUTPUT_ZIP = path.join(ROOT_DIR, 'music-provider-plugin.zip');
+const OFFICIAL_ZIP = path.join(ROOT_DIR, 'plugin.zip');
+const LEGACY_ZIP = path.join(ROOT_DIR, 'music-provider-plugin.zip');
 
 async function packagePlugin() {
   console.log('📦 Starting MusicProvider Nuclear Plugin packaging...');
@@ -33,11 +34,14 @@ async function packagePlugin() {
   const cleanManifest = {
     name: rootPkg.name || 'music-provider',
     version: rootPkg.version || '1.0.0',
-    description: rootPkg.description || 'Standalone music provider utilizing yt-dlp',
+    description: rootPkg.description || 'High-performance YouTube music search and streaming provider utilizing yt-dlp',
     author: rootPkg.author || 'iJonyDev',
     main: 'index.js',
+    category: 'streaming',
+    categories: ['streaming'],
     nuclear: rootPkg.nuclear || {
       displayName: 'MusicProvider',
+      category: 'streaming',
       categories: ['streaming'],
       permissions: ['net', 'fs'],
       icon: {
@@ -74,30 +78,32 @@ async function packagePlugin() {
     console.warn(`⚠️ Could not sync external staging dir: ${err.message}`);
   }
 
-  // 4. Create ZIP archive
-  if (fs.existsSync(OUTPUT_ZIP)) {
-    fs.unlinkSync(OUTPUT_ZIP);
+  // 4. Create ZIP archives (official plugin.zip and legacy alias)
+  for (const zipPath of [OFFICIAL_ZIP, LEGACY_ZIP]) {
+    if (fs.existsSync(zipPath)) {
+      fs.unlinkSync(zipPath);
+    }
+    const zip = new AdmZip();
+    zip.addLocalFile(stagingBundlePath);
+    zip.addLocalFile(stagingPkgPath);
+    zip.writeZip(zipPath);
+
+    const zipStat = fs.statSync(zipPath);
+    console.log(`📦 Zip Archive created: ${zipPath} (${Math.round(zipStat.size / 1024)} KB)`);
+
+    // Verify ZIP contents
+    const verifyZip = new AdmZip(zipPath);
+    const zipEntries = verifyZip.getEntries().map((e) => e.entryName);
+    console.log(`🔍 Verified entries for ${path.basename(zipPath)}:`, zipEntries);
+
+    if (!zipEntries.includes('index.js') || !zipEntries.includes('package.json') || zipEntries.length !== 2) {
+      throw new Error(`Unexpected ZIP structure in ${zipPath}: ${JSON.stringify(zipEntries)}`);
+    }
   }
 
-  const zip = new AdmZip();
-  zip.addLocalFile(stagingBundlePath);
-  zip.addLocalFile(stagingPkgPath);
-  zip.writeZip(OUTPUT_ZIP);
-
-  const zipStat = fs.statSync(OUTPUT_ZIP);
   console.log(`\n🎉 Packaging complete!`);
-  console.log(`📦 Zip Archive: ${OUTPUT_ZIP} (${Math.round(zipStat.size / 1024)} KB)`);
   console.log(`📋 Manifest:`);
   console.log(JSON.stringify(cleanManifest, null, 2));
-
-  // 5. Verify ZIP contents
-  const verifyZip = new AdmZip(OUTPUT_ZIP);
-  const zipEntries = verifyZip.getEntries().map((e) => e.entryName);
-  console.log(`🔍 Verified ZIP entries:`, zipEntries);
-
-  if (!zipEntries.includes('index.js') || !zipEntries.includes('package.json') || zipEntries.length !== 2) {
-    throw new Error(`Unexpected ZIP structure: ${JSON.stringify(zipEntries)}`);
-  }
   console.log(`✨ Standalone artifact verification passed!\n`);
 }
 
