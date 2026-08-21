@@ -26,7 +26,7 @@ Documentación de referencia oficial: [docs.nuclearplayer.com/nuclear/plugins/pu
   "name": "MusicProvider",
   "description": "High-performance YouTube music search and streaming provider utilizing yt-dlp",
   "author": "iJonyDev",
-  "repo": "iJonyDev/MusicProvider",
+  "repo": "JonyDevProjects/MusicProvider",
   "category": "streaming",
   "categories": ["streaming"],
   "tags": ["youtube", "streaming", "yt-dlp", "audio"],

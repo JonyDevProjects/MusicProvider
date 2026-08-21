@@ -36,7 +36,7 @@
 
 ## 3. Checklist de Verificación y Criterios de Aceptación
 
-- [ ] `npm run package` genera `plugin.zip` con peso < 20 KB conteniendo únicamente `index.js` y `package.json`.
-- [ ] `git push origin v1.0.0` ejecuta el workflow de release exitosamente en GitHub Actions.
-- [ ] El release en GitHub contiene el asset `plugin.zip` descargable públicamente.
-- [ ] La entrada en `plugins.json` del registro de Nuclear pasa la validación del esquema oficial.
+- [x] `npm run package` genera `plugin.zip` con peso < 20 KB conteniendo únicamente `index.js` y `package.json`.
+- [x] `git push origin v1.0.0` ejecuta el workflow de release exitosamente en GitHub Actions.
+- [x] El release en GitHub contiene el asset `plugin.zip` descargable públicamente.
+- [x] La entrada en `plugins.json` del registro de Nuclear pasa la validación del esquema oficial.
