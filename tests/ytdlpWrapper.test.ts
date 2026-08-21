@@ -6,8 +6,9 @@ import { search, getStreamInfo, getPlaylistInfo, downloadTrack } from '../src/yt
 
 const TEST_DOWNLOAD_DIR = path.resolve('./tests/downloads');
 const CREEP_VIDEO_ID = 'XFkzRNyygfk'; // Radiohead - Creep
+const isCI = !!process.env.CI;
 
-describe('ytdlpWrapper Integration Tests', () => {
+describe.skipIf(isCI)('ytdlpWrapper Integration Tests', () => {
   // Ensure yt-dlp is installed before running integration tests
   beforeAll(async () => {
     await ensureInstalled();
