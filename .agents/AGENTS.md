@@ -4,9 +4,9 @@ Directrices para agentes de codificación de IA que trabajan en el proyecto Musi
 
 ## Descripción del Proyecto
 
-MusicProvider es un motor backend de búsqueda, proxy y descarga de audio de YouTube escrito en Node.js + TypeScript utilizando ESM. Originalmente construido como un backend independiente para Spoti5, ahora **su objetivo principal es ser extraído y empaquetado como un Plugin de TypeScript para el reproductor Nuclear** (`@nuclearplayer/plugin-sdk`).
+MusicProvider es un Plugin oficial de TypeScript para el reproductor de música **Nuclear** (`@nuclearplayer/plugin-sdk`) que provee búsqueda de alta velocidad (`yt-search`), extracción y resolución de streams de audio (`yt-dlp` / scraper isomórfico) y almacenamiento en caché LRU en memoria RAM (`lru-cache`).
 
-El sistema utiliza `yt-search` (para búsquedas de muy baja latencia) y `yt-dlp` (para obtención de streams crudos y descargas nativas) cacheando las URLs temporales con `lru-cache`.
+El plugin está completamente desacoplado de frameworks HTTP, se empaqueta de forma autónoma con `tsup` (bundle de ~34 KB sin dependencias externas en runtime) y genera el paquete oficial `plugin.zip` para la Nuclear Plugin Store.
 
 ## Comandos del Proyecto
 
@@ -14,12 +14,18 @@ El sistema utiliza `yt-search` (para búsquedas de muy baja latencia) y `yt-dlp`
 # Instalación de dependencias
 npm install
 
-# Compilación de TypeScript
-npm run build
+# Compilación del bundle del plugin
+npm run build:plugin
+
+# Generación del asset de release para Nuclear Store (plugin.zip)
+npm run package
 
 # Ejecutar tests automáticos
 npm test
 npm run test:e2e
+
+# Benchmarking de latencia y rendimiento
+npm run benchmark:all
 ```
 
 ## Reglas de Estilo de Código y TypeScript
