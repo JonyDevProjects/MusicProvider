@@ -119,7 +119,8 @@ describe('Core YouTube Scraper', () => {
         'https://www.youtube.com/results?search_query=Sample%20Song',
         expect.objectContaining({
           headers: expect.objectContaining({
-            'Accept-Encoding': 'gzip, deflate, br'
+            'User-Agent': expect.any(String),
+            'Accept-Language': 'en-US,en;q=0.9'
           })
         })
       );

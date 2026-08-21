@@ -8,14 +8,19 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsup",
+    "build:plugin": "tsup",
     "build:standalone": "tsc",
+    "package": "tsx scripts/package-plugin.ts",
     "start": "node dist/cli.js",
     "dev:server": "tsx src/server.ts",
     "dev:proxy": "tsx src/server.ts & cloudflared tunnel --url http://localhost:3000",
     "test": "vitest run",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "test:e2e:report": "playwright show-report tests/e2e-report"
+    "test:e2e:report": "playwright show-report tests/e2e-report",
+    "benchmark:api": "tsx benchmarks/model-api.ts",
+    "benchmark:integrated": "tsx benchmarks/model-integrated.ts",
+    "benchmark:all": "tsx benchmarks/runner.ts"
   },
   "dependencies": {
     "adm-zip": "^0.5.14",

@@ -20,35 +20,36 @@
 ## Checklist de Tareas — Fase 4
 
 ### 1. Setup y Branching
-- [ ] Crear rama `feat/phase4-packaging-cicd`
-- [ ] Verificar que `npm test` pase al 100% (baseline verde)
-- [ ] Verificar `npx tsc --noEmit` sin errores
+- [x] Crear rama `feat/phase4-packaging-cicd`
+- [x] Verificar que `npm test` pase al 100% (baseline verde)
+- [x] Verificar `npx tsc --noEmit` sin errores
 
 ### 2. Automatización del Empaquetado Standalone
-- [ ] Añadir script `scripts/package-plugin.ts` o utilitario con `adm-zip` para generar `music-provider-plugin.zip`.
-- [ ] Asegurar que el `.zip` contenga exclusivamente:
+- [x] Añadir script `scripts/package-plugin.ts` o utilitario con `adm-zip` para generar `music-provider-plugin.zip`.
+- [x] Asegurar que el `.zip` contenga exclusivamente:
   - `index.js` (generado por `tsup` en `dist/index.js`)
   - `package.json` limpio (con metadatos requeridos por Nuclear)
-- [ ] Añadir scripts a `package.json`:
+- [x] Añadir scripts a `package.json`:
   - `"build:plugin": "tsup"`
   - `"package": "tsx scripts/package-plugin.ts"`
 
 ### 3. Pipeline de CI/CD (GitHub Actions)
-- [ ] Crear `.github/workflows/ci.yml`:
+- [x] Crear `.github/workflows/ci.yml`:
   - Linting y verificación de tipos (`npx tsc --noEmit`)
   - Ejecución de pruebas unitarias (`npm test`)
   - Verificación del build del plugin (`npm run build:plugin`)
-- [ ] Crear `.github/workflows/release.yml`:
+  - Empaquetado de artefacto (`npm run package`)
+- [x] Crear `.github/workflows/release.yml`:
   - Trigger en push de tags (`v*`)
   - Ejecutar tests y build
   - Empaquetar `music-provider-plugin.zip`
   - Crear GitHub Release con el `.zip` adjunto como asset de distribución
 
 ### 4. Verificación y Pruebas
-- [ ] Ejecutar `npm run package` localmente.
-- [ ] Probar la instalación del `.zip` resultante en Nuclear en vivo siguiendo el protocolo oficial:
+- [x] Ejecutar `npm run package` localmente.
+- [x] Probar la instalación del `.zip` resultante y staging en Nuclear en vivo siguiendo el protocolo oficial:
   ```bash
   cd /Users/jonathanquishpe/JoniDev/nuclear/packages/player && pnpm tauri dev
   ```
-- [ ] Inspeccionar DevTools (`Cmd + Option + I`) para validar activación, búsqueda y reproducción.
-- [ ] Persistir avances en `docs/future-roadmap/phase4/session-log.md` y en la memoria de Engram.
+- [x] Inspeccionar DevTools (`Cmd + Option + I`) para validar activación, búsqueda y reproducción.
+- [x] Persistir avances en `docs/future-roadmap/phase4/session-log.md` y en la memoria de Engram.

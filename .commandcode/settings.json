@@ -62,7 +62,8 @@
       "Shell(git:*)",
       "Shell(cd /Users/jonathanquishpe/JoniDev/MusicProvider && git commit -F - <<'EOF' fix(ios): enable local file playback to bypass AVPlayer CDN issues - Info.plist: NSAllowsLocalNetworking -> NSAllowsArbitraryLoads for just_audio proxy - yt_explode_service_io.dart: download stream to local file via Dart HTTP client, select AAC-LC codec - player_provider.dart: handle file:// URIs with AudioSource.file, add diagnostic logging - just_audio: ^0.9.36 -> ^0.10.6 - docs: add investigation report for iOS cellular playback failure Co-authored-by: CommandCodeBot <noreply@commandcode.ai> EOF)",
       "Shell(pkill -f \"flutter run\" 2>/dev/null; pkill -f \"flutter_tools\" 2>/dev/null; echo \"done\")",
-      "Shell(cd /Users/jonathanquishpe/JoniDev/MusicProvider && git add docs/testing/investigation-ios-cellular-playback-failure.md && git commit -F - <<'EOF' docs: update investigation report with Test 8 findings (403 Forbidden) - Added Test 8: download-to-file workaround fails with HTTP 403 from YouTube CDN - Updated key findings table with download-to-file result - Updated files modified and recommendations sections - Added 403 error analysis (signature expiration, missing headers, geo-restriction, IPv6) Co-authored-by: CommandCodeBot <noreply@commandcode.ai> EOF)"
+      "Shell(cd /Users/jonathanquishpe/JoniDev/MusicProvider && git add docs/testing/investigation-ios-cellular-playback-failure.md && git commit -F - <<'EOF' docs: update investigation report with Test 8 findings (403 Forbidden) - Added Test 8: download-to-file workaround fails with HTTP 403 from YouTube CDN - Updated key findings table with download-to-file result - Updated files modified and recommendations sections - Added 403 error analysis (signature expiration, missing headers, geo-restriction, IPv6) Co-authored-by: CommandCodeBot <noreply@commandcode.ai> EOF)",
+      "mcp__engram__mem_stats"
     ],
     "deny": [],
     "defaultMode": "default"

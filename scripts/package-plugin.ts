@@ -1,0 +1,107 @@
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { execSync } from 'child_process';
+import AdmZip from 'adm-zip';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const ROOT_DIR = path.resolve(__dirname, '..');
+const DIST_DIR = path.join(ROOT_DIR, 'dist');
+const STAGING_DIR = path.join(ROOT_DIR, 'dist', 'plugin-staging');
+const EXTERNAL_STAGING_DIR = path.resolve(ROOT_DIR, '..', 'music-provider-plugin');
+const OUTPUT_ZIP = path.join(ROOT_DIR, 'music-provider-plugin.zip');
+
+async function packagePlugin() {
+  console.log('📦 Starting MusicProvider Nuclear Plugin packaging...');
+
+  // 1. Build bundle with tsup
+  console.log('🔨 Building standalone bundle with tsup...');
+  execSync('npm run build:plugin', { cwd: ROOT_DIR, stdio: 'inherit' });
+
+  const bundlePath = path.join(DIST_DIR, 'index.js');
+  if (!fs.existsSync(bundlePath)) {
+    throw new Error(`Bundle not found at ${bundlePath}`);
+  }
+  const bundleStat = fs.statSync(bundlePath);
+  console.log(`✅ Bundle generated: ${bundlePath} (${Math.round(bundleStat.size / 1024)} KB)`);
+
+  // 2. Read and extract clean package.json manifest for Nuclear
+  const rootPkgPath = path.join(ROOT_DIR, 'package.json');
+  const rootPkg = JSON.parse(fs.readFileSync(rootPkgPath, 'utf8'));
+
+  const cleanManifest = {
+    name: rootPkg.name || 'music-provider',
+    version: rootPkg.version || '1.0.0',
+    description: rootPkg.description || 'Standalone music provider utilizing yt-dlp',
+    author: rootPkg.author || 'iJonyDev',
+    main: 'index.js',
+    nuclear: rootPkg.nuclear || {
+      displayName: 'MusicProvider',
+      categories: ['streaming'],
+      permissions: ['net', 'fs'],
+      icon: {
+        type: 'link',
+        link: 'https://raw.githubusercontent.com/nukeop/nuclear/master/packages/ui/assets/logo.svg'
+      }
+    }
+  };
+
+  // 3. Prepare Staging directory
+  if (fs.existsSync(STAGING_DIR)) {
+    fs.rmSync(STAGING_DIR, { recursive: true, force: true });
+  }
+  fs.mkdirSync(STAGING_DIR, { recursive: true });
+
+  const stagingBundlePath = path.join(STAGING_DIR, 'index.js');
+  const stagingPkgPath = path.join(STAGING_DIR, 'package.json');
+
+  fs.copyFileSync(bundlePath, stagingBundlePath);
+  fs.writeFileSync(stagingPkgPath, JSON.stringify(cleanManifest, null, 2) + '\n', 'utf8');
+
+  console.log(`📁 Staging directory prepared at ${STAGING_DIR}`);
+
+  // Also sync external dev staging folder if available for Nuclear manual testing
+  try {
+    if (fs.existsSync(EXTERNAL_STAGING_DIR)) {
+      fs.rmSync(EXTERNAL_STAGING_DIR, { recursive: true, force: true });
+    }
+    fs.mkdirSync(EXTERNAL_STAGING_DIR, { recursive: true });
+    fs.copyFileSync(bundlePath, path.join(EXTERNAL_STAGING_DIR, 'index.js'));
+    fs.writeFileSync(path.join(EXTERNAL_STAGING_DIR, 'package.json'), JSON.stringify(cleanManifest, null, 2) + '\n', 'utf8');
+    console.log(`🔄 Synced clean staging to ${EXTERNAL_STAGING_DIR}`);
+  } catch (err: any) {
+    console.warn(`⚠️ Could not sync external staging dir: ${err.message}`);
+  }
+
+  // 4. Create ZIP archive
+  if (fs.existsSync(OUTPUT_ZIP)) {
+    fs.unlinkSync(OUTPUT_ZIP);
+  }
+
+  const zip = new AdmZip();
+  zip.addLocalFile(stagingBundlePath);
+  zip.addLocalFile(stagingPkgPath);
+  zip.writeZip(OUTPUT_ZIP);
+
+  const zipStat = fs.statSync(OUTPUT_ZIP);
+  console.log(`\n🎉 Packaging complete!`);
+  console.log(`📦 Zip Archive: ${OUTPUT_ZIP} (${Math.round(zipStat.size / 1024)} KB)`);
+  console.log(`📋 Manifest:`);
+  console.log(JSON.stringify(cleanManifest, null, 2));
+
+  // 5. Verify ZIP contents
+  const verifyZip = new AdmZip(OUTPUT_ZIP);
+  const zipEntries = verifyZip.getEntries().map((e) => e.entryName);
+  console.log(`🔍 Verified ZIP entries:`, zipEntries);
+
+  if (!zipEntries.includes('index.js') || !zipEntries.includes('package.json') || zipEntries.length !== 2) {
+    throw new Error(`Unexpected ZIP structure: ${JSON.stringify(zipEntries)}`);
+  }
+  console.log(`✨ Standalone artifact verification passed!\n`);
+}
+
+packagePlugin().catch((err) => {
+  console.error('❌ Packaging failed:', err);
+  process.exit(1);
+});

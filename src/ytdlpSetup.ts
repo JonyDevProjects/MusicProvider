@@ -69,14 +69,18 @@ async function downloadAndExtract(zipName: string, binaryPath: string): Promise<
   }
 
   console.log(`[yt-dlp] Downloading from ${url}...`);
-  const response = await axios({
-    method: 'get',
-    url,
-    responseType: 'arraybuffer',
-    timeout: 300000 // 5 minutes
+  const response = await fetch(url, {
+    headers: {
+      'User-Agent': 'music-provider-agent'
+    }
   });
 
-  fs.writeFileSync(zipPath, response.data);
+  if (!response.ok || !response.body) {
+    throw new Error(`Failed to download binary: HTTP ${response.status} ${response.statusText}`);
+  }
+
+  const arrayBuffer = await response.arrayBuffer();
+  fs.writeFileSync(zipPath, Buffer.from(arrayBuffer));
 
   console.log(`[yt-dlp] Extracting archive to ${BIN_DIR}...`);
   const zip = new AdmZip(zipPath);

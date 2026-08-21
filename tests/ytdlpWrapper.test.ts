@@ -11,7 +11,7 @@ describe('ytdlpWrapper Integration Tests', () => {
   // Ensure yt-dlp is installed before running integration tests
   beforeAll(async () => {
     await ensureInstalled();
-  }, 60000); // Allow up to 1 minute for initial download if needed
+  }, 180000); // Allow up to 3 minutes for initial download if needed
 
   afterAll(() => {
     if (fs.existsSync(TEST_DOWNLOAD_DIR)) {
