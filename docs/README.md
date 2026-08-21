@@ -51,15 +51,19 @@ La documentación se organiza de forma temática en las siguientes secciones:
 
 ### 🗺️ 2. Fases de Evolución y Roadmap (`docs/future-roadmap/`)
 - [future_roadmap_and_architecture.md](./future-roadmap/future_roadmap_and_architecture.md) — Visión global de evolución arquitectónica.
+- **[Fase 1: Restricción de Edad y Cookies](./future-roadmap/future_roadmap_and_architecture.md#fase-1-manejo-de-restricción-de-edad-age-restricted-content)**:
+  - Integración de menú de configuración (`api.Settings`) para cookies y bypass de contenido +18 mediante `yt-dlp`.
+- **[Fase 2: Streams Largos y Refresh Transparente](./future-roadmap/future_roadmap_and_architecture.md#fase-2-casos-extremos-streams-largos-y-caducidad)**:
+  - Monitoreo de expiración de firmas (HTTP 403) y regeneración transparente del stream en caliente con persistencia en caché LRU.
 - **[Fase 3: Motor Isomórfico y Benchmarking](./future-roadmap/phase3/)**:
-  - [decision-and-execution-plan.md](./future-roadmap/phase3/decision-and-execution-plan.md) — Diseño y ejecución del motor desacoplado.
-  - [session-log.md](./future-roadmap/phase3/session-log.md) — Bitácora de la Fase 3.
+  - [decision-and-execution-plan.md](./future-roadmap/phase3/decision-and-execution-plan.md) — Diseño y ejecución del motor desacoplado de frameworks HTTP.
+  - [findings.md](./future-roadmap/phase3/findings.md) y [session-log.md](./future-roadmap/phase3/session-log.md) — Benchmarking de latencia Cold vs Warm Cache.
 - **[Fase 4: Empaquetado Standalone y CI/CD](./future-roadmap/phase4/)**:
-  - [README.md](./future-roadmap/phase4/README.md) — Configuración de `tsup`, `scripts/package-plugin.ts` y workflows de GitHub Actions.
+  - [README.md](./future-roadmap/phase4/README.md) — Configuración de `tsup` (bundle ~34 KB), `scripts/package-plugin.ts` y workflows de GitHub Actions.
   - [session-log.md](./future-roadmap/phase4/session-log.md) — Bitácora de la Fase 4.
 - **[Fase 5: Publicación en Nuclear Plugin Store](./future-roadmap/phase5/)**:
-  - [README.md](./future-roadmap/phase5/README.md) — Especificación y requisitos de publicación en la Store de Nuclear.
-  - [decision-and-execution-plan.md](./future-roadmap/phase5/decision-and-execution-plan.md) — Ejecución de release `v1.0.0` y preparación del PR para `NuclearPlayer/plugin-registry`.
+  - [README.md](./future-roadmap/phase5/README.md) — Especificación y requisitos oficiales de publicación en Nuclear Plugin Store.
+  - [decision-and-execution-plan.md](./future-roadmap/phase5/decision-and-execution-plan.md) — Release oficial `v1.0.0`, conformidad con `plugin.zip` y preparación del PR para `NuclearPlayer/plugin-registry`.
   - [session-log.md](./future-roadmap/phase5/session-log.md) — Bitácora de la Fase 5.
 
 ### 🧪 3. Estrategia de Pruebas (`docs/testing/`)

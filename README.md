@@ -99,9 +99,11 @@ Toda la documentación técnica del proyecto se encuentra organizada de forma mo
 - 📘 **[Guía de Onboarding & Arquitectura](./docs/README.md)**: Índice general del sistema y guía para nuevos desarrolladores.
 - 🔌 **[Integración con Nuclear](./docs/nuclear-plugin/)**: Planes de implementación, mapeo arquitectónico y valor del plugin.
 - 🗺️ **[Roadmap y Fases de Evolución](./docs/future-roadmap/)**:
-  - [Fase 3: Motor Isomórfico y Benchmarks](./docs/future-roadmap/phase3/)
-  - [Fase 4: Empaquetado Standalone y CI/CD](./docs/future-roadmap/phase4/)
-  - [Fase 5: Publicación en Nuclear Plugin Store](./docs/future-roadmap/phase5/)
+  - **[Fase 1: Restricción de Edad y Autenticación](./docs/future-roadmap/future_roadmap_and_architecture.md#fase-1-manejo-de-restricción-de-edad-age-restricted-content)** — Soporte de cookies y configuración de parámetros para videos con restricción de edad.
+  - **[Fase 2: Streams Largos y Refresh Transparente](./docs/future-roadmap/future_roadmap_and_architecture.md#fase-2-casos-extremos-streams-largos-y-caducidad)** — Manejo de caducidad de firmas (HTTP 403) con re-resolución transparente en caliente.
+  - **[Fase 3: Motor Isomórfico y Benchmarks](./docs/future-roadmap/phase3/)** — Desacoplamiento del core, benchmarking riguroso de latencia (Cold vs Warm Cache) y optimización en memoria.
+  - **[Fase 4: Empaquetado Standalone y CI/CD](./docs/future-roadmap/phase4/)** — Bundle CommonJS autónomo con `tsup` (~34 KB) y pipelines de GitHub Actions.
+  - **[Fase 5: Publicación en Nuclear Plugin Store](./docs/future-roadmap/phase5/)** — Conformidad con `plugin.zip`, Release oficial `v1.0.0` y metadatos para `NuclearPlayer/plugin-registry`.
 - 🧪 **[Estrategia de Testing](./docs/testing/)**: Pruebas unitarias, de integración, E2E y protocolo de DevTools.
 - 📊 **[Optimizaciones y Rendimiento](./docs/optimizations/)**: Análisis de latencia, benchmarks y lecciones aprendidas.
 - 📖 **[Referencias Técnicas](./docs/reference/)**: Análisis de dependencias y flujo GitFlow.
