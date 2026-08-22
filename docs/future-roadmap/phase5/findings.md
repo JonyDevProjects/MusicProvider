@@ -28,8 +28,17 @@ Documentación de referencia oficial: [docs.nuclearplayer.com/nuclear/plugins/pu
   "author": "iJonyDev",
   "repo": "JonyDevProjects/MusicProvider",
   "category": "streaming",
-  "categories": ["streaming"],
-  "tags": ["youtube", "streaming", "yt-dlp", "audio"],
+  "categories": [
+    "streaming",
+    "metadata"
+  ],
+  "tags": [
+    "youtube",
+    "streaming",
+    "metadata",
+    "yt-dlp",
+    "audio"
+  ],
   "addedAt": "2026-08-21T00:00:00Z"
 }
 ```

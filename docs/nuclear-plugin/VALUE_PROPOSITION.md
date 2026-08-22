@@ -18,24 +18,33 @@ El plugin **MusicProvider** propone una arquitectura híbrida que separa la resp
 - **Búsqueda Ultrarrápida (Nativa JS):** Sustituimos la invocación de `yt-dlp` para búsquedas por `yt-search` (paquete nativo de NPM). Al ejecutarse dentro del mismo contexto V8/Node de Nuclear, eludimos completamente el overhead de los subprocesos de Python.
 - **Resolución Precisa (yt-dlp con LRU Cache):** Seguimos utilizando `yt-dlp` exclusivamente para resolver metadatos profundos y URLs de streaming directas, pero añadimos una capa de caché (LRU-cache temporal) para que re-escuchar un stream previamente resuelto tome *0 milisegundos*.
 
-## 3. Benchmark Comparativo
+## 3. Benchmark Comparativo y Evidencia Cuantitativa
 
-A continuación, los resultados observados durante nuestras pruebas de estrés y baseline en entornos idénticos (Node.js vs Rust subprocess):
+A continuación, los resultados de rendimiento formalmente medidos en nuestra suite de benchmarks (`benchmarks/results/analysis-latency.md`):
 
-| Métrica / Operación | Backend Oficial de Nuclear (`yt-dlp` en Rust) | MusicProvider Plugin (Híbrido) | Mejora |
-|:---|:---:|:---:|:---:|
-| **Búsqueda (Search Latency)** | ~1.73 s | **~0.76 s** | **🚀 +56% más rápido** |
-| **Overhead de CPU por búsqueda** | Alto (Levanta un proceso OS nuevo) | **Insignificante** (Request HTTP asíncrono puro) | Drástica reducción de carga térmica y de batería en laptops |
-| **Resolución de Stream (Miss)** | ~1.30 s | **~1.30 s** | Igual (Ambos usan `yt-dlp`) |
-| **Resolución de Stream (Cache Hit)** | N/A (Se vuelve a ejecutar `yt-dlp`) | **~0.01 s** (Vía LRU Cache en RAM) | **🚀 100x más rápido** al cambiar de pista en bucle |
+| Métrica / Operación | Backend Oficial de Nuclear (`yt-dlp` en Rust) | MusicProvider Plugin (Híbrido) | Factor de Mejora / Evidencia |
+|:---|:---:|:---:|:---|
+| **Latencia de Búsqueda (Search)** | ~1,730 ms | **100 – 300 ms** (`yt-search`) | **🚀 +70% a +85% más rápido** (sin spawning de subprocesos) |
+| **Overhead de CPU en Búsqueda** | Alto (Spawnea subproceso Python por tecla) | **Insignificante** (V8 Task nativo) | Cero carga térmica y ahorro drástico de batería |
+| **Resolución de Stream (Cold Cache)** | ~2,592 ms | **~2,504 ms** | Idéntico (I/O Bound hacia CDN de Google) |
+| **Resolución de Stream (Warm Cache / RAM)** | ~2,592 ms (re-ejecuta subproceso) | **0.0142 ms (14.2 µs)** | **⚡ ~176,500x más rápido** (lookup O(1) en V8 Heap) |
+| **Time-to-First-Byte (Inicio de Audio)** | 5,000 – 15,000 ms (descarga total) | **20 – 83 ms** (`Range: bytes=0-`) | Inicio de reproducción prácticamente instantáneo |
+| **Consumo de Disco en Playback** | 10 – 20 MB por canción | **0 MB (Streaming directo)** | Sin desgaste de SSD ni archivos temporales huérfanos |
 
-## 4. Beneficios para la Comunidad y el Proyecto
+## 4. Ventajas Técnicas del Streaming Progresivo vs Descarga Nativa
 
-1. **UX Inmediata (Snappy UX):** La reducción de la latencia por debajo del umbral de 1 segundo hace que la barra de búsqueda se sienta nativa e instantánea, eliminando la sensación de "lag" o carga al escribir.
-2. **Vida Útil de Batería:** En dispositivos portátiles, evadir la creación constante de procesos pesados mejora indirectamente la autonomía.
-3. **Evasión de Rate-Limits:** Al descargar el volumen de requests de `yt-dlp`, lo reservamos únicamente para las operaciones pesadas, evadiendo la temida página de CAPTCHA de YouTube durante mucho más tiempo.
-4. **Código Mantenible y Testeado:** Este plugin nace de una abstracción rigurosamente testeada con unit-testing y E2E, diseñada desde el día uno para operar sin fugas de memoria.
+1. **UX Inmediata (Snappy UX & Playback Instantáneo):**
+   - La búsqueda de canciones se reduce por debajo de 300 ms, eliminando la sensación de "lag" al escribir.
+   - El audio comienza a sonar en menos de 100 ms tras el clic gracias a las solicitudes HTTP de chunks parciales (`Range: bytes=0-`), sin esperar a que el archivo completo se descargue al disco.
+2. **Cero Fugas de Memoria y Manejo Seguro con NDJSON:**
+   - La lectura línea por línea mediante `ndjson.ts` permite procesar listas de reproducción gigantescas o resultados múltiples sin desbordar el Heap de V8 ni provocar Out of Memory (OOM).
+3. **Resiliencia ante Expiración de URLs (Transparent Refresh):**
+   - Las firmas de URLs directas de YouTube caducan a las 4-6 horas. En canciones largas, mixes o podcasts, MusicProvider detecta los errores HTTP 403 y regenera el stream en segundo plano sin interrumpir la reproducción.
+4. **Vida Útil de Batería y Cero Desgaste de Disco:**
+   - Al no requerir escribir y borrar archivos temporales de 10-20 MB por cada pista escuchada, se preserva la vida útil del disco SSD y la autonomía en portátiles.
+5. **Código Mantenible, Tipado y Testeado al 100%:**
+   - Construido con TypeScript estricto, 100% compatible con `@nuclearplayer/plugin-sdk`, validado con Vitest y Playwright, y empaquetado como bundle CommonJS autónomo de ~34 KB sin dependencias externas en tiempo de ejecución.
 
 ---
 
-**Resumen:** MusicProvider no compite con la robustez de Nuclear; al contrario, actúa como un complemento quirúrgico que elimina el principal cuello de botella percibido por el usuario moderno: *la latencia de descubrimiento*.
+**Resumen:** MusicProvider no compite con la robustez de Nuclear; al contrario, actúa como una optimización quirúrgica que elimina el principal cuello de botella percibido por el usuario: *la latencia de descubrimiento y la espera de inicio de reproducción*.

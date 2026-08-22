@@ -43,11 +43,13 @@
   "repo": "JonyDevProjects/MusicProvider",
   "category": "streaming",
   "categories": [
-    "streaming"
+    "streaming",
+    "metadata"
   ],
   "tags": [
     "youtube",
     "streaming",
+    "metadata",
     "yt-dlp",
     "audio"
   ],

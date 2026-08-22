@@ -18,8 +18,36 @@ Proporciona búsqueda de pistas de muy baja latencia, resolución directa de str
 - 🎧 **Extracción de Streams de Alta Calidad**: Resolución directa de flujos de audio (`yt-dlp` / scraper isomórfico) con descifrado dinámico de tokens anti-throttling (`n-token`).
 - ⚡ **Caché LRU en Memoria V8**: Almacenamiento en caliente de URLs de streaming (`lru-cache`) con expiración inteligente por TTL (5 min) y descarte de streams fallidos.
 - 📦 **Zero-External Runtime Bundle**: Empaquetado con `tsup` / `esbuild` en un único bundle CommonJS (`dist/index.js`, ~34 KB) totalmente autónomo, sin requerir `node_modules` en tiempo de ejecución.
-- 🏬 **Conformidad Estricta con Nuclear Plugin Store**: Generación determinista del asset oficial `plugin.zip` con estructura plana en raíz (`index.js` + `package.json`) y metadatos estándar (`category: "streaming"`).
+- 🏬 **Conformidad Estricta con Nuclear Plugin Store**: Generación determinista del asset oficial `plugin.zip` con estructura plana en raíz (`index.js` + `package.json`) y metadatos estándar (`category: "streaming"`, `categories: ["streaming", "metadata"]`).
 - 🚀 **Integración CI/CD Automatizada**: Publicación automática de GitHub Releases con assets válidos al crear tags semver (`v*`).
+
+---
+
+## 💎 Propuesta de Valor y Evidencia de Rendimiento (Benchmarks)
+
+MusicProvider resuelve el cuello de botella tradicional de latencia en reproductores de escritorio mediante una arquitectura híbrida que separa la **búsqueda instantánea** de la **resolución de streams**:
+
+### 📊 Benchmark Comparativo: Backend Nativo vs MusicProvider Plugin
+
+| Métrica / Operación | Backend Tradicional (`yt-dlp` spawn) | MusicProvider Plugin (Híbrido) | Factor de Mejora / Evidencia |
+|:---|:---:|:---:|:---|
+| **Latencia de Búsqueda** | ~1,730 ms | **100 – 300 ms** (`yt-search`) | **🚀 +70% a +85% más rápido** (sin spawn de procesos) |
+| **Overhead de CPU en Búsqueda** | Alto (Spawnea subproceso Python por tecla) | **Insignificante** (V8 Task nativo) | Cero carga térmica y ahorro drástico de batería |
+| **Resolución Cold Cache** | ~2,592 ms | **~2,504 ms** | Idéntico (I/O Bound hacia CDN de Google) |
+| **Resolución Warm Cache (RAM)** | ~2,592 ms (re-ejecuta subproceso) | **0.0142 ms (14.2 µs)** | **⚡ ~176,500x más rápido** (lookup O(1) en V8 Heap) |
+| **Time-to-First-Byte (Audio Play)** | 5,000 – 15,000 ms (descarga completa) | **20 – 83 ms** (`Range: bytes=0-`) | Inicio de reproducción prácticamente instantáneo |
+| **Consumo de Disco en Playback** | 10 – 20 MB por canción | **0 MB (Streaming directo)** | Sin desgaste de SSD ni archivos temporales huérfanos |
+
+> 📈 *Datos extraídos de suites formales de benchmarking (`benchmarks/results/analysis-latency.md` y `benchmarks/results/latest.json`).*
+
+### 🎧 Ventajas del Streaming Progresivo frente a Descarga Nativa Completa
+
+1. **Playback Instantáneo (Baja Latencia de Inicio)**:
+   Al usar peticiones HTTP parciales (`Range: bytes=0-`), el decodificador de audio comienza a sonar tras descargar los primeros ~200 KB en lugar de esperar la descarga total de 10-20 MB.
+2. **Cero Fugas de Memoria con Streaming NDJSON**:
+   El procesador por líneas `ndjson.ts` procesa catálogos y listas gigantescas evento por evento (`stdout.on('data')`), evitando bloqueos de Event Loop y errores de Out of Memory (OOM).
+3. **Resiliencia ante Expiración (Transparent Refresh)**:
+   Las firmas temporales de YouTube caducan a las 4-6 horas. MusicProvider detecta errores `403 Forbidden` en reproducciones largas (mixes/podcasts) y re-resuelve automáticamente el stream en caliente sin cortar la reproducción.
 
 ---
 

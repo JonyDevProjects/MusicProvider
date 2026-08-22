@@ -38,11 +38,11 @@ async function packagePlugin() {
     author: rootPkg.author || 'iJonyDev',
     main: 'index.js',
     category: 'streaming',
-    categories: ['streaming'],
+    categories: ['streaming', 'metadata'],
     nuclear: rootPkg.nuclear || {
       displayName: 'MusicProvider',
       category: 'streaming',
-      categories: ['streaming'],
+      categories: ['streaming', 'metadata'],
       permissions: ['net', 'fs'],
       icon: {
         type: 'link',

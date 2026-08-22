@@ -5,7 +5,8 @@
   "author": "iJonyDev",
   "category": "streaming",
   "categories": [
-    "streaming"
+    "streaming",
+    "metadata"
   ],
   "type": "module",
   "main": "dist/index.js",
@@ -54,7 +55,10 @@
   "nuclear": {
     "displayName": "MusicProvider",
     "category": "streaming",
-    "categories": ["streaming"],
+    "categories": [
+      "streaming",
+      "metadata"
+    ],
     "permissions": ["net", "fs"],
     "icon": {
       "type": "link",
