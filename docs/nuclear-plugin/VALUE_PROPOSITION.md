@@ -24,7 +24,7 @@ A continuación, los resultados de rendimiento formalmente medidos en nuestra su
 
 | Métrica / Operación | Backend Oficial de Nuclear (`yt-dlp` en Rust) | MusicProvider Plugin (Híbrido) | Factor de Mejora / Evidencia |
 |:---|:---:|:---:|:---|
-| **Latencia de Búsqueda (Search)** | ~1,730 ms | **100 – 300 ms** (`yt-search`) | **🚀 +70% a +85% más rápido** (sin spawning de subprocesos) |
+| **Latencia de Búsqueda (Search)** | ~1,730 ms | **~760 ms** (`yt-search` / isomórfico) | **🚀 +56% más rápido** (sin spawning de subprocesos) |
 | **Overhead de CPU en Búsqueda** | Alto (Spawnea subproceso Python por tecla) | **Insignificante** (V8 Task nativo) | Cero carga térmica y ahorro drástico de batería |
 | **Resolución de Stream (Cold Cache)** | ~2,592 ms | **~2,504 ms** | Idéntico (I/O Bound hacia CDN de Google) |
 | **Resolución de Stream (Warm Cache / RAM)** | ~2,592 ms (re-ejecuta subproceso) | **0.0142 ms (14.2 µs)** | **⚡ ~176,500x más rápido** (lookup O(1) en V8 Heap) |
@@ -34,12 +34,12 @@ A continuación, los resultados de rendimiento formalmente medidos en nuestra su
 ## 4. Ventajas Técnicas del Streaming Progresivo vs Descarga Nativa
 
 1. **UX Inmediata (Snappy UX & Playback Instantáneo):**
-   - La búsqueda de canciones se reduce por debajo de 300 ms, eliminando la sensación de "lag" al escribir.
+   - La búsqueda de canciones responde en ~760 ms (frente a 1.73 s de `yt-dlp`), eliminando la sensación de "lag" al escribir.
    - El audio comienza a sonar en menos de 100 ms tras el clic gracias a las solicitudes HTTP de chunks parciales (`Range: bytes=0-`), sin esperar a que el archivo completo se descargue al disco.
 2. **Cero Fugas de Memoria y Manejo Seguro con NDJSON:**
    - La lectura línea por línea mediante `ndjson.ts` permite procesar listas de reproducción gigantescas o resultados múltiples sin desbordar el Heap de V8 ni provocar Out of Memory (OOM).
-3. **Resiliencia ante Expiración de URLs (Transparent Refresh):**
-   - Las firmas de URLs directas de YouTube caducan a las 4-6 horas. En canciones largas, mixes o podcasts, MusicProvider detecta los errores HTTP 403 y regenera el stream en segundo plano sin interrumpir la reproducción.
+3. **Soporte Nativo de Streams Largos (> 1 hora):**
+   - Mediante parámetros de rango seguro (`&range=0-99999999999`), se garantiza reproducción fluida y continua en tracks extensos y mixes de más de una hora. *(La re-resolución automática y transparente de tokens expirados tras 4–6h de reproducción forma parte de la Fase 2 del Roadmap)*.
 4. **Vida Útil de Batería y Cero Desgaste de Disco:**
    - Al no requerir escribir y borrar archivos temporales de 10-20 MB por cada pista escuchada, se preserva la vida útil del disco SSD y la autonomía en portátiles.
 5. **Código Mantenible, Tipado y Testeado al 100%:**
