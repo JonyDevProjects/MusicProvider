@@ -34,5 +34,5 @@
 
 ### 3. Registro en Nuclear Store
 - [x] `T-P5.6 (Preparación)`: Generar entrada validada para `plugins.json` con id, repo `JonyDevProjects/MusicProvider`, categorías y metadata.
-- [ ] `T-P5.6 (Envío)`: Realizar Fork de `NuclearPlayer/plugin-registry`, agregar `music-provider` a `plugins.json` y abrir Pull Request oficial.
-- [ ] Verificar la instalación del plugin desde la pestaña Store en Nuclear desktop tras la aceptación del PR.
+- [x] `T-P5.6 (Envío)`: Realizar Fork de `NuclearPlayer/plugin-registry`, agregar `music-provider` a `plugins.json`, validar esquema y abrir Pull Request oficial ([PR #12](https://github.com/NuclearPlayer/plugin-registry/pull/12)).
+- [ ] Verificar la instalación del plugin desde la pestaña Store en Nuclear desktop tras la aceptación y merge del PR.

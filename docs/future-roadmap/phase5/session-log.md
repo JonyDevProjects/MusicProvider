@@ -28,12 +28,13 @@
 - **`T-P5.3` (Consolidación Git)**: Integración y merge limpio de los cambios hacia `develop` y hacia `main`.
 - **`T-P5.4` (Creación y Push del Tag v1.0.0)**: Creado y pusheado el tag `v1.0.0` a GitHub.
 - **`T-P5.5` (Publicación Automatizada del GitHub Release)**: El workflow `Release Plugin` ejecutó exitosamente en GitHub Actions y publicó el Release oficial `v1.0.0` con los assets `plugin.zip` y `music-provider-plugin.zip`.
-- **`T-P5.6` (Preparación de Entrada para el Registro Oficial)**: Generada la entrada JSON estándar lista para ser añadida a `plugins.json` en el repositorio `NuclearPlayer/plugin-registry`.
+- **`T-P5.6` (Registro Oficial y Creación de Pull Request)**: Realizado fork de `NuclearPlayer/plugin-registry`, agregada la entrada de `music-provider` a `plugins.json`, verificados los scripts de validación (`npm run validate` y `check-plugins.ts` al 100% verde) y abierto el **[Pull Request #12 en NuclearPlayer/plugin-registry](https://github.com/NuclearPlayer/plugin-registry/pull/12)**.
 
 ### Artefactos Generados / Verificados
 - **GitHub Release Oficial**: [https://github.com/JonyDevProjects/MusicProvider/releases/tag/v1.0.0](https://github.com/JonyDevProjects/MusicProvider/releases/tag/v1.0.0)
 - **Asset Oficial para Nuclear**: `plugin.zip` (10 KB)
-- **Entrada para `NuclearPlayer/plugin-registry`**:
+- **Pull Request Oficial en Nuclear Store**: [https://github.com/NuclearPlayer/plugin-registry/pull/12](https://github.com/NuclearPlayer/plugin-registry/pull/12)
+- **Entrada en `NuclearPlayer/plugin-registry`**:
 ```json
 {
   "id": "music-provider",
